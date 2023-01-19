@@ -51,7 +51,7 @@ class Service extends ServiceProvider
                 \Tagd\Core\Console\Commands\Seed\Dev::class,
                 \Tagd\Core\Console\Commands\Seed\Qa::class,
                 \Tagd\Core\Console\Commands\Seed\Uat::class,
-                \Tagd\Core\Console\Commands\Seed\Production::class,
+                \Tagd\Core\Console\Commands\Seed\Prod::class,
                 \Tagd\Core\Console\Commands\Seed\Database::class,
             ];
 
