@@ -1,92 +1,223 @@
-# core
+# Tagd Core Laravel package
 
+## What it does
 
+This [Laravel](https://laravel.com) package allows you to manage all things related with Tagd
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Once installed you can do stuff like this:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.totallydev.com/tagd/packages/core.git
-git branch -M main
-git push -uf origin main
+public function doSomething(\Tagd\Core\Repositories\Items $items)
+{
+    $item = $items->findById('123');
+}
 ```
 
-## Integrate with your tools
+For further reading please check [doc/index.md](doc/index.md)
 
-- [ ] [Set up project integrations](https://gitlab.totallydev.com/tagd/packages/core/-/settings/integrations)
+### Changelog
 
-## Collaborate with your team
+Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Getting Started
 
-## Test and Deploy
+To get a local copy up and running follow these simple example steps.
 
-Use the built-in continuous integration in GitLab.
+### Installation
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+1. Add the package to your project with
+```
+composer require tagd/core
+```
 
-***
+2. Publish the package configuration file with
+```
+php artisan vendor:publish --provider="Tagd\Core\Providers\Service"
+```
+Then edit the `/config/tagd.php` in your project.
 
-# Editing this README
+3. This package requires a few [migrations](src/database/migrations) and [seeds](src/database/seeds).
+Run the artisan commands if needed:
+```
+php artisan migrate
+php artisan db:seed --class="Tagd\Core\Database\Seeders\DatabaseSeeder"
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+> For development purposes you can run the following seeder
+`php artisan db:seed --class="Tagd\Core\Database\Seeders\DevSeeder"`
+```
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Here is a list of different features this package provides:
+### Commands
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+There are several artisan console commands available at [Console/Commands](src/code/Console/Commands). Once the package is installed you can run these commands in your project.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+| Command                   | Description                                                     |
+|---------------------------|-----------------------------------------------------------------|
+| `tagd:seed:db`            | Seeds the database                                              |
+| `tagd:seed:dev`           | Seeds the database for development                              |
+| `tagd:seed:qa`            | Seeds the database for QA                                       |
+| `tagd:seed:uat`           | Seeds the database for UAT                                      |
+| `tagd:seed:prod`          | Seeds the database for production                               |
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+> If you add more commands, remember to register them at [Providers/TagdServiceProvider.php](src/code/Providers/TagdServiceProvider.php)
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+### Models
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+There are models available at [Models](src/code/Models). These are just plain Eloquent models.
 
-## License
-For open source projects, say how it is licensed.
+These models purpose is only to deal with the database tables. Any extra logic is handled by a Repository.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+To configure which database connection the models will use, update the `config/tagd.php` file in your project.
+
+### Repositories
+
+There are repositories available at [Repositories](src/code/Repositories). The main purpose of these repositories are to provide users with access to the different Tagd entities.
+
+You can think of a repository as an intermediate class to deal with the Eloquent models so you don't have to, but it also encapsulates any business logic related to that model life cycle.
+
+Repositories inherit from a base class which implement all the basic CRUD actions. Each repository can override those actions or implement extra actions.
+
+```mermaid
+classDiagram
+    Repository <|-- Customers
+    Repository <|-- Items
+    Repository <|-- Retailers
+    Repository: +Model model
+    Repository: +crete()
+    Repository: +update()
+    Repository: +find()
+    Repository: +delete()
+    class Customers{
+      +create()
+      +update()
+      +approve()
+    }
+    class Items{
+      -create()
+    }
+    class Retailers{
+      -create()
+    }
+```
+
+Each repository has an interface so it can be binded in Laravel. Read more at the [Service Container](https://laravel.com/docs/9.x/container) documentation.
+
+### Events
+
+There are events available at [Events](src/code/Events).
+
+| Event | Description |
+|---------------------------|-----------------------|
+| `ItemCreated`            | An item has been created             |
+|   |   |
+
+These events are dispatched mostly by the repositories. But also from model observers. The purpose of these events are to serve repository users with a way to interact on tagd events so they don't have to interact with model events directly.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant M as Model
+    participant MO as Model Observer
+    participant E as Event
+    M-->>MO: model event dispatched
+    MO-->>E: tagd event dispatched
+```
+
+### Listeners
+
+There are events available at [Listeners](src/code/Listeners). The listeners are subscribed to the different events and perform actions depending on the logic.
+
+This package performs some actions on certain events (i.e. send an email when a transaction has been made).
+
+### Policies
+
+There are auth policies available at [Policies](src/code/Policies). These policies define what permissions authed users have against the different operations when applied to a model.
+
+Check [Authorization](https://laravel.com/docs/8.x/authorization) at Laravel's documentation.
+
+i.e. the following code defines that an authed `$user` is able to `update` only his/her items(s). (Given that the authed user is the owner)
+```php
+    public function update(GenericUser $user, Item $item)
+    {
+        return intval($user->id) === intval($item->owner_id)
+            ? Response::allow()
+            : Response::deny('You do not own this item');
+    }
+```
+
+The policies are mostly used inside the [Repositories](src/code/Repositories) but they can be accessed from anywhere.
+
+i.e. the following code uses the previously defined policy to authorize an user before updating a conference
+```php
+    public function update(int $itemId, array $payload): bool
+    {
+        try {
+            $item = $this->findById($itemId);
+
+            $this->authorize('update', $item);
+
+            $item = $item->update($payload);
+        } catch (\Illuminate\Auth\AuthenticationException) {
+            throw new Exceptions\NotAllowed($e);
+        } catch (\Exception $e) {
+            throw new Exceptions\NotFound($e);
+        }
+
+        return $item;
+    }
+```
+
+### Uploads
+
+Files are stored in S3. Each uploaded file is represented by the [Upload](src/code/Models/Upload.php) class.
+
+You need to setup the right credentials in the [config](src/config/tagd.php) file. This model is able to generate a pre-signed url for anyone to store the file in S3 in our behalf. Please note that these url expire after some period of time.
+
+## Development
+
+TO DO
+### Publish
+
+Should you need to publish a new version of this package, follow these steps:
+
+1. Push your changes to the `main` branch
+
+2. Update the [CHANGELOG.md](CHANGELOG.md) to document what's new in this new version
+
+3. Tag your `main` branch with your new version number, i.e. `1.0.2` and wait for the package to be published.
+
+> Please note that before publishing the package a number of tests will be run, including code style. If any test fails the package won't be published.
+
+See [.gitlab-ci.yml](.gitlab-ci.yml) for further details.
+
+The package will be published at this project's [package registry](https://gitlab.totallydev.com/tagd/core/-/packages)
+
+### Tests
+
+There are a number of tests available at [tests](tests) classified as Feature and Unit tests.
+
+You can perform the tests by running `composer run test`.
+
+### Code Style
+
+This project follows a coding standard based on the [PSR-12](https://www.php-fig.org/psr/psr-12/) standard and customized for [Laravel](https://laravel.com/) project.
+
+You can perform a check on code style by running `composer run pint_check`.
+
+Should you want to also fix automatically the code style, you can run `composer run pint`
+
+Read more at the [Pint](https://github.com/laravel/pint) project.
+
+### Tech Stack
+
+This package follows the standard conventions for Laravel Packages. Please read the official [Package development](https://laravel.com/docs/9.x/packages) documentation for further details.
+
+The dependencies of this package are defined in the [composer.json](composer.json) file. The main ones are:
+
+- [PHP 8.1](https://www.php.net/) scripting language.
+- [AWS SDK 3.2](https://aws.amazon.com/sdk-for-php/) PHP library to communicate with AWS.
+- [PHPUnit 9.3](https://phpunit.de/) PHP testing framework.
+
+> Please read the official [Composer](https://getcomposer.org/doc/) documentation for further details.
