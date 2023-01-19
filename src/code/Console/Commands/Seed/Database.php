@@ -2,8 +2,8 @@
 
 namespace Tagd\Core\Console\Commands\Seed;
 
-use Tagd\Core\Database\Seeders\DatabaseSeeder;
 use Illuminate\Console\Command;
+use Tagd\Core\Database\Seeders\DatabaseSeeder;
 
 class Database extends Command
 {

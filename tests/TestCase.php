@@ -2,10 +2,10 @@
 
 namespace Tagd\Core\Tests;
 
+use Orchestra\Testbench\TestCase as Base;
 use Tagd\Core\Database\Seeders\TestingSeeder;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
 use Tagd\Core\Providers\Service;
-use Orchestra\Testbench\TestCase as Base;
 
 class TestCase extends Base
 {

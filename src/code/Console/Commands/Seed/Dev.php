@@ -2,8 +2,8 @@
 
 namespace Tagd\Core\Console\Commands\Seed;
 
-use Tagd\Core\Database\Seeders\DevSeeder;
 use Illuminate\Console\Command;
+use Tagd\Core\Database\Seeders\DevSeeder;
 
 class Dev extends Command
 {

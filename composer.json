@@ -32,7 +32,7 @@
         "whichbrowser/parser": "^2.1"
     },
     "require-dev": {
-        "laravel/pint": "^0.2.3",
+        "laravel/pint": "^1.2",
         "orchestra/testbench": "^7.5",
         "phpunit/phpunit": "^9.3"
     },
