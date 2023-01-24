@@ -25,9 +25,13 @@ class Tagd extends Model
 
     protected $fillable = [
         'item_id',
+        'consumer_id',
+        'meta',
+        'activated_at',
     ];
 
     protected $casts = [
+        'meta' => 'array',
     ];
 
     protected $observables = [

@@ -15,6 +15,9 @@ class Tagd extends Factory
     public function definition()
     {
         return [
+            'meta' => [
+                'transaction' => $this->faker->ean13(),
+            ],
         ];
     }
 

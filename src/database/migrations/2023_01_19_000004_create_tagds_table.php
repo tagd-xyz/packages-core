@@ -27,9 +27,10 @@ return new class extends Migration
     {
         Schema::create($this->tableName(), function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('item_id')->constrained()->nullable();
-            $table->foreignUuid('consumer_id')->constrained()->nullable();
+            $table->foreignUuid('item_id')->nullable()->constrained();
+            $table->foreignUuid('consumer_id')->nullable()->constrained();
             $table->string('slug');
+            $table->json('meta');
             $table->datetime('activated_at')->nullable();
 
             $table->timestamps();

@@ -20,6 +20,7 @@ class Consumer extends Model
     protected $table = 'consumers';
 
     protected $fillable = [
+        'name',
     ];
 
     protected $casts = [
