@@ -4,7 +4,7 @@ namespace Tagd\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class Prod extends Seeder
+class ProdSeeder extends Seeder
 {
     /**
      * Seed the application's database.

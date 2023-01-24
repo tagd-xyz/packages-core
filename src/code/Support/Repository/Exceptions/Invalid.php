@@ -1,6 +1,6 @@
 <?php
 
-namespace Tagd\Core\Repositories\Exceptions;
+namespace Tagd\Core\Support\Repository\Exceptions;
 
 use Illuminate\Validation\ValidationException;
 

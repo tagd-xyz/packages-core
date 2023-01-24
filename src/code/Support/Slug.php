@@ -10,7 +10,7 @@ class Slug
     // Open Location Code alphabet - https://en.wikipedia.org/wiki/Open_Location_Code
     public const ALPHABET = '23456789CFGHJMPQRVWX';
 
-    public const CHUNK_SIZE = 5;
+    public const CHUNK_SIZE = 4;
 
     public const CHUNK_TOTAL = 4;
 

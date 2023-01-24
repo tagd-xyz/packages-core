@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Tagd\Core\Models\Item\Property as Model;
+use Tagd\Core\Models\Actor\Consumer as Model;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 return new class extends Migration
@@ -27,8 +27,7 @@ return new class extends Migration
     {
         Schema::create($this->tableName(), function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('item_id')->constrained()->cascadeOnDelete();
-            $table->json('data');
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });

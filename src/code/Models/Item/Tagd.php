@@ -5,32 +5,29 @@
 
 namespace Tagd\Core\Models\Item;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Tagd\Core\Models\Actor\Retailer;
+use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Model;
 use Tagd\Core\Models\Traits\HasUuidKey;
+use Tagd\Core\Support\Slug;
 
-class Item extends Model
+class Tagd extends Model
 {
     use
         HasFactory,
         HasUuidKey,
         SoftDeletes;
 
-    protected $table = 'items';
+    protected $table = 'tagds';
 
     protected $fillable = [
-        'retailer_id',
-        'type',
-        'name',
-        'description',
-        'properties',
+        'item_id',
     ];
 
     protected $casts = [
-        'properties' => 'array',
     ];
 
     protected $observables = [
@@ -43,6 +40,9 @@ class Item extends Model
     {
         parent::boot();
         static::autoUuidKey();
+        static::creating(function ($model) {
+            $model->slug = (new Slug())->toString();
+        });
     }
 
     /*
@@ -51,19 +51,14 @@ class Item extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function retailer()
+    public function item()
     {
-        return $this->belongsTo(Retailer::class);
+        return $this->belongsTo(Item::class);
     }
 
-    public function propertiesBags()
+    public function consumer()
     {
-        return $this->hasMany(PropertyBags::class);
-    }
-
-    public function tagds()
-    {
-        return $this->hasMany(Tagd::class);
+        return $this->belongsTo(Consumer::class);
     }
 
     /*
@@ -72,21 +67,10 @@ class Item extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected function rootTagd(): Attribute
+    protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                return $this->tagds()->whereNull('prev_id')->first();
-            }
-        );
-    }
-
-    protected function currentTagd(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                return $this->tagds()->whereNull('next_id')->first();
-            }
+            get: fn () => ! is_null($this->activated_at),
         );
     }
 
@@ -101,4 +85,11 @@ class Item extends Model
     | ACTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function activate()
+    {
+        $updated = $this->update([
+            'activated_at' => Carbon::now(),
+        ]);
+    }
 }

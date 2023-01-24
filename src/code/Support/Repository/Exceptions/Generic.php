@@ -1,10 +1,8 @@
 <?php
 
-namespace Tagd\Core\Repositories\Exceptions;
+namespace Tagd\Core\Support\Repository\Exceptions;
 
-use Exception;
-
-class Duplicated extends Generic
+class Generic extends \Exception
 {
     /**
      * Create a new exception instance.
@@ -12,7 +10,7 @@ class Duplicated extends Generic
      * @param  string  $message
      * @return void
      */
-    public function __construct(string $message = 'Duplicated entry')
+    public function __construct(string $message)
     {
         parent::__construct($message);
     }

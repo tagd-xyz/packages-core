@@ -1,12 +1,12 @@
 <?php
 
-namespace Tagd\Core\Repositories\Actions;
+namespace Tagd\Core\Support\Repository\Actions;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\DB;
-use Tagd\Core\Repositories\Exceptions\NotAllowed;
-use Tagd\Core\Repositories\Exceptions\NotFound;
+use Tagd\Core\Support\Repository\Exceptions\NotAllowed;
+use Tagd\Core\Support\Repository\Exceptions\NotFound;
 
 trait Delete
 {

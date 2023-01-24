@@ -1,6 +1,6 @@
 <?php
 
-namespace Tagd\Core\Repositories\Interfaces;
+namespace Tagd\Core\Support\Repository\Interfaces;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;

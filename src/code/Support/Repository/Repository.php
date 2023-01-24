@@ -1,6 +1,6 @@
 <?php
 
-namespace Tagd\Core\Repositories;
+namespace Tagd\Core\Support\Repository;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +20,7 @@ abstract class Repository implements Interfaces\Repository
     /**
      * @var bool
      */
-    protected $isAuthorizationEnabled = true;
+    protected $isAuthorizationEnabled;
 
     /**
      * Repository constructor.
@@ -30,6 +30,8 @@ abstract class Repository implements Interfaces\Repository
     public function __construct(Model $model)
     {
         $this->model = $model;
+        $this->isAuthorizationEnabled = false;
+        // TODO THIS
     }
 
     /**

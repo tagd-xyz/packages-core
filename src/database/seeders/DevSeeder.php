@@ -20,5 +20,10 @@ class DevSeeder extends Seeder
         ]);
 
         $this->call(DatabaseSeeder::class);
+
+        $this->call(Actors\ConsumersSeeder::class);
+        $this->call(Actors\ResellersSeeder::class);
+        $this->call(Actors\RetailersSeeder::class);
+        // $this->call(Items\ItemsSeeder::class);
     }
 }

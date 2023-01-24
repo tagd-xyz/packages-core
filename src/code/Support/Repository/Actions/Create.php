@@ -1,12 +1,12 @@
 <?php
 
-namespace Tagd\Core\Repositories\Actions;
+namespace Tagd\Core\Support\Repository\Actions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use Tagd\Core\Repositories\Exceptions\Duplicated as DuplicatedException;
-use Tagd\Core\Repositories\Exceptions\Generic as GenericException;
+use Tagd\Core\Support\Repository\Exceptions\Duplicated as DuplicatedException;
+use Tagd\Core\Support\Repository\Exceptions\Generic as GenericException;
 
 trait Create
 {

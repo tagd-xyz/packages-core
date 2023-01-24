@@ -10,14 +10,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Model;
 use Tagd\Core\Models\Traits\HasUuidKey;
 
-class Property extends Model
+class PropertyBag extends Model
 {
     use
         HasFactory,
         HasUuidKey,
         SoftDeletes;
 
-    protected $table = 'properties';
+    protected $table = 'propertyBags';
 
     protected $fillable = [
         'item_id',

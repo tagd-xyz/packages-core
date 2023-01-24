@@ -1,13 +1,13 @@
 <?php
 
-namespace Tagd\Core\Repositories\Actions;
+namespace Tagd\Core\Support\Repository\Actions;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Tagd\Core\Repositories\Exceptions\InvalidFilter;
-use Tagd\Core\Repositories\Exceptions\NotFound;
+use Tagd\Core\Support\Repository\Exceptions\InvalidFilter;
+use Tagd\Core\Support\Repository\Exceptions\NotFound;
 
 trait Fetch
 {
