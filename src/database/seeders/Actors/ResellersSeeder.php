@@ -31,19 +31,19 @@ class ResellersSeeder extends Seeder
             $this->truncate();
         }
 
-        $factory = Reseller::factory()
-            ->count(1)
-            ->state([
-                'name' => 'Vinted',
-            ])
-            ->create();
-
-        $factory = Reseller::factory()
-            ->count(1)
-            ->state([
-                'name' => 'Ebay',
-            ])
-            ->create();
+        foreach ([
+            'Vinted',
+            'Ebay',
+            'Depop',
+            'eBid',
+        ] as $name) {
+            $factory = Reseller::factory()
+                ->count(1)
+                ->state([
+                    'name' => $name,
+                ])
+                ->create();
+        }
     }
 
     /**

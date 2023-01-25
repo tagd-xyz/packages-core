@@ -7,6 +7,30 @@ use Tagd\Core\Models\Item\Type;
 
 class Item extends Factory
 {
+    private function randomName($type): string
+    {
+        switch ($type) {
+            case Type::FASHION->value:
+                return collect([
+                    'Leather Tote Bag',
+                    'Leather Mini Cross-Body',
+                    'Basic Tote Bag',
+                    'Mini City Bag',
+                ])->random();
+
+            case Type::SNEAKERS->value:
+                return collect([
+                    'Ca Pro Lux',
+                    'Gazelle',
+                    'Kick Lo Leather',
+                    'Teveris Nitro',
+                    'Balance 327 Grey Day',
+                    'Chuck Taylor All',
+                    'Waffle Trainer 2',
+                ])->random();
+        }
+    }
+
     private function randomType(): string
     {
         $types = Type::cases();
@@ -32,6 +56,9 @@ class Item extends Factory
                 return collect([
                     'Nike',
                     'Adidas',
+                    'Puma',
+                    'Vans',
+                    'Converse',
                 ])->random();
         }
     }
@@ -70,7 +97,7 @@ class Item extends Factory
         $type = $this->randomType();
 
         return [
-            'name' => $this->faker->words(3, true),
+            'name' => $this->randomName($type),
             'type' => $type,
             'description' => $this->faker->paragraph(),
             'properties' => [
