@@ -52,7 +52,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Tagd\\Core\\Providers\\Service"
+                "Tagd\\Core\\Providers\\TagdServiceProvider"
             ],
             "aliases": {
                 "Tagd": "Tagd\\Core\\Facade"

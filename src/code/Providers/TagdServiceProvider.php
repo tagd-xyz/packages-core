@@ -7,7 +7,7 @@ namespace Tagd\Core\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
-class Service extends ServiceProvider
+class TagdServiceProvider extends ServiceProvider
 {
     /**
      * The policy mappings for the package.
