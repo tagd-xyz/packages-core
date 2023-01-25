@@ -33,6 +33,8 @@ return new class extends Migration
             $table->string('slug');
             $table->json('meta')->nullable();
             $table->datetime('activated_at')->nullable();
+            $table->datetime('expired_at')->nullable();
+            $table->datetime('transferred_at')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

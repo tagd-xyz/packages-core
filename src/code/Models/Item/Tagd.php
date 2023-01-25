@@ -31,6 +31,8 @@ class Tagd extends Model
         'meta',
         'parent_id',
         'activated_at',
+        'expired_at',
+        'transferred_at',
     ];
 
     protected $casts = [
@@ -96,6 +98,20 @@ class Tagd extends Model
         );
     }
 
+    protected function isExpired(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ! is_null($this->expired_at),
+        );
+    }
+
+    protected function isTransferred(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ! is_null($this->transferred_at),
+        );
+    }
+
     protected function isRoot(): Attribute
     {
         return Attribute::make(
@@ -119,6 +135,20 @@ class Tagd extends Model
     {
         $updated = $this->update([
             'activated_at' => Carbon::now(),
+        ]);
+    }
+
+    public function expire()
+    {
+        $updated = $this->update([
+            'expired_at' => Carbon::now(),
+        ]);
+    }
+
+    public function transfer()
+    {
+        $updated = $this->update([
+            'transferred_at' => Carbon::now(),
         ]);
     }
 }
