@@ -21,7 +21,7 @@ class ConsumersSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 15,
+            'total' => 0,
             ...$options,
         ]);
 

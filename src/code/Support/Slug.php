@@ -42,7 +42,7 @@ class Slug
     public function generate(): array
     {
         $this->chunks = [];
-        for ($i = 0; $i <= self::CHUNK_TOTAL; $i++) {
+        for ($i = 0; $i < self::CHUNK_TOTAL; $i++) {
             $this->chunks[] = $this->chunk(self::CHUNK_SIZE, self::ALPHABET);
         }
 

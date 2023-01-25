@@ -35,39 +35,49 @@ class RetailersSeeder extends Seeder
             $this->truncate();
         }
 
-        $factory = Retailer::factory()
-            ->count(1)
-            ->state([
-                'name' => 'Top Fashion',
-            ])
-            ->has(Item::factory()
-                ->count($total)
-                ->type(Type::FASHION)
-                ->has(Tagd::factory()
-                    ->count(1)
-                    ->for(Consumer::factory())
-                    ->active(),
-                    'tagds'
+        foreach ([
+            'Top Fashion',
+            'Dresses & More',
+        ] as $name) {
+            $factory = Retailer::factory()
+                ->count(1)
+                ->state([
+                    'name' => $name,
+                ])
+                ->has(Item::factory()
+                    ->count($total)
+                    ->type(Type::FASHION)
+                    ->has(Tagd::factory()
+                        ->count(1)
+                        ->for(Consumer::factory())
+                        ->active(),
+                        'tagds'
+                    )
                 )
-            )
-            ->create();
+                ->create();
+        }
 
-        $factory = Retailer::factory()
-            ->count(1)
-            ->state([
-                'name' => 'Sneaker World',
-            ])
-            ->has(Item::factory()
-                ->count($total)
-                ->type(Type::SNEAKERS)
-                ->has(Tagd::factory()
-                    ->count(1)
-                    ->for(Consumer::factory())
-                    ->active(),
-                    'tagds'
+        foreach ([
+            'Sneaker World',
+            'Kick Game',
+        ] as $name) {
+            $factory = Retailer::factory()
+                ->count(1)
+                ->state([
+                    'name' => $name,
+                ])
+                ->has(Item::factory()
+                    ->count($total)
+                    ->type(Type::SNEAKERS)
+                    ->has(Tagd::factory()
+                        ->count(1)
+                        ->for(Consumer::factory())
+                        ->active(),
+                        'tagds'
+                    )
                 )
-            )
-            ->create();
+                ->create();
+        }
     }
 
     /**

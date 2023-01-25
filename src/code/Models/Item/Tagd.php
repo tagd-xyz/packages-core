@@ -26,7 +26,9 @@ class Tagd extends Model
     protected $fillable = [
         'item_id',
         'consumer_id',
+        'reseller_id',
         'meta',
+        'parent_id',
         'activated_at',
     ];
 
@@ -63,6 +65,21 @@ class Tagd extends Model
     public function consumer()
     {
         return $this->belongsTo(Consumer::class);
+    }
+
+    public function reseller()
+    {
+        return $this->belongsTo(Reseller::class);
+    }
+
+    public function children()
+    {
+        return $this->hasMany(static::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(static::class, 'parent_id');
     }
 
     /*

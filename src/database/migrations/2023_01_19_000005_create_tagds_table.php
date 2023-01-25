@@ -29,8 +29,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('item_id')->nullable()->constrained();
             $table->foreignUuid('consumer_id')->nullable()->constrained();
+            $table->foreignUuid('reseller_id')->nullable()->constrained();
             $table->string('slug');
-            $table->json('meta');
+            $table->json('meta')->nullable();
             $table->datetime('activated_at')->nullable();
 
             $table->timestamps();
@@ -41,6 +42,7 @@ return new class extends Migration
 
         Schema::table($this->tableName(), function (Blueprint $table) {
             $table->after('slug', function ($table) {
+                $table->foreignUuid('parent_id')->nullable()->references('id')->on('tagds');
                 $table->foreignUuid('prev_id')->nullable()->references('id')->on('tagds');
                 $table->foreignUuid('next_id')->nullable()->references('id')->on('tagds');
             });
