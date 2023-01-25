@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Actor\Consumer;
+use Tagd\Core\Models\Actor\Reseller;
 use Tagd\Core\Models\Model;
 use Tagd\Core\Models\Traits\HasUuidKey;
 use Tagd\Core\Support\Slug;
@@ -92,6 +93,13 @@ class Tagd extends Model
     {
         return Attribute::make(
             get: fn () => ! is_null($this->activated_at),
+        );
+    }
+
+    protected function isRoot(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => is_null($this->parent_id),
         );
     }
 
