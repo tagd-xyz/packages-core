@@ -71,6 +71,7 @@ class TagdServiceProvider extends ServiceProvider
         /**
          * Observers
          */
+        \Tagd\Core\Models\Actor\Consumer::observe(\Tagd\Core\Observers\Actors\Consumer::class);
 
         /**
          * Policies
@@ -100,6 +101,7 @@ class TagdServiceProvider extends ServiceProvider
          */
         foreach (
             [
+                \Tagd\Core\Listeners\Models\Item::class,
             ] as $listener) {
             Event::subscribe($listener);
         }

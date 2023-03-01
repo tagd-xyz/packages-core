@@ -22,4 +22,17 @@ class Consumers extends Repository implements ConsumersInterface
     {
         parent::__construct($model);
     }
+
+    /**
+     * Asserts a consumer exists
+     *
+     * @param  mixed  $email
+     * @return Model
+     */
+    public function assertExists($email): Model
+    {
+        return Model::firstOrCreate([
+            'email' => $email,
+        ]);
+    }
 }

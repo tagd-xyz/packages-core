@@ -41,6 +41,13 @@ interface Repository
     public function searchableFields(): array;
 
     /**
+     * List of filtrable fields
+     *
+     * @return array
+     */
+    public function filtrableFields(): array;
+
+    /**
      * Get all models.
      *
      * @param  array  $options

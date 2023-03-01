@@ -8,10 +8,9 @@ namespace Tagd\Core\Models\Actor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Item\Item;
-use Tagd\Core\Models\Model;
 use Tagd\Core\Models\Traits\HasUuidKey;
 
-class Retailer extends Model
+class Retailer extends Actor
 {
     use
         HasFactory,
