@@ -27,7 +27,8 @@ return new class extends Migration
     {
         Schema::create($this->tableName(), function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('email')->unique();
+            $table->string('auth_id')->unique();
+            $table->string('name')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

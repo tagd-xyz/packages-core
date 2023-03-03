@@ -14,7 +14,8 @@ class Consumer extends Factory
     public function definition()
     {
         return [
-            'email' => $this->faker->email(),
+            'name' => $this->faker->firstName() . ' ' . $this->faker->lastName(),
+            'auth_id' => $this->faker->uuid(),
         ];
     }
 }

@@ -20,7 +20,8 @@ class Consumer extends Actor
     protected $table = 'consumers';
 
     protected $fillable = [
-        'email',
+        'name',
+        'auth_id',
     ];
 
     protected $casts = [
