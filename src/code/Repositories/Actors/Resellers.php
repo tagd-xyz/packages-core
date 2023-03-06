@@ -27,7 +27,7 @@ class Resellers extends Repository implements ResellersInterface
      * Asserts a reseller exists
      *
      * @param  mixed  $authId
-     * @param  string $name
+     * @param  string  $name
      * @return Model
      */
     public function assertExists($authId, $name = null): Model

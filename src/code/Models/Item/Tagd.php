@@ -119,6 +119,30 @@ class Tagd extends Model
         );
     }
 
+    protected function isAvailableForResale(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->meta['is_available_for_resale'] ?? false,
+        );
+    }
+
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->isTransferred) {
+                    return TagdStatus::TRANSFERRED;
+                } elseif ($this->isExpired) {
+                    return TagdStatus::EXPIRED;
+                } elseif ($this->isActive) {
+                    return TagdStatus::ACTIVE;
+                } else {
+                    return TagdStatus::INACTIVE;
+                }
+            },
+        );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -149,6 +173,16 @@ class Tagd extends Model
     {
         $updated = $this->update([
             'transferred_at' => Carbon::now(),
+        ]);
+    }
+
+    public function enableForResale(bool $enabled = true)
+    {
+        $this->update([
+            'meta' => [
+                ...$this->meta,
+                'is_available_for_resale' => $enabled,
+            ],
         ]);
     }
 }

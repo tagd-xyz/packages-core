@@ -73,4 +73,33 @@ class Tagds extends Repository implements TagdsInterface
 
         return $tagd;
     }
+
+    /**
+     * Sets tags as active
+     *
+     * @param  Model  $tagd
+     * @return Model
+     */
+    public function activate(
+        Model $tagd
+    ): Model {
+        $tagd->activate();
+
+        return $tagd;
+    }
+
+    /**
+     * Sets tags as available for resale
+     *
+     * @param  Model  $tagd
+     * @return Model
+     */
+    public function setAsAvailableForResale(
+        Model $tagd,
+        bool $enabled = true
+    ): Model {
+        $tagd->enableForResale($enabled);
+
+        return $tagd;
+    }
 }

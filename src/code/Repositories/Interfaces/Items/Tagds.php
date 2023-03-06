@@ -22,4 +22,24 @@ interface Tagds extends Repository
         ConsumerModel $consumer,
         string $transactionId
     ): Model;
+
+    /**
+     * Sets tags as active
+     *
+     * @param  Model  $tagd
+     * @return Model
+     */
+    public function activate(
+        Model $tagd
+    ): Model;
+
+    /**
+     * Sets tags as available for resale
+     *
+     * @param  Model  $tagd
+     * @return Model
+     */
+    public function setAsAvailableForResale(
+        Model $tagd
+    ): Model;
 }

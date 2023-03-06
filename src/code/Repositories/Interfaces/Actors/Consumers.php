@@ -11,7 +11,7 @@ interface Consumers extends Repository
      * Asserts a consumer exists
      *
      * @param  mixed  $authId
-     * @param  string $name
+     * @param  string  $name
      * @return Model
      */
     public function assertExists($authId, $name = null): Model;

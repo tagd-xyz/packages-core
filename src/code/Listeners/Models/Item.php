@@ -22,6 +22,9 @@ class Item
 
         $tagdsRepo = app(TagdsRepo::class);
         $tagdsRepo->createFor($event->item, $consumer, $event->transactionId);
+
+        // automatically set as "active"
+        $event->item->activate();
     }
 
     /**
