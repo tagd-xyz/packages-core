@@ -32,9 +32,11 @@ return new class extends Migration
             $table->foreignUuid('reseller_id')->nullable()->constrained();
             $table->string('slug');
             $table->json('meta')->nullable();
-            $table->datetime('activated_at')->nullable();
-            $table->datetime('expired_at')->nullable();
-            $table->datetime('transferred_at')->nullable();
+            $table->string('status')->nullable();
+            $table->datetime('status_at')->nullable();
+            // $table->datetime('expired_at')->nullable();
+            // $table->datetime('cancelled_at')->nullable();
+            // $table->datetime('transferred_at')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

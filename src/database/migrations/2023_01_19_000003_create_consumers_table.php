@@ -29,6 +29,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('auth_id')->unique();
             $table->string('name')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('website')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

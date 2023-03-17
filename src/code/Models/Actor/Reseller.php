@@ -22,6 +22,8 @@ class Reseller extends Actor
     protected $fillable = [
         'name',
         'auth_id',
+        'logo',
+        'website',
     ];
 
     protected $casts = [

@@ -4,6 +4,7 @@ namespace Tagd\Core\Listeners\Models;
 
 use Illuminate\Events\Dispatcher;
 use Tagd\Core\Events\Items\Item\Created;
+use Tagd\Core\Notifications\Consumers\TagdCreated as TagdCreatedNotification;
 use Tagd\Core\Repositories\Interfaces\Actors\Consumers as ConsumersRepo;
 use Tagd\Core\Repositories\Items\Tagds as TagdsRepo;
 
@@ -17,14 +18,23 @@ class Item
      */
     public function onCreated(Created $event)
     {
+        // A Retailer has just created a new item
+        // Make sure the consumer exists, and create its Tagd
+
         $consumersRepo = app(ConsumersRepo::class);
         $consumer = $consumersRepo->assertExists($event->consumerEmail);
 
         $tagdsRepo = app(TagdsRepo::class);
-        $tagdsRepo->createFor($event->item, $consumer, $event->transactionId);
+        $tagd = $tagdsRepo->createFor($event->item, $consumer, $event->transactionId);
 
-        // automatically set as "active"
-        $event->item->activate();
+        // notify the consumer
+        \Log::info('----- notify to consumer');
+        $consumer->notify(new TagdCreatedNotification(
+            $tagd
+        ));
+
+        // automatically set the newly created Tagd as "active"
+        $tagd->activate();
     }
 
     /**

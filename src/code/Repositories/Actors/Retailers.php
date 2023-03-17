@@ -34,12 +34,9 @@ class Retailers extends Repository implements RetailersInterface
     {
         $model = Model::firstOrCreate([
             'auth_id' => $authId,
+        ], [
+            'name' => $name,
         ]);
-
-        if ($name) {
-            $model->name = $name;
-            $model->save();
-        }
 
         return $model;
     }

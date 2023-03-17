@@ -30,13 +30,13 @@ class Tagd extends Model
         'reseller_id',
         'meta',
         'parent_id',
-        'activated_at',
-        'expired_at',
-        'transferred_at',
+        'status',
+        'status_at',
     ];
 
     protected $casts = [
         'meta' => 'array',
+        'status_at' => 'datetime',
     ];
 
     protected $observables = [
@@ -94,21 +94,35 @@ class Tagd extends Model
     protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => ! is_null($this->activated_at),
+            get: fn () => TagdStatus::ACTIVE == $this->status,
         );
     }
 
     protected function isExpired(): Attribute
     {
         return Attribute::make(
-            get: fn () => ! is_null($this->expired_at),
+            get: fn () => TagdStatus::EXPIRED == $this->status,
+        );
+    }
+
+    protected function isCancelled(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => TagdStatus::CANCELLED == $this->status,
+        );
+    }
+
+    protected function isResale(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => TagdStatus::RESALE == $this->status,
         );
     }
 
     protected function isTransferred(): Attribute
     {
         return Attribute::make(
-            get: fn () => ! is_null($this->transferred_at),
+            get: fn () => TagdStatus::TRANSFERRED == $this->status,
         );
     }
 
@@ -122,24 +136,9 @@ class Tagd extends Model
     protected function isAvailableForResale(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->meta['is_available_for_resale'] ?? false,
-        );
-    }
-
-    protected function status(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                if ($this->isTransferred) {
-                    return TagdStatus::TRANSFERRED;
-                } elseif ($this->isExpired) {
-                    return TagdStatus::EXPIRED;
-                } elseif ($this->isActive) {
-                    return TagdStatus::ACTIVE;
-                } else {
-                    return TagdStatus::INACTIVE;
-                }
-            },
+            get: fn () => $this->meta[
+                (TagdMeta::AVAILABLE_FOR_RESALE)->value
+            ] ?? false,
         );
     }
 
@@ -158,21 +157,32 @@ class Tagd extends Model
     public function activate()
     {
         $updated = $this->update([
-            'activated_at' => Carbon::now(),
+            'status' => TagdStatus::ACTIVE,
+            'status_at' => Carbon::now(),
         ]);
     }
 
     public function expire()
     {
         $updated = $this->update([
-            'expired_at' => Carbon::now(),
+            'status' => TagdStatus::EXPIRED,
+            'status_at' => Carbon::now(),
         ]);
     }
 
     public function transfer()
     {
         $updated = $this->update([
-            'transferred_at' => Carbon::now(),
+            'status' => TagdStatus::TRANSFERRED,
+            'status_at' => Carbon::now(),
+        ]);
+    }
+
+    public function cancel()
+    {
+        $updated = $this->update([
+            'status' => TagdStatus::CANCELLED,
+            'status_at' => Carbon::now(),
         ]);
     }
 
@@ -181,7 +191,7 @@ class Tagd extends Model
         $this->update([
             'meta' => [
                 ...$this->meta,
-                'is_available_for_resale' => $enabled,
+                (TagdMeta::AVAILABLE_FOR_RESALE)->value => $enabled,
             ],
         ]);
     }

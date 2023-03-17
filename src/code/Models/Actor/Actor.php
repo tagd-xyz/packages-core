@@ -5,8 +5,10 @@
 
 namespace Tagd\Core\Models\Actor;
 
+use Illuminate\Notifications\Notifiable;
 use Tagd\Core\Models\Model;
 
 class Actor extends Model
 {
+    use Notifiable;
 }

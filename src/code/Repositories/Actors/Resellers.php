@@ -34,12 +34,9 @@ class Resellers extends Repository implements ResellersInterface
     {
         $model = Model::firstOrCreate([
             'auth_id' => $authId,
+        ], [
+            'name' => $name,
         ]);
-
-        if ($name) {
-            $model->name = $name;
-            $model->save();
-        }
 
         return $model;
     }
