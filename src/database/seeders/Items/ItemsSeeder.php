@@ -5,6 +5,8 @@ namespace Tagd\Core\Database\Seeders\Items;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
+use Tagd\Core\Models\Actor\Consumer;
+use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Item\Item;
 use Tagd\Core\Models\Item\Tagd;
 
@@ -34,7 +36,14 @@ class ItemsSeeder extends Seeder
 
         $factory = Item::factory()
             ->count($total)
-            ->has(Tagd::factory()->count(1), 'tagds')
+            ->for(Retailer::first())
+            ->has(
+                Tagd::factory()
+                    ->count(1)
+                    ->active()
+                    ->for(Consumer::first()),
+                'tagds'
+            )
             ->create();
     }
 

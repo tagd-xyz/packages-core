@@ -8,10 +8,9 @@ namespace Tagd\Core\Models\Actor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Item\Tagd;
-use Tagd\Core\Models\Model;
 use Tagd\Core\Models\Traits\HasUuidKey;
 
-class Reseller extends Model
+class Reseller extends Actor
 {
     use
         HasFactory,
@@ -22,6 +21,9 @@ class Reseller extends Model
 
     protected $fillable = [
         'name',
+        'auth_id',
+        'logo',
+        'website',
     ];
 
     protected $casts = [

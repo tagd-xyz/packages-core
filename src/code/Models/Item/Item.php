@@ -12,6 +12,8 @@ use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Model;
 use Tagd\Core\Models\Traits\HasUuidKey;
 
+// use Tagd\Core\Events\Consumer\Created as ConsumerCreated;
+
 class Item extends Model
 {
     use
@@ -34,6 +36,7 @@ class Item extends Model
     ];
 
     protected $observables = [
+        // 'created',
     ];
 
     /**
@@ -43,6 +46,10 @@ class Item extends Model
     {
         parent::boot();
         static::autoUuidKey();
+
+        // static::created(function (Model $model) {
+        //     ConsumerCreated::dispatch($model);
+        // });
     }
 
     /*

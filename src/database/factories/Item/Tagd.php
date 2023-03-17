@@ -4,6 +4,7 @@ namespace Tagd\Core\Database\Factories\Item;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tagd\Core\Models\Item\TagdStatus;
 
 class Tagd extends Factory
 {
@@ -31,9 +32,8 @@ class Tagd extends Factory
     {
         return $this->state(function (array $attributes) use ($isActive) {
             return [
-                'activated_at' => $isActive
-                    ? Carbon::now()
-                    : null,
+                'status' => $isActive ? TagdStatus::ACTIVE : TagdStatus::INACTIVE,
+                'status_at' => Carbon::now(),
             ];
         });
     }

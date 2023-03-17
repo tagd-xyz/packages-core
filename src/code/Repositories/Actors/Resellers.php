@@ -22,4 +22,22 @@ class Resellers extends Repository implements ResellersInterface
     {
         parent::__construct($model);
     }
+
+    /**
+     * Asserts a reseller exists
+     *
+     * @param  mixed  $authId
+     * @param  string  $name
+     * @return Model
+     */
+    public function assertExists($authId, $name = null): Model
+    {
+        $model = Model::firstOrCreate([
+            'auth_id' => $authId,
+        ], [
+            'name' => $name,
+        ]);
+
+        return $model;
+    }
 }
