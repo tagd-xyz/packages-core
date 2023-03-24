@@ -85,6 +85,11 @@ class Tagd extends Model
         return $this->belongsTo(static::class, 'parent_id');
     }
 
+    public function auctions()
+    {
+        return $this->hasMany(static::class, 'parent_id')->where('status', TagdStatus::RESALE);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
