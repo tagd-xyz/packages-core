@@ -15,7 +15,7 @@ class Retailer extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'auth_id' => $this->faker->uuid(),
+            'auth_id' => $this->faker->email(),
         ];
     }
 }

@@ -27,7 +27,7 @@ return new class extends Migration
     {
         Schema::create($this->tableName(), function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('auth_id')->unique();
+            $table->string('email')->unique();
             $table->string('name')->nullable();
             $table->string('logo')->nullable();
             $table->string('website')->nullable();

@@ -15,7 +15,7 @@ class Consumer extends Factory
     {
         return [
             'name' => $this->faker->firstName() . ' ' . $this->faker->lastName(),
-            'auth_id' => $this->faker->uuid(),
+            'auth_id' => $this->faker->email(),
         ];
     }
 }

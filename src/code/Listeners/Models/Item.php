@@ -18,6 +18,7 @@ class Item
      */
     public function onCreated(Created $event)
     {
+        \Log::info('on item created');
         // A Retailer has just created a new item
         // Make sure the consumer exists, and create its Tagd
 

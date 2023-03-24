@@ -21,7 +21,7 @@ class Consumer extends Actor
 
     protected $fillable = [
         'name',
-        'auth_id',
+        'email',
     ];
 
     protected $casts = [

@@ -10,9 +10,9 @@ interface Retailers extends Repository
     /**
      * Asserts a retailer exists
      *
-     * @param  mixed  $authId
+     * @param  mixed  $email
      * @param  string  $name
      * @return Model
      */
-    public function assertExists($authId, $name = null): Model;
+    public function assertExists($email, $name = null): Model;
 }
