@@ -44,11 +44,12 @@ class TagdCreated extends Notification
      */
     public function toDatabase($notifiable)
     {
-        \Log::info('----- to database');
+        $this->tagd->load('item');
+        $this->tagd->load('item.retailer');
 
         return [
             'title' => 'You have received a new tag!',
-            // 'tagd' => $this->tagd,
+            'tagd' => $this->tagd,
         ];
     }
 }
