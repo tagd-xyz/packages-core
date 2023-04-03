@@ -50,6 +50,11 @@ class Retailer extends Actor
         return $this->hasMany(Item::class);
     }
 
+    public function stock()
+    {
+        return $this->hasMany(Stock::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

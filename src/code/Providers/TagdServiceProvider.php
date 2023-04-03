@@ -110,6 +110,7 @@ class TagdServiceProvider extends ServiceProvider
          * Repositories
          */
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Items\Items::class, \Tagd\Core\Repositories\Items\Items::class);
+        $this->app->bind(\Tagd\Core\Repositories\Interfaces\Items\Stock::class, \Tagd\Core\Repositories\Items\Stock::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Items\Tagds::class, \Tagd\Core\Repositories\Items\Tagds::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Retailers::class, \Tagd\Core\Repositories\Actors\Retailers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Resellers::class, \Tagd\Core\Repositories\Actors\Resellers::class);

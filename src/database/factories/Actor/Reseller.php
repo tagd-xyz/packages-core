@@ -15,7 +15,7 @@ class Reseller extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'auth_id' => $this->faker->email(),
+            'email' => $this->faker->email(),
         ];
     }
 }
