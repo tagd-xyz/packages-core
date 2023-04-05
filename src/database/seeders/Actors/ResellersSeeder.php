@@ -14,7 +14,6 @@ class ResellersSeeder extends Seeder
     /**
      * Seed the application's database for development purposes.
      *
-     * @param  array  $options
      * @return void
      */
     public function run(array $options = [])

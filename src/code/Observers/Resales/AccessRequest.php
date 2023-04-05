@@ -17,7 +17,6 @@ class AccessRequest
     /**
      * Handle the AccessRequest "created" event.
      *
-     * @param  AccessRequestModel  $accessRequest
      * @return void
      */
     public function created(AccessRequestModel $accessRequest)

@@ -9,17 +9,11 @@ interface AccessRequests extends Repository
 {
     /**
      * Rejects an access request
-     *
-     * @param  Model  $accessRequest
-     * @return Model
      */
     public function reject(Model $accessRequest): Model;
 
     /**
      * Approves an access request
-     *
-     * @param  Model  $accessRequest
-     * @return Model
      */
     public function approve(Model $accessRequest): Model;
 }

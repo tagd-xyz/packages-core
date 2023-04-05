@@ -37,7 +37,7 @@ class Stock extends Factory
     {
         $types = Type::cases();
 
-        return  $types[array_rand($types)]->value ?? null;
+        return $types[array_rand($types)]->value ?? null;
     }
 
     private function randomBrand(string $type): string
@@ -111,8 +111,6 @@ class Stock extends Factory
 
     /**
      * Set as fashion type
-     *
-     * @return self
      */
     public function type(Type $type): self
     {

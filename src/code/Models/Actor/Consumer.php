@@ -13,8 +13,7 @@ use Tagd\Core\Models\Traits\HasUuidKey;
 
 class Consumer extends Actor
 {
-    use
-        HasFactory,
+    use HasFactory,
         HasUuidKey,
         SoftDeletes;
 

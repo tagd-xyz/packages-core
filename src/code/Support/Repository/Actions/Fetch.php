@@ -13,8 +13,6 @@ trait Fetch
 {
     /**
      * List of searchable fields
-     *
-     * @return array
      */
     public function searchableFields(): array
     {
@@ -25,8 +23,6 @@ trait Fetch
 
     /**
      * List of filtrable fields
-     *
-     * @return array
      */
     public function filtrableFields(): array
     {
@@ -37,7 +33,6 @@ trait Fetch
      * Build query
      *
      * @param  mixed  $options
-     * @return Builder
      */
     protected function buildQuery($options): Builder
     {
@@ -152,9 +147,6 @@ trait Fetch
 
     /**
      * Fetches all entries (paginated)
-     *
-     * @param  array  $options
-     * @return LengthAwarePaginator
      */
     public function allPaginated(array $options = []): LengthAwarePaginator
     {
@@ -174,7 +166,6 @@ trait Fetch
      * Find model by id.
      *
      * @param  int|string  $modelId
-     * @param  array  $options
      * @return Model
      */
     public function findById(

@@ -40,7 +40,6 @@ class Slug
     /**
      * Generates
      *
-     * @return array
      *
      * @throws RangeException
      * @throws Exception
@@ -57,8 +56,6 @@ class Slug
 
     /**
      * toString
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -67,8 +64,6 @@ class Slug
 
     /**
      * toArray
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -78,9 +73,7 @@ class Slug
     /**
      * Generate a random string, using a cryptographically secure pseudorandom number generator (random_int)
      *
-     * @param  int  $length
      * @param  string  $keyspace
-     * @return string
      *
      * @throws RangeException
      * @throws Exception

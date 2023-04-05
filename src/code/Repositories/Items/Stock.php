@@ -15,8 +15,6 @@ class Stock extends Repository implements StockInterface
 
     /**
      * Constructor.
-     *
-     * @param  Model  $model
      */
     public function __construct(Model $model)
     {

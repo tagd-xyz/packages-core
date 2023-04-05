@@ -17,7 +17,6 @@ trait Update
      * Update existing model.
      *
      * @param  int|string  $modelId
-     * @param  array  $payload
      * @return Model
      */
     public function update(

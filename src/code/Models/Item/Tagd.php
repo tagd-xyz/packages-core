@@ -17,8 +17,7 @@ use Tagd\Core\Support\Slug;
 
 class Tagd extends Model
 {
-    use
-        HasFactory,
+    use HasFactory,
         HasUuidKey,
         SoftDeletes;
 

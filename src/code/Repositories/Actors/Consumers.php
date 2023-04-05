@@ -15,8 +15,6 @@ class Consumers extends Repository implements ConsumersInterface
 
     /**
      * Constructor.
-     *
-     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -28,7 +26,6 @@ class Consumers extends Repository implements ConsumersInterface
      *
      * @param  mixed  $email
      * @param  string  $name
-     * @return Model
      */
     public function assertExists($email, $name = null): Model
     {
@@ -45,7 +42,6 @@ class Consumers extends Repository implements ConsumersInterface
      * Finds a consumer by email
      *
      * @param  mixed  $email
-     * @return Model
      */
     public function findByEmail($email): Model
     {

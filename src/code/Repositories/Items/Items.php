@@ -16,8 +16,6 @@ class Items extends Repository implements ItemsInterface
 
     /**
      * Constructor.
-     *
-     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -26,12 +24,6 @@ class Items extends Repository implements ItemsInterface
 
     /**
      * Creates an Item for a Consumer
-     *
-     * @param  string  $email
-     * @param  string  $transactionId
-     * @param  string  $retailerId
-     * @param  array  $details
-     * @return Model
      */
     public function createForConsumer(
         string $email,

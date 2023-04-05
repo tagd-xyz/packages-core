@@ -16,7 +16,6 @@ class Created
     /**
      * Create a new event instance.
      *
-     * @param  AccessRequest  $accessRequest
      * @return void
      */
     public function __construct(

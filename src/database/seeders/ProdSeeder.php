@@ -9,7 +9,6 @@ class ProdSeeder extends Seeder
     /**
      * Seed the application's database.
      *
-     * @param  array  $options
      * @return void
      */
     public function run(

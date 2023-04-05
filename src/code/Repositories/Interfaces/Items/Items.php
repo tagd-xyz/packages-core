@@ -9,12 +9,6 @@ interface Items extends Repository
 {
     /**
      * Creates an Item for a Consumer
-     *
-     * @param  string  $email
-     * @param  string  $transactionId
-     * @param  string  $retailerId
-     * @param  array  $details
-     * @return Model
      */
     public function createForConsumer(
         string $email,

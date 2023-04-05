@@ -14,8 +14,7 @@ use Tagd\Core\Models\Traits\HasUuidKey;
 
 class Item extends Model
 {
-    use
-        HasFactory,
+    use HasFactory,
         HasUuidKey,
         SoftDeletes;
 

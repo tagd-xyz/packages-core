@@ -21,8 +21,6 @@ class Tagds extends Repository implements TagdsInterface
 
     /**
      * Constructor.
-     *
-     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -31,11 +29,6 @@ class Tagds extends Repository implements TagdsInterface
 
     /**
      * Creates tagd for an item recently created
-     *
-     * @param  ItemModel  $item
-     * @param  ConsumerModel  $consumer
-     * @param  string  $transactionId
-     * @return Model
      */
     public function createFor(
         ItemModel $item,
@@ -77,9 +70,6 @@ class Tagds extends Repository implements TagdsInterface
 
     /**
      * Sets tags as active
-     *
-     * @param  Model  $tagd
-     * @return Model
      */
     public function activate(
         Model $tagd
@@ -91,9 +81,6 @@ class Tagds extends Repository implements TagdsInterface
 
     /**
      * Sets tags as available for resale
-     *
-     * @param  Model  $tagd
-     * @return Model
      */
     public function setAsAvailableForResale(
         Model $tagd,
@@ -106,10 +93,6 @@ class Tagds extends Repository implements TagdsInterface
 
     /**
      * Confirm a tagd
-     *
-     * @param  Model  $tagd
-     * @param  ConsumerModel  $consumer
-     * @return Model
      */
     public function confirm(
         Model $tagd,
@@ -143,9 +126,6 @@ class Tagds extends Repository implements TagdsInterface
 
     /**
      * Cancel a tagd
-     *
-     * @param  Model  $tagd
-     * @return Model
      */
     public function cancel(
         Model $tagd,

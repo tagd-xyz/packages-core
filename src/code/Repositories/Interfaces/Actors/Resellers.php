@@ -12,7 +12,6 @@ interface Resellers extends Repository
      *
      * @param  mixed  $email
      * @param  string  $name
-     * @return Model
      */
     public function assertExists($email, $name = null): Model;
 }

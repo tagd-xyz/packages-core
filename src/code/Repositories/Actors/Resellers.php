@@ -15,8 +15,6 @@ class Resellers extends Repository implements ResellersInterface
 
     /**
      * Constructor.
-     *
-     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -28,7 +26,6 @@ class Resellers extends Repository implements ResellersInterface
      *
      * @param  mixed  $email
      * @param  string  $name
-     * @return Model
      */
     public function assertExists($email, $name = null): Model
     {

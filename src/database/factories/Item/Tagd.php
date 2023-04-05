@@ -24,9 +24,6 @@ class Tagd extends Factory
 
     /**
      * Set tagd as active
-     *
-     * @param  bool  $isActive
-     * @return self
      */
     public function active(bool $isActive = true): self
     {

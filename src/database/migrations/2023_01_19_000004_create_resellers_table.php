@@ -10,8 +10,6 @@ return new class extends Migration
 {
     /**
      * Get table name
-     *
-     * @return string
      */
     private function tableName(): string
     {

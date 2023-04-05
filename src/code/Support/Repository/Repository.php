@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Repository implements Interfaces\Repository
 {
-    use
-        Actions\Fetch,
+    use Actions\Fetch,
         Actions\Create,
         Actions\Update,
         Actions\Delete;
@@ -24,8 +23,6 @@ abstract class Repository implements Interfaces\Repository
 
     /**
      * Repository constructor.
-     *
-     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -36,9 +33,6 @@ abstract class Repository implements Interfaces\Repository
 
     /**
      * Getter/Setter if authorization is enabled
-     *
-     * @param  null|bool  $itIs
-     * @return bool
      */
     public function isAuthorizationEnabled(?bool $itIs = null): bool
     {

@@ -9,7 +9,6 @@ class NotFound extends Generic
     /**
      * Create a new exception instance.
      *
-     * @param  Exception  $exception
      * @return void
      */
     public function __construct(Exception $exception)

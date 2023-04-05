@@ -15,8 +15,6 @@ class AccessRequests extends Repository implements AccessRequestsInterface
 
     /**
      * Constructor.
-     *
-     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
@@ -25,9 +23,6 @@ class AccessRequests extends Repository implements AccessRequestsInterface
 
     /**
      * Rejects an access request
-     *
-     * @param  Model  $accessRequest
-     * @return Model
      */
     public function reject(Model $accessRequest): Model
     {
@@ -38,9 +33,6 @@ class AccessRequests extends Repository implements AccessRequestsInterface
 
     /**
      * Approves an access request
-     *
-     * @param  Model  $accessRequest
-     * @return Model
      */
     public function approve(Model $accessRequest): Model
     {

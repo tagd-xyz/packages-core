@@ -28,38 +28,26 @@ interface Repository
 
     /**
      * Returns true if authorization is enabled
-     *
-     * @return bool
      */
     public function isAuthorizationEnabled(): bool;
 
     /**
      * List of searchable fields
-     *
-     * @return array
      */
     public function searchableFields(): array;
 
     /**
      * List of filtrable fields
-     *
-     * @return array
      */
     public function filtrableFields(): array;
 
     /**
      * Get all models.
-     *
-     * @param  array  $options
-     * @return Collection
      */
     public function all(array $options = []): Collection;
 
     /**
      * Get all models (paginated).
-     *
-     * @param  array  $options
-     * @return LengthAwarePaginator
      */
     public function allPaginated(array $options = []): LengthAwarePaginator;
 
@@ -67,7 +55,6 @@ interface Repository
      * Find model by id.
      *
      * @param  int|string  $modelId
-     * @param  array  $options
      * @return Model
      */
     public function findById($modelId, array $options = []): ?Model;
@@ -75,7 +62,6 @@ interface Repository
     /**
      * Create a model.
      *
-     * @param  array  $payload
      * @return Model
      */
     public function create(array $payload): ?Model;
@@ -84,8 +70,6 @@ interface Repository
      * Update existing model.
      *
      * @param  int|string  $modelId
-     * @param  array  $payload
-     * @param  array  $options
      * @param  callable  $check
      * @return Model
      */
@@ -95,7 +79,6 @@ interface Repository
      * Delete model by id.
      *
      * @param  int|string  $modelId
-     * @return bool
      */
     public function deleteById($modelId): bool;
 
@@ -103,7 +86,6 @@ interface Repository
      * Restore model by id.
      *
      * @param  int|string  $modelId
-     * @return bool
      */
     public function restoreById($modelId): bool;
 
@@ -111,7 +93,6 @@ interface Repository
      * Permanently delete model by id.
      *
      * @param  int|string  $modelId
-     * @return bool
      */
     public function permanentlyDeleteById($modelId): bool;
 }

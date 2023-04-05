@@ -12,8 +12,7 @@ use Tagd\Core\Models\Traits\HasUuidKey;
 
 class PropertyBag extends Model
 {
-    use
-        HasFactory,
+    use HasFactory,
         HasUuidKey,
         SoftDeletes;
 

@@ -13,8 +13,7 @@ use Tagd\Core\Models\Traits\HasUuidKey;
 
 class Stock extends Model
 {
-    use
-        HasFactory,
+    use HasFactory,
         HasUuidKey,
         SoftDeletes;
 

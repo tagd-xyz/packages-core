@@ -13,7 +13,6 @@ trait Create
     /**
      * Create a model.
      *
-     * @param  array  $payload
      * @return Model
      */
     public function create(array $payload): ?Model

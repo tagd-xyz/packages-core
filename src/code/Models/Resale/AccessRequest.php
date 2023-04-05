@@ -15,8 +15,7 @@ use Tagd\Core\Support\Slug;
 
 class AccessRequest extends Model
 {
-    use
-        SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'reseller_access_requests';
 

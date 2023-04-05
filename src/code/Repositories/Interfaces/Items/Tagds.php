@@ -12,11 +12,6 @@ interface Tagds extends Repository
 {
     /**
      * Creates tagd for an item recently created
-     *
-     * @param  ItemModel  $item
-     * @param  ConsumerModel  $consumer
-     * @param  string  $transactionId
-     * @return Model
      */
     public function createFor(
         ItemModel $item,
@@ -31,9 +26,6 @@ interface Tagds extends Repository
 
     /**
      * Sets tags as active
-     *
-     * @param  Model  $tagd
-     * @return Model
      */
     public function activate(
         Model $tagd
@@ -41,9 +33,6 @@ interface Tagds extends Repository
 
     /**
      * Sets tags as available for resale
-     *
-     * @param  Model  $tagd
-     * @return Model
      */
     public function setAsAvailableForResale(
         Model $tagd
@@ -51,10 +40,6 @@ interface Tagds extends Repository
 
     /**
      * Confirm a tagd
-     *
-     * @param  Model  $tagd
-     * @param  ConsumerModel  $consumer
-     * @return Model
      */
     public function confirm(
         Model $tagd,
@@ -63,9 +48,6 @@ interface Tagds extends Repository
 
     /**
      * Cancel a tagd
-     *
-     * @param  Model  $tagd
-     * @return Model
      */
     public function cancel(
         Model $tagd

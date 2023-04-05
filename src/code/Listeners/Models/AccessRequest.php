@@ -11,7 +11,6 @@ class AccessRequest
     /**
      * on Item created
      *
-     * @param  Created  $event
      * @return void
      */
     public function onCreated(Created $event)
@@ -27,9 +26,6 @@ class AccessRequest
 
     /**
      * Subscribe
-     *
-     * @param  Dispatcher  $events
-     * @return array
      */
     public function subscribe(Dispatcher $events): array
     {

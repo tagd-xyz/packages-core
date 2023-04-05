@@ -17,7 +17,6 @@ class Consumer
     /**
      * Handle the Consumer "created" event.
      *
-     * @param  ConsumerModel  $consumer
      * @return void
      */
     public function created(ConsumerModel $consumer)

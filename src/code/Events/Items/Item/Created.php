@@ -20,7 +20,6 @@ class Created
     /**
      * Create a new event instance.
      *
-     * @param  Item  $item
      * @param  string  $consumerEmail
      * @return void
      */

@@ -14,7 +14,6 @@ trait Delete
      * Delete model by id.
      *
      * @param  int|string  $modelId
-     * @return bool
      */
     public function deleteById($modelId): bool
     {
@@ -42,7 +41,6 @@ trait Delete
      * Restore model by id.
      *
      * @param  int|string  $modelId
-     * @return bool
      */
     public function restoreById($modelId): bool
     {
@@ -69,7 +67,6 @@ trait Delete
      * Permanently delete model by id.
      *
      * @param  int|string  $modelId
-     * @return bool
      */
     public function permanentlyDeleteById($modelId): bool
     {
@@ -98,8 +95,6 @@ trait Delete
 
     /**
      * Deletes all models.
-     *
-     * @return bool
      */
     public function truncate(): bool
     {
@@ -122,8 +117,6 @@ trait Delete
 
     /**
      * Permanently deletes all models.
-     *
-     * @return bool
      */
     public function permanentlyTruncate(): bool
     {

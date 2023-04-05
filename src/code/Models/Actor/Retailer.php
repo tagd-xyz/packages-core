@@ -12,8 +12,7 @@ use Tagd\Core\Models\Traits\HasUuidKey;
 
 class Retailer extends Actor
 {
-    use
-        HasFactory,
+    use HasFactory,
         HasUuidKey,
         SoftDeletes;
 
