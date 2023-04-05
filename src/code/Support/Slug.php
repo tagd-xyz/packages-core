@@ -8,13 +8,17 @@ use RangeException;
 class Slug
 {
     // Open Location Code alphabet - https://en.wikipedia.org/wiki/Open_Location_Code
-    public const ALPHABET = '23456789CFGHJMPQRVWX';
+    public const ALPHABET_OPEN_LOCATION = '23456789CFGHJMPQRVWX';
+
+    public const ALPHABET_DIGITS_ONLY = '0123456789';
 
     private $chunkSize;
 
     private $chunkTotal;
 
     private $delimiter;
+
+    private $alphabet;
 
     /**
      * @var array
@@ -27,10 +31,12 @@ class Slug
      * @return void
      */
     public function __construct(
+        string $alphabet = self::ALPHABET_OPEN_LOCATION,
         int $chunkSize = 4,
         int $chunkTotal = 4,
         string $delimiter = '-',
     ) {
+        $this->alphabet = $alphabet;
         $this->chunkSize = $chunkSize;
         $this->chunkTotal = $chunkTotal;
         $this->delimiter = $delimiter;
@@ -48,7 +54,7 @@ class Slug
     {
         $this->chunks = [];
         for ($i = 0; $i < $this->chunkTotal; $i++) {
-            $this->chunks[] = $this->chunk($this->chunkSize, self::ALPHABET);
+            $this->chunks[] = $this->chunk($this->chunkSize, $this->alphabet);
         }
 
         return $this->chunks;
@@ -80,7 +86,7 @@ class Slug
      */
     private function chunk(
         int $length,
-        string $alphabet = self::ALPHABET
+        string $alphabet
     ): string {
         if ($length < 1) {
             throw new \RangeException('Length must be a positive integer');
