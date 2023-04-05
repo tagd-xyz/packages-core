@@ -15,4 +15,12 @@ interface Consumers extends Repository
      * @return Model
      */
     public function assertExists($email, $name = null): Model;
+
+    /**
+     * Finds a consumer by email
+     *
+     * @param  mixed  $email
+     * @return Model
+     */
+    public function findByEmail($email): Model;
 }

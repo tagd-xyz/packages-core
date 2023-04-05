@@ -18,7 +18,6 @@ class Item
      */
     public function onCreated(Created $event)
     {
-        \Log::info('on item created');
         // A Retailer has just created a new item
         // Make sure the consumer exists, and create its Tagd
 
@@ -29,7 +28,6 @@ class Item
         $tagd = $tagdsRepo->createFor($event->item, $consumer, $event->transactionId);
 
         // notify the consumer
-        \Log::info('----- notify to consumer');
         $consumer->notify(new TagdCreatedNotification(
             $tagd
         ));

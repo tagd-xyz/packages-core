@@ -44,6 +44,7 @@ class Items extends Repository implements ItemsInterface
             'retailer_id' => $retailerId,
         ]);
 
+        //TODO: move to somewhere better
         ItemCreated::dispatch($item, $email, $transactionId);
 
         return $item;

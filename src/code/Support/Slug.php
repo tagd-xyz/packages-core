@@ -10,11 +10,11 @@ class Slug
     // Open Location Code alphabet - https://en.wikipedia.org/wiki/Open_Location_Code
     public const ALPHABET = '23456789CFGHJMPQRVWX';
 
-    public const CHUNK_SIZE = 4;
+    private $chunkSize;
 
-    public const CHUNK_TOTAL = 4;
+    private $chunkTotal;
 
-    public const DELIMITER = '-';
+    private $delimiter;
 
     /**
      * @var array
@@ -26,8 +26,14 @@ class Slug
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct(
+        int $chunkSize = 4,
+        int $chunkTotal = 4,
+        string $delimiter = '-',
+    ) {
+        $this->chunkSize = $chunkSize;
+        $this->chunkTotal = $chunkTotal;
+        $this->delimiter = $delimiter;
         $this->generate();
     }
 
@@ -42,8 +48,8 @@ class Slug
     public function generate(): array
     {
         $this->chunks = [];
-        for ($i = 0; $i < self::CHUNK_TOTAL; $i++) {
-            $this->chunks[] = $this->chunk(self::CHUNK_SIZE, self::ALPHABET);
+        for ($i = 0; $i < $this->chunkTotal; $i++) {
+            $this->chunks[] = $this->chunk($this->chunkSize, self::ALPHABET);
         }
 
         return $this->chunks;
@@ -56,7 +62,7 @@ class Slug
      */
     public function toString(): string
     {
-        return implode(self::DELIMITER, $this->chunks);
+        return implode($this->delimiter, $this->chunks);
     }
 
     /**
@@ -80,7 +86,7 @@ class Slug
      * @throws Exception
      */
     private function chunk(
-        int $length = self::CHUNK_SIZE,
+        int $length,
         string $alphabet = self::ALPHABET
     ): string {
         if ($length < 1) {

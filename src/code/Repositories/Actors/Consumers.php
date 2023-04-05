@@ -40,4 +40,15 @@ class Consumers extends Repository implements ConsumersInterface
 
         return $model;
     }
+
+    /**
+     * Finds a consumer by email
+     *
+     * @param  mixed  $email
+     * @return Model
+     */
+    public function findByEmail($email): Model
+    {
+        return Model::where('email', $email)->firstOrFail();
+    }
 }

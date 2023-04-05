@@ -8,6 +8,7 @@ namespace Tagd\Core\Models\Actor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Item\Tagd;
+use Tagd\Core\Models\Resale\AccessRequest;
 use Tagd\Core\Models\Traits\HasUuidKey;
 
 class Consumer extends Actor
@@ -48,6 +49,11 @@ class Consumer extends Actor
     public function tagds()
     {
         return $this->hasMany(Tagd::class);
+    }
+
+    public function accessRequests()
+    {
+        return $this->hasMany(AccessRequest::class);
     }
 
     /*
