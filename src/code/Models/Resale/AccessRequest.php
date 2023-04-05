@@ -41,7 +41,7 @@ class AccessRequest extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->code = (new Slug(Slug::ALPHABET_DIGITS_ONLY, 6, 1))->toString();
+            $model->code = (new Slug(Slug::ALPHABET_DIGITS_ONLY, 5, 1))->toString();
         });
     }
 
