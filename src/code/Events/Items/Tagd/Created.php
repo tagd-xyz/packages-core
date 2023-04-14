@@ -1,17 +1,17 @@
 <?php
 
-namespace Tagd\Core\Events\Items\Item;
+namespace Tagd\Core\Events\Items\Tagd;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Tagd\Core\Models\Item\Item;
+use Tagd\Core\Models\Item\Tagd;
 
 class Created
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $item;
+    public $tagd;
 
     /**
      * Create a new event instance.
@@ -19,8 +19,8 @@ class Created
      * @return void
      */
     public function __construct(
-        Item $item
+        Tagd $tagd
     ) {
-        $this->item = $item;
+        $this->tagd = $tagd;
     }
 }

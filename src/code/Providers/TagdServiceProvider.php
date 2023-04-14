@@ -72,6 +72,8 @@ class TagdServiceProvider extends ServiceProvider
          * Observers
          */
         \Tagd\Core\Models\Actor\Consumer::observe(\Tagd\Core\Observers\Actors\Consumer::class);
+        \Tagd\Core\Models\Item\Item::observe(\Tagd\Core\Observers\Items\Item::class);
+        \Tagd\Core\Models\Item\Tagd::observe(\Tagd\Core\Observers\Items\Tagd::class);
         \Tagd\Core\Models\Resale\AccessRequest::observe(\Tagd\Core\Observers\Resales\AccessRequest::class);
 
         /**
@@ -103,6 +105,7 @@ class TagdServiceProvider extends ServiceProvider
         foreach (
             [
                 \Tagd\Core\Listeners\Models\Item::class,
+                \Tagd\Core\Listeners\Models\Tagd::class,
                 \Tagd\Core\Listeners\Models\AccessRequest::class,
             ] as $listener) {
             Event::subscribe($listener);
@@ -119,5 +122,10 @@ class TagdServiceProvider extends ServiceProvider
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Retailers::class, \Tagd\Core\Repositories\Actors\Retailers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Resellers::class, \Tagd\Core\Repositories\Actors\Resellers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Consumers::class, \Tagd\Core\Repositories\Actors\Consumers::class);
+
+        /**
+         * Services
+         */
+        $this->app->bind(\Tagd\Core\Services\Interfaces\RetailerSales::class, \Tagd\Core\Services\RetailerSales\Service::class);
     }
 }
