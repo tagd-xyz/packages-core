@@ -22,17 +22,5 @@ class Item
     public function created(ItemModel $item)
     {
         Created::dispatch($item);
-
-        // $tagd = $item->rootTagd;
-
-        // \Log::info('item_id' . $item->id);
-        // \Log::info('tagd_id' . $tagd->id);
-        // \Log::info('consumer_id: ' . $tagd->consumer_id);
-
-        // Created::dispatch(
-        //     $item,
-        //     $tagd->consumer->email,
-        //     $tagd->meta['transaction'] ?? ''
-        // );
     }
 }
