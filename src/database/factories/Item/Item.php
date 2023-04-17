@@ -108,13 +108,15 @@ class Item extends Factory
     }
 
     /**
-     * Set as fashion type
+     * Set as given type
      */
     public function type(Type $type): self
     {
         return $this->state(function (array $attributes) use ($type) {
             return [
+                'name' => $this->randomName($type->value),
                 'type' => $type->value,
+                'description' => $this->faker->paragraph(),
                 'properties' => [
                     'brand' => $this->randomBrand($type->value),
                     'model' => $this->faker->words(2, true),

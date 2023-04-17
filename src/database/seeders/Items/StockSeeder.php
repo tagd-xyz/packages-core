@@ -20,8 +20,10 @@ class StockSeeder extends Seeder
     public function run(array $options = [])
     {
         extract([
-            'truncate' => true,
+            'truncate' => false,
             'total' => 10,
+            'retailerId' => null, // null means first
+            'type' => null, // null means random
             ...$options,
         ]);
 
@@ -31,9 +33,18 @@ class StockSeeder extends Seeder
             $this->truncate();
         }
 
+        $retailer = $retailerId
+            ? Retailer::find($retailerId)
+            : Retailer::first();
+
         $factory = Stock::factory()
-            ->count($total)
-            ->for(Retailer::first())
+            ->count($total);
+
+        if ($type) {
+            $factory = $factory->type($type);
+        }
+        $factory
+            ->for($retailer)
             ->create();
     }
 
