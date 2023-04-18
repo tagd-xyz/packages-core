@@ -60,6 +60,11 @@ class Stock extends Model
         return $this->hasMany(PropertyBags::class);
     }
 
+    public function image_uploads()
+    {
+        return $this->hasMany(StockImage::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

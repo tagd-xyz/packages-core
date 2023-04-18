@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Resale\AccessRequest;
+use Tagd\Core\Models\Traits\HasUpload;
 use Tagd\Core\Models\Traits\HasUuidKey;
+use Tagd\Core\Models\Upload\Upload;
 
 class Reseller extends Actor
 {
     use HasFactory,
+        HasUpload,
         HasUuidKey,
         SoftDeletes;
 
@@ -22,7 +25,7 @@ class Reseller extends Actor
     protected $fillable = [
         'name',
         'email',
-        'logo',
+        'avatar_upload_id',
         'website',
     ];
 
@@ -57,11 +60,66 @@ class Reseller extends Actor
         return $this->hasMany(AccessRequest::class);
     }
 
+    public function avatar_uploads()
+    {
+        return $this->hasMany(Upload::class, 'id', 'avatar_upload_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * get avatar attribute
+     */
+    public function getAvatarAttribute()
+    {
+        return $this->avatar_uploads()->orderBy('created_at', 'desc')->limit(1)->first();
+    }
+
+    /**
+     * get avatar_url_small attribute
+     *
+     * @return string
+     */
+    public function getAvatarSmallUrlAttribute(): ?string
+    {
+        $avatar = $this->avatar;
+
+        if ($avatar) {
+            return $this->getTransformedUploadUrl(
+                $avatar->full_path,
+                function ($sih) {
+                    return $sih->square(100)->focusOnFace();
+                }
+            );
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * get avatar_url attribute
+     *
+     * @return string
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        $avatar = $this->avatar;
+
+        if ($avatar) {
+            return $this->getTransformedUploadUrl(
+                $avatar->full_path,
+                function ($sih) {
+                    return $sih->square(640)->focusOnFace();
+                }
+            );
+        } else {
+            return null;
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------

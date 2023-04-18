@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('name')->nullable();
             $table->string('logo')->nullable();
+            $table->foreignUuid('avatar_upload_id')->nullable()->constrained('uploads');
             $table->string('website')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -122,6 +122,8 @@ class TagdServiceProvider extends ServiceProvider
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Retailers::class, \Tagd\Core\Repositories\Actors\Retailers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Resellers::class, \Tagd\Core\Repositories\Actors\Resellers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Consumers::class, \Tagd\Core\Repositories\Actors\Consumers::class);
+        $this->app->bind(\Tagd\Core\Repositories\Interfaces\Uploads\Resellers::class, \Tagd\Core\Repositories\Uploads\Resellers::class);
+        $this->app->bind(\Tagd\Core\Repositories\Interfaces\Uploads\Stocks::class, \Tagd\Core\Repositories\Uploads\Stocks::class);
 
         /**
          * Services

@@ -66,6 +66,11 @@ class Item extends Model
         return $this->hasMany(Tagd::class);
     }
 
+    public function image_uploads()
+    {
+        return $this->hasMany(ItemImage::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
