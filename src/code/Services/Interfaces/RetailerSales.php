@@ -13,6 +13,7 @@ interface RetailerSales
         string $retailerId,
         string $consumerEmail,
         string $transactionId,
-        array $itemDetails
+        array $itemDetails,
+        array $imageUploads
     ): Item;
 }

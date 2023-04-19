@@ -20,4 +20,22 @@ class Stock extends Repository implements StockInterface
     {
         parent::__construct($model);
     }
+
+    /**
+     * Update stock images
+     */
+    public function updateImages(string $stockId, array $imageUploads): Model
+    {
+        $stock = Model::find($stockId);
+
+        foreach ($imageUploads as $uploadId) {
+            $stock->images()->updateOrCreate([
+                'upload_id' => $uploadId,
+            ]);
+        }
+
+        $stock->load('images');
+
+        return $stock;
+    }
 }

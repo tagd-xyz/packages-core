@@ -45,7 +45,7 @@ trait Resize
      */
     public function fit(string $fit): self
     {
-        $this->payload['edits']['resize']['fit'] = $fit->value;
+        $this->payload['edits']['resize']['fit'] = $fit;
 
         return $this;
     }

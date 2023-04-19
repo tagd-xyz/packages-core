@@ -20,4 +20,22 @@ class Items extends Repository implements ItemsInterface
     {
         parent::__construct($model);
     }
+
+    /**
+     * Update item images
+     */
+    public function updateImages(string $itemId, array $imageUploads): Model
+    {
+        $item = Model::find($itemId);
+
+        foreach ($imageUploads as $uploadId) {
+            $item->images()->updateOrCreate([
+                'upload_id' => $uploadId,
+            ]);
+        }
+
+        $item->load('images');
+
+        return $item;
+    }
 }

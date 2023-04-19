@@ -17,14 +17,16 @@ trait ProcessRetailerSale
         string $retailerId,
         string $consumerEmail,
         string $transactionId,
-        array $itemDetails
+        array $itemDetails,
+        array $imageUploads,
     ): Item {
 
         return DB::transaction(function () use (
             $retailerId,
             $consumerEmail,
             $transactionId,
-            $itemDetails
+            $itemDetails,
+            $imageUploads
         ) {
             $itemsRepo = app(ItemsRepo::class);
             $consumersRepo = app(ConsumersRepo::class);
@@ -35,6 +37,7 @@ trait ProcessRetailerSale
                 ...$itemDetails,
                 'retailer_id' => $retailerId,
             ]);
+            $itemsRepo->updateImages($item->id, $imageUploads);
 
             // Make sure the consumer exists
             $consumer = $consumersRepo

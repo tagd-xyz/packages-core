@@ -44,32 +44,44 @@ class ItemImage extends Model
     */
 
     /**
-     * get image_url_small attribute
+     * get small_url attribute
      *
      * @return string
      */
-    public function getImageSmallUrlAttribute(): ?string
+    public function getSmallUrlAttribute(): ?string
     {
-        return $this->getTransformedUploadUrl(
-            'upload',
-            function ($sih) {
-                return $sih->square(250);
-            }
-        );
+        $upload = $this->upload;
+
+        if ($upload) {
+            return $this->getTransformedUploadUrl(
+                $upload->full_path,
+                function ($sih) {
+                    return $sih->square(100)->fit('inside');
+                }
+            );
+        } else {
+            return null;
+        }
     }
 
     /**
-     * get image_url attribute
+     * get url attribute
      *
      * @return string
      */
-    public function getImageUrlAttribute(): ?string
+    public function getUrlAttribute(): ?string
     {
-        return $this->getTransformedUploadUrl(
-            'upload',
-            function ($sih) {
-                return $sih->square(640);
-            }
-        );
+        $upload = $this->upload;
+
+        if ($upload) {
+            return $this->getTransformedUploadUrl(
+                $upload->full_path,
+                function ($sih) {
+                    return $sih->square(640)->fit('inside');
+                }
+            );
+        } else {
+            return null;
+        }
     }
 }
