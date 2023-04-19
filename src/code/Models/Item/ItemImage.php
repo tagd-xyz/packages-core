@@ -84,4 +84,25 @@ class ItemImage extends Model
             return null;
         }
     }
+
+    /**
+     * get preview_url attribute
+     *
+     * @return string
+     */
+    public function getPreviewUrlAttribute(): ?string
+    {
+        $upload = $this->upload;
+
+        if ($upload) {
+            return $this->getTransformedUploadUrl(
+                $upload->full_path,
+                function ($sih) {
+                    return $sih->square(640)->fit('cover');
+                }
+            );
+        } else {
+            return null;
+        }
+    }
 }
