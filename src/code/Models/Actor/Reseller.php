@@ -92,7 +92,6 @@ class Reseller extends Actor
             return $this->getTransformedUploadUrl(
                 $avatar->full_path,
                 function ($sih) {
-                    // return $sih->square(100)->focusOnFace();
                     return $sih->square(100)->fit('inside');
                 }
             );
