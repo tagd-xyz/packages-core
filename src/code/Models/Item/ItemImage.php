@@ -56,7 +56,7 @@ class ItemImage extends Model
             return $this->getTransformedUploadUrl(
                 $upload->full_path,
                 function ($sih) {
-                    return $sih->square(100)->fit('inside');
+                    return $sih->square(100)->fit('cover');
                 }
             );
         } else {
@@ -77,7 +77,49 @@ class ItemImage extends Model
             return $this->getTransformedUploadUrl(
                 $upload->full_path,
                 function ($sih) {
-                    return $sih->square(640)->fit('inside');
+                    return $sih->width(1024)->height(768)->fit('contain');
+                }
+            );
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * get url attribute
+     *
+     * @return string
+     */
+    public function getPortraitUrlAttribute(): ?string
+    {
+        $upload = $this->upload;
+
+        if ($upload) {
+            return $this->getTransformedUploadUrl(
+                $upload->full_path,
+                function ($sih) {
+                    return $sih->width(768)->height(1024)->fit('contain');
+                }
+            );
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * get url attribute
+     *
+     * @return string
+     */
+    public function getSquareUrlAttribute(): ?string
+    {
+        $upload = $this->upload;
+
+        if ($upload) {
+            return $this->getTransformedUploadUrl(
+                $upload->full_path,
+                function ($sih) {
+                    return $sih->square(1024)->fit('inside');
                 }
             );
         } else {
