@@ -80,7 +80,7 @@ class AccessRequest extends Model
     {
         return Attribute::make(
             get: function () {
-                return ! is_null($this->rejected_at);
+                return is_null($this->approved_at) && ! is_null($this->rejected_at);
             }
         );
     }
