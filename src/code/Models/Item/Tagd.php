@@ -28,7 +28,6 @@ class Tagd extends Model
         'consumer_id',
         'reseller_id',
         'meta',
-        'stats',
         'parent_id',
         'status',
         'status_at',
@@ -36,9 +35,7 @@ class Tagd extends Model
 
     protected $casts = [
         'meta' => 'array',
-        'stats' => 'array',
         'status_at' => 'datetime',
-        'status' => TagdStatus::class,
     ];
 
     protected $observables = [
@@ -82,11 +79,6 @@ class Tagd extends Model
         return $this->hasMany(static::class, 'parent_id');
     }
 
-    public function allChildren()
-    {
-        return $this->children()->with('children');
-    }
-
     public function parent()
     {
         return $this->belongsTo(static::class, 'parent_id');
@@ -106,35 +98,35 @@ class Tagd extends Model
     protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::ACTIVE == $this->status,
+            get: fn () => (TagdStatus::ACTIVE)->value == $this->status,
         );
     }
 
     protected function isExpired(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::EXPIRED == $this->status,
+            get: fn () => (TagdStatus::EXPIRED)->value == $this->status,
         );
     }
 
     protected function isCancelled(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::CANCELLED == $this->status,
+            get: fn () => (TagdStatus::CANCELLED)->value == $this->status,
         );
     }
 
     protected function isResale(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::RESALE == $this->status,
+            get: fn () => (TagdStatus::RESALE)->value == $this->status,
         );
     }
 
     protected function isTransferred(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::TRANSFERRED == $this->status,
+            get: fn () => (TagdStatus::TRANSFERRED)->value == $this->status,
         );
     }
 
@@ -151,15 +143,6 @@ class Tagd extends Model
             get: fn () => $this->meta[
                 (TagdMeta::AVAILABLE_FOR_RESALE)->value
             ] ?? false,
-        );
-    }
-
-    protected function childrenCount(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                return $this->children()->count();
-            }
         );
     }
 
@@ -215,18 +198,5 @@ class Tagd extends Model
                 (TagdMeta::AVAILABLE_FOR_RESALE)->value => $enabled,
             ],
         ]);
-    }
-
-    public function countAllChildren(callable $filter = null): int
-    {
-        $count = 0;
-        foreach ($this->children as $child) {
-            if (is_null($filter) || $filter($child)) {
-                $count++;
-            }
-            $count += $child->countAllChildren($filter);
-        }
-
-        return $count;
     }
 }

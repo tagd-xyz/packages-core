@@ -4,8 +4,6 @@ namespace Tagd\Core\Listeners\Models;
 
 use Illuminate\Events\Dispatcher;
 use Tagd\Core\Events\Items\Tagd\Created;
-use Tagd\Core\Events\Items\Tagd\StatusUpdated;
-use Tagd\Core\Jobs\UpdateTagdAncestorsStats;
 use Tagd\Core\Notifications\Consumers\TagdCreated as TagdCreatedNotification;
 
 class Tagd
@@ -24,19 +22,7 @@ class Tagd
             $tagd->consumer->notify(new TagdCreatedNotification(
                 $tagd
             ));
-        } else {
-            UpdateTagdAncestorsStats::dispatch($tagd);
         }
-    }
-
-    /**
-     * on Tagd status updated
-     *
-     * @return void
-     */
-    public function onStatusUpdated(StatusUpdated $event)
-    {
-        UpdateTagdAncestorsStats::dispatch($event->tagd);
     }
 
     /**
@@ -46,7 +32,6 @@ class Tagd
     {
         return [
             Created::class => 'onCreated',
-            StatusUpdated::class => 'onStatusUpdated',
         ];
     }
 }

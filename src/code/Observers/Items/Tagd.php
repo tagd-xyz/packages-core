@@ -3,7 +3,6 @@
 namespace Tagd\Core\Observers\Items;
 
 use Tagd\Core\Events\Items\Tagd\Created;
-use Tagd\Core\Events\Items\Tagd\StatusUpdated;
 use Tagd\Core\Models\Item\Tagd as TagdModel;
 
 class Tagd
@@ -16,25 +15,12 @@ class Tagd
     public $afterCommit = true;
 
     /**
-     * Handle the Tagd "created" event.
-
+     * Handle the Item "created" event.
      *
      * @return void
      */
     public function created(TagdModel $tagd)
     {
         Created::dispatch($tagd);
-    }
-
-    /**
-     * Handle the Tagd "updated" event
-     *
-     * @return void
-     */
-    public function updated(TagdModel $tagd)
-    {
-        if ($tagd->isDirty('status')) {
-            StatusUpdated::dispatch($tagd);
-        }
     }
 }

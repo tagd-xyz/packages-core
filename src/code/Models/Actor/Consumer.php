@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Resale\AccessRequest;
 use Tagd\Core\Models\Traits\HasUuidKey;
-use Tagd\Core\Models\User\Role;
 
 class Consumer extends Actor
 {
@@ -54,11 +53,6 @@ class Consumer extends Actor
     public function accessRequests()
     {
         return $this->hasMany(AccessRequest::class);
-    }
-
-    public function role()
-    {
-        return $this->morphOne(Role::class, 'actor');
     }
 
     /*
