@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreignUuid('reseller_id')->nullable()->constrained();
             $table->string('slug');
             $table->json('meta')->nullable();
+            $table->json('stats')->nullable();
             $table->string('status')->nullable();
             $table->datetime('status_at')->nullable();
             // $table->datetime('expired_at')->nullable();
