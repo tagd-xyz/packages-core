@@ -12,6 +12,7 @@ use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Item\Item;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Item\TagdStatus;
+use Tagd\Core\Repositories\Items\Tagds as TagdsRepo;
 
 class ItemsSeeder extends Seeder
 {
@@ -27,6 +28,7 @@ class ItemsSeeder extends Seeder
         extract([
             'truncate' => true,
             'total' => 10,
+            'totalResales' => 6,
             ...$options,
         ]);
 
@@ -36,64 +38,51 @@ class ItemsSeeder extends Seeder
             $this->truncate();
         }
 
-        $date = Carbon::today()->subDays(30);
+        $tagdsRepo = app()->make(TagdsRepo::class);
 
-        // sell some items
+        $date = Carbon::today()->subMonth(1);
+
+        $retailer = Retailer::first();
         $consumer = Consumer::first();
+
+        // retailer sell some items
         for ($i = 0; $i < $total; $i++) {
             $date->addDays(1);
+            Carbon::setTestNow($date);
 
-            $factory = Item::factory()
+            Item::factory()
                 ->count(1)
-                ->for(Retailer::first())
+                ->for($retailer)
                 ->has(
                     Tagd::factory()
                         ->count(1)
                         ->active()
-                        ->for($consumer)
-                        ->state([
-                            'created_at' => $date,
-                        ]),
+                        ->for($consumer),
                     'tagds'
                 )
-                ->state([
-                    'created_at' => $date,
-                ])
                 ->create();
         }
 
-        // resale some items
+        // consumer resales some items
         $reseller = Reseller::first();
-        $consumer2 = Consumer::where('id', '<>', $consumer->id)->first();
-        foreach (Tagd::whereStatus(TagdStatus::ACTIVE)->get() as $tagd) {
-            $tagd->transfer();
 
-            $tagdReseller = Tagd::factory()
-                ->count(1)
-                ->active()
-                ->for($reseller)
-                ->state([
-                    'created_at' => $tagd->created_at,
-                    'item_id' => $tagd->item_id,
-                    'parent_id' => $tagd->id,
-                ])
-                ->noTransaction()
-                ->create();
+        $consumers = collect($consumer->id);
 
-            $tagdReseller = $tagdReseller[0];
-            $tagdReseller->transfer();
+        while ($totalResales-- > 0) {
+            $newConsumer = Consumer::whereNotIn('id', $consumers)->first();
+            foreach (Tagd::whereStatus(TagdStatus::ACTIVE)->get() as $tagd) {
 
-            $tagdConsumer = Tagd::factory()
-                ->count(1)
-                ->active()
-                ->for($consumer2)
-                ->state([
-                    'created_at' => $tagdReseller->created_at,
-                    'item_id' => $tagdReseller->item_id,
-                    'parent_id' => $tagdReseller->id,
-                ])
-                ->noTransaction()
-                ->create();
+                $listedAt = $tagd->status_at->clone()->addDays(1);
+                Carbon::setTestNow($listedAt);
+
+                $tagdReseller = $tagdsRepo->createForResale($reseller, $tagd);
+
+                $resoldAt = $listedAt->clone()->addDays(1);
+                Carbon::setTestNow($resoldAt);
+
+                $tagdsRepo->confirm($tagdReseller, $newConsumer);
+            }
+            $consumers->push($newConsumer->id);
         }
     }
 

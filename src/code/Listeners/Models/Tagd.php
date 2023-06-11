@@ -6,6 +6,7 @@ use Illuminate\Events\Dispatcher;
 use Tagd\Core\Events\Items\Tagd\Created;
 use Tagd\Core\Events\Items\Tagd\StatusUpdated;
 use Tagd\Core\Jobs\UpdateTagdAncestorsStats;
+use Tagd\Core\Jobs\UpdateTagdTimeToTransferStats;
 use Tagd\Core\Notifications\Consumers\TagdCreated as TagdCreatedNotification;
 
 class Tagd
@@ -24,9 +25,10 @@ class Tagd
             $tagd->consumer->notify(new TagdCreatedNotification(
                 $tagd
             ));
-        } else {
-            UpdateTagdAncestorsStats::dispatch($tagd);
         }
+
+        UpdateTagdAncestorsStats::dispatch($tagd);
+        UpdateTagdTimeToTransferStats::dispatch($tagd);
     }
 
     /**
@@ -36,7 +38,10 @@ class Tagd
      */
     public function onStatusUpdated(StatusUpdated $event)
     {
-        UpdateTagdAncestorsStats::dispatch($event->tagd);
+        $tagd = $event->tagd;
+
+        UpdateTagdAncestorsStats::dispatch($tagd);
+        // UpdateTagdTimeToTransferStats::dispatch($tagd);
     }
 
     /**
