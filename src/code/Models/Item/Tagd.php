@@ -5,10 +5,11 @@
 
 namespace Tagd\Core\Models\Item;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
 use Tagd\Core\Models\Model;
@@ -163,6 +164,17 @@ class Tagd extends Model
         );
     }
 
+    protected function root(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->is_root
+                    ? $this
+                    : $this->parent->root;
+            }
+        );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -175,35 +187,43 @@ class Tagd extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function activate()
+    public function activate(Carbon $date = null)
     {
         $updated = $this->update([
             'status' => TagdStatus::ACTIVE,
-            'status_at' => Carbon::now(),
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
         ]);
     }
 
-    public function expire()
+    public function expire(Carbon $date = null)
     {
         $updated = $this->update([
             'status' => TagdStatus::EXPIRED,
-            'status_at' => Carbon::now(),
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
         ]);
     }
 
-    public function transfer()
+    public function transfer(Carbon $date = null)
     {
         $updated = $this->update([
             'status' => TagdStatus::TRANSFERRED,
-            'status_at' => Carbon::now(),
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
         ]);
     }
 
-    public function cancel()
+    public function cancel(Carbon $date = null)
     {
         $updated = $this->update([
             'status' => TagdStatus::CANCELLED,
-            'status_at' => Carbon::now(),
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
         ]);
     }
 
@@ -215,6 +235,44 @@ class Tagd extends Model
                 (TagdMeta::AVAILABLE_FOR_RESALE)->value => $enabled,
             ],
         ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HELPERS
+    |--------------------------------------------------------------------------
+    */
+
+    public function buildChildrenCollection(callable $filter = null): Collection
+    {
+        $collection = collect();
+
+        if (is_null($filter) || $filter($this)) {
+            $collection->push($this);
+        }
+
+        foreach ($this->children as $child) {
+            $collection = $collection->concat(
+                $child->buildChildrenCollection($filter)
+            );
+        }
+
+        return $collection;
+    }
+
+    public function countAllAncestors(callable $filter = null): int
+    {
+        $count = 0;
+
+        $parent = $this->parent;
+        if ($parent) {
+            if (is_null($filter) || $filter($parent)) {
+                $count++;
+            }
+            $count += $parent->countAllAncestors($filter);
+        }
+
+        return $count;
     }
 
     public function countAllChildren(callable $filter = null): int

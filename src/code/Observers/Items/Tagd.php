@@ -33,7 +33,8 @@ class Tagd
      */
     public function updated(TagdModel $tagd)
     {
-        if ($tagd->isDirty('status')) {
+        if ($tagd->wasChanged('status')) {
+            // if ($tagd->isDirty('status')) {
             StatusUpdated::dispatch($tagd);
         }
     }
