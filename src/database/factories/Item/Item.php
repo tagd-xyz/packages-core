@@ -3,88 +3,13 @@
 namespace Tagd\Core\Database\Factories\Item;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Tagd\Core\Models\Item\Type;
+use Tagd\Core\Models\Item\Stock;
 
 class Item extends Factory
 {
-    private function randomName($type): string
+    private function randomStock(): Stock
     {
-        switch ($type) {
-            case Type::FASHION->value:
-                return collect([
-                    'Leather Tote Bag',
-                    'Leather Mini Cross-Body',
-                    'Basic Tote Bag',
-                    'Mini City Bag',
-                ])->random();
-
-            case Type::SNEAKERS->value:
-                return collect([
-                    'Ca Pro Lux',
-                    'Gazelle',
-                    'Kick Lo Leather',
-                    'Teveris Nitro',
-                    'Balance 327 Grey Day',
-                    'Chuck Taylor All',
-                    'Waffle Trainer 2',
-                ])->random();
-        }
-    }
-
-    private function randomType(): string
-    {
-        $types = Type::cases();
-
-        return $types[array_rand($types)]->value ?? null;
-    }
-
-    private function randomBrand(string $type): string
-    {
-        switch ($type) {
-            case Type::FASHION->value:
-                return collect([
-                    'Gucci',
-                    'Louis Vuitton',
-                    'Cartier',
-                    'Zara',
-                    'H&M',
-                    'Uniqlo',
-                    'Hermès',
-                ])->random();
-
-            case Type::SNEAKERS->value:
-                return collect([
-                    'Nike',
-                    'Adidas',
-                    'Puma',
-                    'Vans',
-                    'Converse',
-                ])->random();
-        }
-    }
-
-    private function randomSize(string $type): string
-    {
-        switch ($type) {
-            case Type::FASHION->value:
-                return collect([
-                    'S',
-                    'M',
-                    'L',
-                ])->random();
-
-            case Type::SNEAKERS->value:
-                return collect([
-                    '6',
-                    '6.5',
-                    '7',
-                    '7.5',
-                    '8',
-                    '8.5',
-                    '9',
-                    '9.5',
-                ])->random();
-        }
+        return Stock::inRandomOrder()->first();
     }
 
     /**
@@ -94,35 +19,13 @@ class Item extends Factory
      */
     public function definition()
     {
-        $type = $this->randomType();
+        $stock = $this->randomStock();
 
         return [
-            'name' => $this->randomName($type),
-            'type' => $type,
-            'description' => $this->faker->paragraph(),
-            'properties' => [
-                'brand' => $this->randomBrand($type),
-                'model' => $this->faker->words(2, true),
-            ],
+            'name' => $stock->name,
+            'type' => $stock->type,
+            'description' => $stock->description,
+            'properties' => $stock->properties,
         ];
-    }
-
-    /**
-     * Set as given type
-     */
-    public function type(Type $type): self
-    {
-        return $this->state(function (array $attributes) use ($type) {
-            return [
-                'name' => $this->randomName($type->value),
-                'type' => $type->value,
-                'description' => $this->faker->paragraph(),
-                'properties' => [
-                    'brand' => $this->randomBrand($type->value),
-                    'model' => $this->faker->words(2, true),
-                    'size' => $this->randomSize($type->value),
-                ],
-            ];
-        });
     }
 }

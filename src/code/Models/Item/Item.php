@@ -95,6 +95,15 @@ class Item extends Model
         );
     }
 
+    protected function tagdCount(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->tagds()->count();
+            }
+        );
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

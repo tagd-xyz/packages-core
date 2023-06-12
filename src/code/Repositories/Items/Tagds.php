@@ -4,6 +4,7 @@ namespace Tagd\Core\Repositories\Items;
 
 use Carbon\Carbon;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Facades\DB;
 use Tagd\Core\Models\Actor\Consumer as ConsumerModel;
 use Tagd\Core\Models\Actor\Reseller as ResellerModel;
 use Tagd\Core\Models\Item\Item as ItemModel;
@@ -35,13 +36,17 @@ class Tagds extends Repository implements TagdsInterface
         ConsumerModel $consumer,
         string $transactionId
     ): Model {
-        return $this->create([
-            'item_id' => $item->id,
-            'consumer_id' => $consumer->id,
-            'meta' => [
-                'transaction' => $transactionId,
-            ],
-        ]);
+        return DB::transaction(function () use (
+            $item, $consumer, $transactionId
+        ) {
+            return $this->create([
+                'item_id' => $item->id,
+                'consumer_id' => $consumer->id,
+                'meta' => [
+                    'transaction' => $transactionId,
+                ],
+            ]);
+        }, 5);
     }
 
     public function createForResale(
@@ -56,16 +61,20 @@ class Tagds extends Repository implements TagdsInterface
         //     throw new AuthenticationException('Action not allowed');
         // }
 
-        $tagd = $this->create([
-            'parent_id' => $parentTagd->id,
-            'item_id' => $parentTagd->item_id,
-            'reseller_id' => $reseller->id,
-            'status' => TagdStatus::RESALE,
-            'status_at' => Carbon::now(),
-        ]);
-        $tagd->refresh();
+        return DB::transaction(function () use (
+            $reseller, $parentTagd
+        ) {
+            $tagd = $this->create([
+                'parent_id' => $parentTagd->id,
+                'item_id' => $parentTagd->item_id,
+                'reseller_id' => $reseller->id,
+                'status' => TagdStatus::RESALE,
+                'status_at' => Carbon::now(),
+            ]);
+            $tagd->refresh();
 
-        return $tagd;
+            return $tagd;
+        }, 5);
     }
 
     /**
@@ -74,9 +83,13 @@ class Tagds extends Repository implements TagdsInterface
     public function activate(
         Model $tagd
     ): Model {
-        $tagd->activate();
+        return DB::transaction(function () use (
+            $tagd
+        ) {
+            $tagd->activate();
 
-        return $tagd;
+            return $tagd;
+        }, 5);
     }
 
     /**
@@ -86,9 +99,13 @@ class Tagds extends Repository implements TagdsInterface
         Model $tagd,
         bool $enabled = true
     ): Model {
-        $tagd->enableForResale($enabled);
+        return DB::transaction(function () use (
+            $tagd, $enabled
+        ) {
+            $tagd->enableForResale($enabled);
 
-        return $tagd;
+            return $tagd;
+        }, 5);
     }
 
     /**
@@ -98,30 +115,34 @@ class Tagds extends Repository implements TagdsInterface
         Model $tagd,
         ConsumerModel $consumer
     ): Model {
-        $tagd->transfer();
-        $tagd->parent->transfer();
+        return DB::transaction(function () use (
+            $tagd, $consumer
+        ) {
+            $tagd->transfer();
+            $tagd->parent->transfer();
 
-        // expire siblings
-        $activeSiblings = $tagd->parent->children
-            ->filter(function ($child) use ($tagd) {
-                return
-                    $child->id != $tagd->id
-                    && TagdStatus::RESALE == $child->status;
-            });
+            // expire siblings
+            $activeSiblings = $tagd->parent->children
+                ->filter(function ($child) use ($tagd) {
+                    return
+                        $child->id != $tagd->id
+                        && TagdStatus::RESALE == $child->status;
+                });
 
-        foreach ($activeSiblings as $sibling) {
-            $sibling->expire();
-        }
+            foreach ($activeSiblings as $sibling) {
+                $sibling->expire();
+            }
 
-        $newTagd = $this->create([
-            'parent_id' => $tagd->id,
-            'item_id' => $tagd->item_id,
-            'consumer_id' => $consumer->id,
-            'status' => TagdStatus::ACTIVE,
-            'status_at' => Carbon::now(),
-        ]);
+            $newTagd = $this->create([
+                'parent_id' => $tagd->id,
+                'item_id' => $tagd->item_id,
+                'consumer_id' => $consumer->id,
+                'status' => TagdStatus::ACTIVE,
+                'status_at' => Carbon::now(),
+            ]);
 
-        return $newTagd;
+            return $newTagd;
+        }, 5);
     }
 
     /**
@@ -130,9 +151,11 @@ class Tagds extends Repository implements TagdsInterface
     public function cancel(
         Model $tagd,
     ): Model {
-        $tagd->cancel();
-        $tagd->refresh();
+        return DB::transaction(function () use ($tagd) {
+            $tagd->cancel();
+            $tagd->refresh();
 
-        return $tagd;
+            return $tagd;
+        }, 5);
     }
 }
