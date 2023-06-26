@@ -1,6 +1,6 @@
 <?php
 
-namespace Tagd\Core\TestsUnit\Models\User;
+namespace Tagd\Core\Tests\Unit\Models\User;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tagd\Core\Tests\TestCase;

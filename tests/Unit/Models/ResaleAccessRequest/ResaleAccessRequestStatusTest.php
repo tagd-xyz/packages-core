@@ -1,6 +1,6 @@
 <?php
 
-namespace Tagd\Core\TestsUnit\Models\ResaleAccessRequest;
+namespace Tagd\Core\Tests\Unit\Models\ResaleAccessRequest;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tagd\Core\Tests\TestCase;

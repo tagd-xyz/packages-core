@@ -13,7 +13,6 @@ trait NeedsResaleAccessRequests
      */
     protected function aResaleAccessRequest(): AccessRequest
     {
-
         return AccessRequest::factory()
             ->for(Consumer::factory()->create())
             ->for(Reseller::factory()->create())
