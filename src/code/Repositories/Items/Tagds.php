@@ -75,6 +75,7 @@ class Tagds extends Repository implements TagdsInterface
         Model $tagd
     ): Model {
         $tagd->activate();
+        $tagd->refresh();
 
         return $tagd;
     }
@@ -87,6 +88,7 @@ class Tagds extends Repository implements TagdsInterface
         bool $enabled = true
     ): Model {
         $tagd->enableForResale($enabled);
+        $tagd->refresh();
 
         return $tagd;
     }

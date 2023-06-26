@@ -49,7 +49,7 @@ class Tagd extends Model
         parent::boot();
         static::autoUuidKey();
         static::creating(function ($model) {
-            $model->status = TagdStatus::INACTIVE;
+            // $model->status = TagdStatus::INACTIVE;
             $model->slug = (new Slug())->toString();
         });
     }
