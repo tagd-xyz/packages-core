@@ -7,6 +7,7 @@ namespace Tagd\Core\Models\Resale;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
@@ -15,7 +16,7 @@ use Tagd\Core\Support\Slug;
 
 class AccessRequest extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $table = 'reseller_access_requests';
 

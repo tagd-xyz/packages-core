@@ -2,8 +2,6 @@
 
 namespace Tagd\Core\Support\Repository\Exceptions;
 
-use Exception;
-
 class Duplicated extends Generic
 {
     /**

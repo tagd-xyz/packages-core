@@ -15,7 +15,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Tagd\\Core\\" : "src/code/core",
+            "Tagd\\Core\\" : "src/code",
             "Tagd\\Core\\Database\\Seeders\\": "src/database/seeders/",
             "Tagd\\Core\\Database\\Factories\\": "src/database/factories/",
             "Tagd\\Core\\Tests\\Traits\\": "tests/Traits/"
