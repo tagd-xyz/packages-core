@@ -6,17 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tagd\Core\Repositories\Items\Tagds;
 use Tagd\Core\Tests\TestCase;
 use Tagd\Core\Tests\Traits\NeedsConsumers;
-use Tagd\Core\Tests\Traits\NeedsItems;
-use Tagd\Core\Tests\Traits\NeedsResellers;
 use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class StateTest extends TestCase
 {
     use RefreshDatabase,
-        NeedsItems,
         NeedsTagds,
-        NeedsConsumers,
-        NeedsResellers;
+        NeedsConsumers;
 
     public function testActivate()
     {
