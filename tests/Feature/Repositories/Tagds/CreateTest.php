@@ -49,7 +49,7 @@ class CreateTest extends TestCase
             $tagd,
         );
 
-        $this->assertEquals($newTagd->status, (TagdStatus::RESALE)->value);
+        $this->assertEquals($newTagd->status, (TagdStatus::RESALE));
         $this->assertEquals($newTagd->parent_id, $tagd->id);
         $this->assertEquals($newTagd->reseller_id, $reseller->id);
         $this->assertEquals($newTagd->item_id, $tagd->item_id);

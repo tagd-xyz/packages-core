@@ -3,13 +3,21 @@
 namespace Tagd\Core\Database\Factories\Item;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Item\Stock;
 
 class Item extends Factory
 {
     private function randomStock(): Stock
     {
-        return Stock::inRandomOrder()->first();
+        $stock = Stock::inRandomOrder()->first();
+        if (! $stock) {
+            $stock = Stock::factory()
+                ->for(Retailer::factory()->create())
+                ->create();
+        }
+
+        return $stock;
     }
 
     /**
