@@ -64,13 +64,13 @@ class Tagd extends Factory
     /**
      * Set tagd parent id
      *
-     * @param  mixed  $id
+     * @param  mixed  $tagd
      */
-    public function childOf($id): self
+    public function childOf($tagd): self
     {
-        return $this->state(function (array $attributes) use ($id) {
+        return $this->state(function (array $attributes) use ($tagd) {
             return [
-                'parent_id' => $id,
+                'parent_id' => $tagd->id,
             ];
         });
     }

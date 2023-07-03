@@ -32,7 +32,7 @@ composer require tagd/core
 
 2. Publish the package configuration file with
 ```
-php artisan vendor:publish --provider="Tagd\Core\Providers\Service"
+php artisan vendor:publish --provider="Tagd\Core\Providers\TagdServiceProvider"
 ```
 Then edit the `/config/tagd.php` in your project.
 
