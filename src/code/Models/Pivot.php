@@ -2,7 +2,7 @@
 
 namespace Tagd\Core\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\Pivot as Base;
 
 class Pivot extends Base
 {
