@@ -105,6 +105,7 @@ class Stock extends Factory
             'properties' => [
                 'brand' => $this->randomBrand($type),
                 'model' => $this->faker->words(2, true),
+                'size' => $this->randomSize($type),
             ],
         ];
     }
