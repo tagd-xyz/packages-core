@@ -47,11 +47,11 @@ class ItemsSeeder extends Seeder
 
         // retailer sell some items
         for ($i = 0; $i < $total; $i++) {
-            $date->addDays(1);
+            $date->addDays(rand(1, 5));
             Carbon::setTestNow($date);
 
             Item::factory()
-                ->count(1)
+                ->count(rand(1,5))
                 ->for($retailer)
                 ->has(
                     Tagd::factory()
@@ -72,12 +72,14 @@ class ItemsSeeder extends Seeder
             $newConsumer = Consumer::whereNotIn('id', $consumers)->first();
             foreach (Tagd::whereStatus(TagdStatus::ACTIVE)->get() as $tagd) {
 
-                $listedAt = $tagd->status_at->clone()->addDays(1);
+                $days = rand(1,5);
+
+                $listedAt = $tagd->status_at->clone()->addDays($days);
                 Carbon::setTestNow($listedAt);
 
                 $tagdReseller = $tagdsRepo->createForResale($reseller, $tagd);
 
-                $resoldAt = $listedAt->clone()->addDays(1);
+                $resoldAt = $listedAt->clone()->addDays($days + rand(1,5));
                 Carbon::setTestNow($resoldAt);
 
                 $tagdsRepo->confirm($tagdReseller, $newConsumer);
