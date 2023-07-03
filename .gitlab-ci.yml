@@ -38,6 +38,7 @@ test:
   rules:
     - if: '$CI_COMMIT_BRANCH'
 
+# https://docs.gitlab.com/ee/ci/testing/test_coverage_visualization.html
 test-coverage:
   stage: test
   image: composer:latest
