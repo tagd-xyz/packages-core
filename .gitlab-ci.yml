@@ -25,19 +25,18 @@ quality:
     - ./build/scripts/quality.sh
   rules:
     - if: $CI_COMMIT_BRANCH
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
 
-# unit_test:
-#   stage: test
-#   image: composer:latest
-#   extends:
-#     - .shared_runners
-#   before_script:
-#     - ./build/scripts/install_dtk.sh
-#   script:
-#     - ./build/scripts/test.sh
-#   rules:
-#     - if: '$CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME'
+test:
+  stage: test
+  image: composer:latest
+  extends:
+    - .shared_runners
+  before_script:
+    - ./build/scripts/install_dtk.sh
+  script:
+    - ./build/scripts/test.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
 
 # publish:
 #   stage: deploy
