@@ -38,6 +38,25 @@ test:
   rules:
     - if: '$CI_COMMIT_BRANCH'
 
+# https://docs.gitlab.com/ee/ci/testing/test_coverage_visualization.html
+test-coverage:
+  stage: test
+  image: composer:latest
+  extends:
+    - .shared_runners
+  before_script:
+    - ./build/scripts/install_dtk.sh
+  script:
+    - ./build/scripts/test_coverage.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.cobertura.xml
+
 # publish:
 #   stage: deploy
 #   image: curlimages/curl:latest
