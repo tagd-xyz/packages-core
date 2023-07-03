@@ -24,6 +24,6 @@ class DevSeeder extends Seeder
         $this->call(Actors\ResellersSeeder::class);
         $this->call(Actors\RetailersSeeder::class);
         $this->call(Items\StockSeeder::class);
-        // $this->call(Items\ItemsSeeder::class);
+        $this->call(Items\ItemsSeeder::class);
     }
 }

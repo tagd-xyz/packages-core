@@ -43,16 +43,16 @@ class RetailersSeeder extends Seeder
                 ->state([
                     'name' => $name,
                 ])
-                ->has(Item::factory()
-                    ->count($total)
-                    ->type(Type::FASHION)
-                    ->has(Tagd::factory()
-                        ->count(1)
-                        ->for(Consumer::factory())
-                        ->active(),
-                        'tagds'
-                    )
-                )
+                // ->has(Item::factory()
+                //     ->count($total)
+                //     ->type(Type::FASHION)
+                //     ->has(Tagd::factory()
+                //         ->count(1)
+                //         ->for(Consumer::factory())
+                //         ->active(),
+                //         'tagds'
+                //     )
+                // )
                 ->create();
         }
 
@@ -65,16 +65,16 @@ class RetailersSeeder extends Seeder
                 ->state([
                     'name' => $name,
                 ])
-                ->has(Item::factory()
-                    ->count($total)
-                    ->type(Type::SNEAKERS)
-                    ->has(Tagd::factory()
-                        ->count(1)
-                        ->for(Consumer::factory())
-                        ->active(),
-                        'tagds'
-                    )
-                )
+                // ->has(Item::factory()
+                //     ->count($total)
+                //     ->type(Type::SNEAKERS)
+                //     ->has(Tagd::factory()
+                //         ->count(1)
+                //         ->for(Consumer::factory())
+                //         ->active(),
+                //         'tagds'
+                //     )
+                // )
                 ->create();
         }
     }

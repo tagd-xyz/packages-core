@@ -43,6 +43,7 @@ trait Fetch
         extract([
             'columns' => ['*'],
             'relations' => [],
+            'append' => [],
             'orderBy' => 'id',
             'direction' => 'asc',
             'searchFunc' => null,
@@ -120,6 +121,7 @@ trait Fetch
         }
 
         $query = $query
+            ->append($append)
             ->with($relations)
             ->select($columns)
             ->orderBy($orderBy, $direction);
