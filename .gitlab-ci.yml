@@ -38,6 +38,18 @@ test:
   rules:
     - if: '$CI_COMMIT_BRANCH'
 
+test-coverage:
+  stage: test
+  image: composer:latest
+  extends:
+    - .shared_runners
+  before_script:
+    - ./build/scripts/install_dtk.sh
+  script:
+    - ./build/scripts/test_coverage.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
 # publish:
 #   stage: deploy
 #   image: curlimages/curl:latest

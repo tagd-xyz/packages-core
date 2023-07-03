@@ -45,6 +45,12 @@
     "test": [
       "touch tagd.sqlite && vendor/bin/phpunit"
     ],
+    "test-coverage-html": [
+      "touch tagd.sqlite && XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html tests-coverage/"
+    ],
+    "test-coverage-text": [
+      "touch tagd.sqlite && XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text"
+    ],
     "pint": [
       "vendor/bin/pint"
     ],
