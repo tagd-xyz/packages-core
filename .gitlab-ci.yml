@@ -50,6 +50,7 @@ test-coverage:
     - ./build/scripts/test_coverage.sh
   rules:
     - if: '$CI_COMMIT_BRANCH'
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:
     reports:
       coverage_report:
