@@ -43,7 +43,7 @@
   "scripts": {
     "pre-autoload-dump": [],
     "test": [
-      "vendor/bin/phpunit"
+      "touch tagd.sqlite && vendor/bin/phpunit"
     ],
     "pint": [
       "vendor/bin/pint"
