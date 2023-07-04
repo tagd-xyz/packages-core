@@ -44,11 +44,13 @@ trait ProcessRetailerSale
                 ->assertExists($consumerEmail);
 
             // Create Tagd
-            $tagd = $tagdsRepo->createFor(
-                $item,
-                $consumer,
-                $transactionId
-            );
+            $tagd = $tagdsRepo->create([
+                'item_id' => $item->id,
+                'consumer_id' => $consumer->id,
+                'meta' => [
+                    'transaction' => $transactionId,
+                ],
+            ]);
 
             // Automatically set the newly created Tagd as "active"
             $tagd->activate();

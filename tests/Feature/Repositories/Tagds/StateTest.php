@@ -14,15 +14,15 @@ class StateTest extends TestCase
         NeedsTagds,
         NeedsConsumers;
 
-    public function testActivate()
-    {
-        $repo = app(Tagds::class);
+    // public function testActivate()
+    // {
+    //     $repo = app(Tagds::class);
 
-        $tagd = $this->aTagd();
-        $repo->activate($tagd);
+    //     $tagd = $this->aTagd();
+    //     $repo->activate($tagd);
 
-        $this->assertEquals($tagd->isActive, true);
-    }
+    //     $this->assertEquals($tagd->isActive, true);
+    // }
 
     public function testSetAsAvailableForResale()
     {

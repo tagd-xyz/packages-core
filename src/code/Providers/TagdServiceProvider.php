@@ -131,5 +131,6 @@ class TagdServiceProvider extends ServiceProvider
          * Services
          */
         $this->app->bind(\Tagd\Core\Services\Interfaces\RetailerSales::class, \Tagd\Core\Services\RetailerSales\Service::class);
+        $this->app->bind(\Tagd\Core\Services\Interfaces\ResellerSales::class, \Tagd\Core\Services\ResellerSales\Service::class);
     }
 }

@@ -7,7 +7,6 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\DB;
 use Tagd\Core\Models\Actor\Consumer as ConsumerModel;
 use Tagd\Core\Models\Actor\Reseller as ResellerModel;
-use Tagd\Core\Models\Item\Item as ItemModel;
 use Tagd\Core\Models\Item\Tagd as Model;
 use Tagd\Core\Models\Item\TagdStatus;
 use Tagd\Core\Repositories\Interfaces\Items\Tagds as TagdsInterface;
@@ -26,27 +25,6 @@ class Tagds extends Repository implements TagdsInterface
     public function __construct(Model $model)
     {
         parent::__construct($model);
-    }
-
-    /**
-     * Creates tagd for an item recently created
-     */
-    public function createFor(
-        ItemModel $item,
-        ConsumerModel $consumer,
-        string $transactionId
-    ): Model {
-        return DB::transaction(function () use (
-            $item, $consumer, $transactionId
-        ) {
-            return $this->create([
-                'item_id' => $item->id,
-                'consumer_id' => $consumer->id,
-                'meta' => [
-                    'transaction' => $transactionId,
-                ],
-            ]);
-        }, 5);
     }
 
     public function createForResale(
