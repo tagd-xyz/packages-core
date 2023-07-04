@@ -7,9 +7,9 @@ namespace Tagd\Core\Models\Actor;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Tagd\Core\Models\Actor\Traits\HasTrustModifier;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Resale\AccessRequest;
+use Tagd\Core\Models\Traits\HasTrustScore;
 use Tagd\Core\Models\Traits\HasUuidKey;
 use Tagd\Core\Models\User\Role;
 
@@ -17,7 +17,7 @@ class Consumer extends Actor
 {
     use HasFactory,
         HasUuidKey,
-        HasTrustModifier,
+        HasTrustScore,
         SoftDeletes;
 
     protected $table = 'consumers';

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tagd\Core\Models\Actor\Traits;
+namespace Tagd\Core\Models\Traits;
 
 use Tagd\Core\Models\Ref\TrustSetting;
 

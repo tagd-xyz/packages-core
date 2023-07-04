@@ -7,40 +7,40 @@ use Tagd\Core\Models\Ref\TrustSetting;
 use Tagd\Core\Tests\TestCase;
 use Tagd\Core\Tests\Traits\NeedsConsumers;
 
-class TestTrustModifier extends TestCase
+class TestTrustScore extends TestCase
 {
     use RefreshDatabase, NeedsConsumers;
 
-    public function testGetTrustModifierDefault()
+    public function testGetTrustScoreDefault()
     {
         $consumer = $this->aConsumer();
 
-        $this->assertEquals(TrustSetting::MODIFIER_DEFAULT, $consumer->trust_modifier);
+        $this->assertEquals(TrustSetting::SCORE_DEFAULT, $consumer->trust_score);
     }
 
-    public function testSetTrustModifier()
+    public function testSetTrustScore()
     {
         $consumer = $this->aConsumer();
 
-        $consumer->trust_modifier = 20;
+        $consumer->trust_score = 20;
 
-        $this->assertEquals(20, $consumer->trust_modifier);
+        $this->assertEquals(20, $consumer->trust_score);
     }
 
-    public function testSetTrustModifierOutOfRange()
+    public function testSetTrustScoreOutOfRange()
     {
         $consumer = $this->aConsumer();
 
         $this->assertThrows(
             function () use ($consumer) {
-                $consumer->trust_modifier = TrustSetting::MODIFIER_MIN - 1;
+                $consumer->trust_score = TrustSetting::SCORE_MIN - 1;
             },
             \InvalidArgumentException::class
         );
 
         $this->assertThrows(
             function () use ($consumer) {
-                $consumer->trust_modifier = TrustSetting::MODIFIER_MAX + 1;
+                $consumer->trust_score = TrustSetting::SCORE_MAX + 1;
             },
             \InvalidArgumentException::class
         );

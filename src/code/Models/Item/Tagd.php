@@ -12,8 +12,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
-use Tagd\Core\Models\Item\Traits\HasTrustScore;
 use Tagd\Core\Models\Model;
+use Tagd\Core\Models\Traits\HasTrustScore;
 use Tagd\Core\Models\Traits\HasUuidKey;
 use Tagd\Core\Support\Slug;
 
