@@ -8,7 +8,7 @@ variables:
 
 .shared_runners:
   tags:
-    - totally-uat-k8s
+    - totally-ci
 
 stages:
   - test
