@@ -3,13 +3,13 @@
 namespace Tagd\Core\Database\Seeders\Actors;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
 use Tagd\Core\Models\Actor\Reseller;
 
 class ResellersSeeder extends Seeder
 {
-    use UsesFactories;
+    use UsesFactories, TruncatesTables;
 
     /**
      * Seed the application's database for development purposes.
@@ -20,14 +20,16 @@ class ResellersSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 5,
+            'total' => 1,
             ...$options,
         ]);
 
         $this->setupFactories();
 
         if ($truncate) {
-            $this->truncate();
+            $this->truncate([
+                (new Reseller())->getTable(),
+            ]);
         }
 
         foreach ([
@@ -43,25 +45,5 @@ class ResellersSeeder extends Seeder
                 ])
                 ->create();
         }
-    }
-
-    /**
-     * Truncate tables
-     *
-     * @return void
-     */
-    private function truncate()
-    {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        foreach (
-            [
-                (new Reseller())->getTable(),
-            ] as $table
-        ) {
-            DB::table($table)->truncate();
-        }
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

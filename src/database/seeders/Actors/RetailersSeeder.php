@@ -3,7 +3,7 @@
 namespace Tagd\Core\Database\Seeders\Actors;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Retailer;
@@ -13,7 +13,7 @@ use Tagd\Core\Models\Item\Type;
 
 class RetailersSeeder extends Seeder
 {
-    use UsesFactories;
+    use UsesFactories, TruncatesTables;
 
     /**
      * Seed the application's database for development purposes.
@@ -31,7 +31,11 @@ class RetailersSeeder extends Seeder
         $this->setupFactories();
 
         if ($truncate) {
-            $this->truncate();
+            $this->truncate([
+                (new Tagd())->getTable(),
+                (new Item())->getTable(),
+                (new Retailer())->getTable(),
+            ]);
         }
 
         foreach ([
@@ -77,27 +81,5 @@ class RetailersSeeder extends Seeder
                 // )
                 ->create();
         }
-    }
-
-    /**
-     * Truncate tables
-     *
-     * @return void
-     */
-    private function truncate()
-    {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        foreach (
-            [
-                (new Tagd())->getTable(),
-                (new Item())->getTable(),
-                (new Retailer())->getTable(),
-            ] as $table
-        ) {
-            DB::table($table)->truncate();
-        }
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

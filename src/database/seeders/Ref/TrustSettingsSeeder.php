@@ -1,13 +1,14 @@
 <?php
 
-namespace Tagd\Core\Database\Seeders\Actors;
+namespace Tagd\Core\Database\Seeders\Ref;
 
 use Illuminate\Database\Seeder;
 use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
-use Tagd\Core\Models\Actor\Consumer;
+use Tagd\Core\Models\Ref\TrustSetting;
+use Tagd\Core\Models\Ref\TrustSettingName;
 
-class ConsumersSeeder extends Seeder
+class TrustSettingsSeeder extends Seeder
 {
     use UsesFactories, TruncatesTables;
 
@@ -20,7 +21,6 @@ class ConsumersSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 2,
             ...$options,
         ]);
 
@@ -28,19 +28,19 @@ class ConsumersSeeder extends Seeder
 
         if ($truncate) {
             $this->truncate([
-                (new Consumer())->getTable(),
+                (new TrustSetting())->getTable(),
             ]);
         }
 
-        $factory = Consumer::factory()
-            ->count($total)
-            ->create();
+        $brandModifiers = [
+            'adidas' => 20,
+            'gucci' => 50,
+        ];
 
-        // $factory = Consumer::factory()
-        //     ->count(1)
-        //     ->state([
-        //         'email' => 'juan@totally.group',
-        //     ])
-        //     ->create();
+        TrustSetting::firstOrCreate([
+            'name' => TrustSettingName::BRAND_MODIFIER,
+        ], [
+            'setting' => $brandModifiers,
+        ]);
     }
 }

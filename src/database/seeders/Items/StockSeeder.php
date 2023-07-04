@@ -3,14 +3,14 @@
 namespace Tagd\Core\Database\Seeders\Items;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
 use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Item\Stock;
 
 class StockSeeder extends Seeder
 {
-    use UsesFactories;
+    use UsesFactories, TruncatesTables;
 
     /**
      * Seed the application's database for development purposes.
@@ -21,7 +21,7 @@ class StockSeeder extends Seeder
     {
         extract([
             'truncate' => false,
-            'total' => 10,
+            'total' => 1,
             'retailerId' => null, // null means first
             'type' => null, // null means random
             ...$options,
@@ -30,7 +30,9 @@ class StockSeeder extends Seeder
         $this->setupFactories();
 
         if ($truncate) {
-            $this->truncate();
+            $this->truncate([
+                (new Stock())->getTable(),
+            ]);
         }
 
         $retailer = $retailerId
@@ -46,25 +48,5 @@ class StockSeeder extends Seeder
         $factory
             ->for($retailer)
             ->create();
-    }
-
-    /**
-     * Truncate tables
-     *
-     * @return void
-     */
-    private function truncate()
-    {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        foreach (
-            [
-                (new Stock())->getTable(),
-            ] as $table
-        ) {
-            DB::table($table)->truncate();
-        }
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

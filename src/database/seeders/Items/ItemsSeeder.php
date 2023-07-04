@@ -4,7 +4,7 @@ namespace Tagd\Core\Database\Seeders\Items;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
@@ -16,7 +16,7 @@ use Tagd\Core\Repositories\Items\Tagds as TagdsRepo;
 
 class ItemsSeeder extends Seeder
 {
-    use UsesFactories;
+    use UsesFactories, TruncatesTables;
 
     /**
      * Seed the application's database for development purposes.
@@ -27,15 +27,18 @@ class ItemsSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 10,
-            'totalResales' => 6,
+            'total' => 1,
+            'totalResales' => 1,
             ...$options,
         ]);
 
         $this->setupFactories();
 
         if ($truncate) {
-            $this->truncate();
+            $this->truncate([
+                (new Tagd())->getTable(),
+                (new Item())->getTable(),
+            ]);
         }
 
         $tagdsRepo = app()->make(TagdsRepo::class);
@@ -86,26 +89,5 @@ class ItemsSeeder extends Seeder
             }
             $consumers->push($newConsumer->id);
         }
-    }
-
-    /**
-     * Truncate tables
-     *
-     * @return void
-     */
-    private function truncate()
-    {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        foreach (
-            [
-                (new Tagd())->getTable(),
-                (new Item())->getTable(),
-            ] as $table
-        ) {
-            DB::table($table)->truncate();
-        }
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
