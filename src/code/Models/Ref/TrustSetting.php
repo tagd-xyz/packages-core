@@ -23,6 +23,12 @@ class TrustSetting extends Model
 
     public const MODIFIER_DEFAULT = 0;
 
+    public const SCORE_MIN = 0;
+
+    public const SCORE_MAX = 100;
+
+    public const SCORE_DEFAULT = 0;
+
     protected $fillable = [
         'name',
         'setting',
