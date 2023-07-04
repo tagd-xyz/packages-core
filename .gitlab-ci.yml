@@ -46,6 +46,7 @@ test-coverage:
     - .shared_runners
   before_script:
     - ./build/scripts/install_dtk.sh
+    - pecl install xdebug && docker-php-ext-enable xdebug
   script:
     - ./build/scripts/test_coverage.sh
   rules:
