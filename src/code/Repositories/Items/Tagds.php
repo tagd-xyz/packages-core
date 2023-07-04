@@ -68,6 +68,7 @@ class Tagds extends Repository implements TagdsInterface
                 'parent_id' => $parentTagd->id,
                 'item_id' => $parentTagd->item_id,
                 'reseller_id' => $reseller->id,
+                'trust' => $parentTagd->trust,
                 'status' => TagdStatus::RESALE,
                 'status_at' => Carbon::now(),
             ]);
@@ -137,6 +138,7 @@ class Tagds extends Repository implements TagdsInterface
                 'parent_id' => $tagd->id,
                 'item_id' => $tagd->item_id,
                 'consumer_id' => $consumer->id,
+                'trust' => $tagd->trust,
                 'status' => TagdStatus::ACTIVE,
                 'status_at' => Carbon::now(),
             ]);
