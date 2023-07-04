@@ -29,7 +29,7 @@ trait NeedsRetailers
         }
 
         $user = User::factory()
-            ->firebase(config('services.firebase.tenant_id_retailers'))
+            ->firebase('retailers')
             ->create();
         $user->startActingAs($retailer);
 

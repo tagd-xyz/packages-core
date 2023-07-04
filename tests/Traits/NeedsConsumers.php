@@ -29,7 +29,7 @@ trait NeedsConsumers
         }
 
         $user = User::factory()
-            ->firebase(config('services.firebase.tenant_id_consumers'))
+            ->firebase('consumers')
             ->create();
         $user->startActingAs($consumer);
 
