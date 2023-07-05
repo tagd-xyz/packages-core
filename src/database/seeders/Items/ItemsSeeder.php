@@ -4,7 +4,7 @@ namespace Tagd\Core\Database\Seeders\Items;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
@@ -12,11 +12,11 @@ use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Item\Item;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Item\TagdStatus;
-use Tagd\Core\Repositories\Items\Tagds as TagdsRepo;
+use Tagd\Core\Services\ResellerSales\Service as ResellerSalesService;
 
 class ItemsSeeder extends Seeder
 {
-    use UsesFactories;
+    use UsesFactories, TruncatesTables;
 
     /**
      * Seed the application's database for development purposes.
@@ -27,18 +27,21 @@ class ItemsSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 10,
-            'totalResales' => 6,
+            'total' => 1,
+            'totalResales' => 1,
             ...$options,
         ]);
 
         $this->setupFactories();
 
         if ($truncate) {
-            $this->truncate();
+            $this->truncate([
+                (new Tagd())->getTable(),
+                (new Item())->getTable(),
+            ]);
         }
 
-        $tagdsRepo = app()->make(TagdsRepo::class);
+        $resellerSalesService = app()->make(ResellerSalesService::class);
 
         $date = Carbon::today()->subMonth(1);
 
@@ -51,7 +54,7 @@ class ItemsSeeder extends Seeder
             Carbon::setTestNow($date);
 
             Item::factory()
-                ->count(rand(1, 5))
+                ->count(rand(1, 2))
                 ->for($retailer)
                 ->has(
                     Tagd::factory()
@@ -77,35 +80,14 @@ class ItemsSeeder extends Seeder
                 $listedAt = $tagd->status_at->clone()->addDays($days);
                 Carbon::setTestNow($listedAt);
 
-                $tagdReseller = $tagdsRepo->createForResale($reseller, $tagd);
+                $tagdReseller = $resellerSalesService->startResellerSale($reseller, $tagd);
 
                 $resoldAt = $listedAt->clone()->addDays($days + rand(1, 5));
                 Carbon::setTestNow($resoldAt);
 
-                $tagdsRepo->confirm($tagdReseller, $newConsumer);
+                $resellerSalesService->confirmResale($tagdReseller, $newConsumer);
             }
             $consumers->push($newConsumer->id);
         }
-    }
-
-    /**
-     * Truncate tables
-     *
-     * @return void
-     */
-    private function truncate()
-    {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        foreach (
-            [
-                (new Tagd())->getTable(),
-                (new Item())->getTable(),
-            ] as $table
-        ) {
-            DB::table($table)->truncate();
-        }
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

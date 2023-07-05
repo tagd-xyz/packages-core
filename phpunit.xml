@@ -12,9 +12,14 @@
             <directory suffix=".php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./src/code</directory>
+        </include>
+    </coverage>
     <php>
-        <env name="DB_CONNECTION" value="mysql"/>
-        <env name="DB_DATABASE" value="tagd_qa_testing"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value="tagd.sqlite"/>
         <env name="APP_KEY" value="base64:hzu4gPC2S85tAX7tpg/PFFMZ5QSLBy9ZMtrK807szfw="/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>

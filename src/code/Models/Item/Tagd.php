@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
 use Tagd\Core\Models\Model;
+use Tagd\Core\Models\Traits\HasTrustScore;
 use Tagd\Core\Models\Traits\HasUuidKey;
 use Tagd\Core\Support\Slug;
 
@@ -20,6 +21,7 @@ class Tagd extends Model
 {
     use HasFactory,
         HasUuidKey,
+        HasTrustScore,
         SoftDeletes;
 
     protected $table = 'tagds';
@@ -33,6 +35,7 @@ class Tagd extends Model
         'parent_id',
         'status',
         'status_at',
+        'trust',
     ];
 
     protected $casts = [
@@ -40,6 +43,7 @@ class Tagd extends Model
         'stats' => 'array',
         'status_at' => 'datetime',
         'status' => TagdStatus::class,
+        'trust' => 'array',
     ];
 
     protected $observables = [
@@ -53,6 +57,9 @@ class Tagd extends Model
         parent::boot();
         static::autoUuidKey();
         static::creating(function ($model) {
+            if (! $model->status) {
+                $model->status = TagdStatus::INACTIVE;
+            }
             $model->slug = (new Slug())->toString();
         });
     }

@@ -1,67 +1,76 @@
 {
-    "name": "tagd/core",
-    "description": "All Tagd business logic related",
-    "keywords": ["laravel", "totally", "tagd"],
-    "support": {
-        "issues": "https://gitlab.totallydev.com/tagd/packages/core/-/issues",
-        "source": "https://gitlab.totallydev.com/tagd/packages/core"
-    },
-    "type": "library",
-    "authors": [
-        {
-            "name": "Juan Sierra",
-            "email": "juan@totally.group"
-        }
+  "name": "tagd/core",
+  "description": "All Tagd business logic related",
+  "keywords": [
+    "laravel",
+    "totally",
+    "tagd"
+  ],
+  "support": {
+    "issues": "https://gitlab.totallydev.com/tagd/packages/core/-/issues",
+    "source": "https://gitlab.totallydev.com/tagd/packages/core"
+  },
+  "type": "library",
+  "authors": [
+    {
+      "name": "Juan Sierra",
+      "email": "juan@totally.group"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tagd\\Core\\": "src/code",
+      "Tagd\\Core\\Database\\Seeders\\": "src/database/seeders/",
+      "Tagd\\Core\\Database\\Factories\\": "src/database/factories/",
+      "Tagd\\Core\\Tests\\Traits\\": "tests/Traits/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tagd\\Core\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "aws/aws-sdk-php": "^3.209",
+    "whichbrowser/parser": "^2.1"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.2",
+    "orchestra/testbench": "^7.5",
+    "phpunit/phpunit": "^9.3"
+  },
+  "scripts": {
+    "pre-autoload-dump": [],
+    "test": [
+      "touch tagd.sqlite && vendor/bin/phpunit"
     ],
-    "autoload": {
-        "psr-4": {
-            "Tagd\\Core\\" : "src/code/core",
-            "Tagd\\Core\\Database\\Seeders\\": "src/database/seeders/",
-            "Tagd\\Core\\Database\\Factories\\": "src/database/factories/",
-            "Tagd\\Core\\Tests\\Traits\\": "tests/Traits/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tagd\\Core\\Tests\\": "tests/"
-        }
-    },
-    "require": {
-        "php": "^8.1",
-        "aws/aws-sdk-php": "^3.209",
-        "whichbrowser/parser": "^2.1"
-    },
-    "require-dev": {
-        "laravel/pint": "^1.2",
-        "orchestra/testbench": "^7.5",
-        "phpunit/phpunit": "^9.3"
-    },
-    "scripts": {
-        "pre-autoload-dump": [
-        ],
-        "test": [
-            "vendor/bin/phpunit"
-        ],
-        "pint": [
-            "vendor/bin/pint"
-        ],
-        "pint_check": [
-            "vendor/bin/pint --test"
-        ]
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Tagd\\Core\\Providers\\TagdServiceProvider"
-            ],
-            "aliases": {
-                "Tagd": "Tagd\\Core\\Facade"
-            }
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "test-coverage-html": [
+      "touch tagd.sqlite && XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html tests-coverage/"
+    ],
+    "test-coverage-text": [
+      "touch tagd.sqlite && XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --colors=never --coverage-cobertura=coverage.cobertura.xml"
+    ],
+    "pint": [
+      "vendor/bin/pint"
+    ],
+    "pint-check": [
+      "vendor/bin/pint --test"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Tagd\\Core\\Providers\\TagdServiceProvider"
+      ],
+      "aliases": {
+        "Tagd": "Tagd\\Core\\Facade"
+      }
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

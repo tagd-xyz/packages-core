@@ -8,7 +8,7 @@ variables:
 
 .shared_runners:
   tags:
-    - totally-uat-k8s
+    - totally-ci
 
 stages:
   - test
@@ -25,19 +25,38 @@ quality:
     - ./build/scripts/quality.sh
   rules:
     - if: $CI_COMMIT_BRANCH
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
 
-# unit_test:
-#   stage: test
-#   image: composer:latest
-#   extends:
-#     - .shared_runners
-#   before_script:
-#     - ./build/scripts/install_dtk.sh
-#   script:
-#     - ./build/scripts/test.sh
-#   rules:
-#     - if: '$CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME'
+test:
+  stage: test
+  image: composer:latest
+  extends:
+    - .shared_runners
+  before_script:
+    - ./build/scripts/install_dtk.sh
+  script:
+    - ./build/scripts/test.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+# https://docs.gitlab.com/ee/ci/testing/test_coverage_visualization.html
+test-coverage:
+  stage: test
+  image: composer:latest
+  extends:
+    - .shared_runners
+  before_script:
+    - ./build/scripts/install_dtk.sh
+    - pecl install xdebug && docker-php-ext-enable xdebug
+  script:
+    - ./build/scripts/test_coverage.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.cobertura.xml
 
 # publish:
 #   stage: deploy

@@ -3,6 +3,7 @@
 namespace Tagd\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Tagd\Core\Database\Seeders\Traits\UsesFactories;
 
 class TestingSeeder extends Seeder
 {
