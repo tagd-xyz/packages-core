@@ -34,8 +34,6 @@ trait StartResellerSale
                 'status_at' => Carbon::now(),
             ]);
 
-            // TODO: calculate trust score
-
             // Return newly created tagd
             return $tagd;
         });

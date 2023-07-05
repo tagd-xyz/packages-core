@@ -108,6 +108,7 @@ class TagdServiceProvider extends ServiceProvider
                 \Tagd\Core\Listeners\Models\Item::class,
                 \Tagd\Core\Listeners\Models\Tagd::class,
                 \Tagd\Core\Listeners\Models\AccessRequest::class,
+                \Tagd\Core\Listeners\TrustScores\Tagd::class,
             ] as $listener) {
             Event::subscribe($listener);
         }
@@ -132,5 +133,6 @@ class TagdServiceProvider extends ServiceProvider
          */
         $this->app->bind(\Tagd\Core\Services\Interfaces\RetailerSales::class, \Tagd\Core\Services\RetailerSales\Service::class);
         $this->app->bind(\Tagd\Core\Services\Interfaces\ResellerSales::class, \Tagd\Core\Services\ResellerSales\Service::class);
+        $this->app->bind(\Tagd\Core\Services\Interfaces\TrustScores::class, \Tagd\Core\Services\TrustScores\Service::class);
     }
 }
