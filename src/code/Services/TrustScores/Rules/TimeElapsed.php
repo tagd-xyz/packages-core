@@ -2,6 +2,9 @@
 
 namespace Tagd\Core\Services\TrustScores\Rules;
 
+use Tagd\Core\Models\Item\TagdStatus;
+use Tagd\Core\Models\Ref\TrustSetting;
+
 class TimeElapsed extends Base
 {
     /**
@@ -11,6 +14,11 @@ class TimeElapsed extends Base
      */
     public function apply(): float
     {
+        // apply only on resale
+        if (TagdStatus::RESALE != $this->tagd->status) {
+            return TrustSetting::SCORE_DEFAULT;
+        }
+
         // calculate time elapsed between resale and sale
         $listedAt = $this->tagd->created_at;
         $soldAt = $this->tagd->parent->created_at;

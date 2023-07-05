@@ -4,7 +4,7 @@ namespace Tagd\Core\Tests\Unit\Models\Tagd;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tagd\Core\Models\Ref\TrustSetting;
-use Tagd\Core\Repositories\Items\Tagds;
+use Tagd\Core\Services\ResellerSales\Service as ResellerSalesService;
 use Tagd\Core\Tests\TestCase;
 use Tagd\Core\Tests\Traits\NeedsResellers;
 use Tagd\Core\Tests\Traits\NeedsTagds;
@@ -67,16 +67,15 @@ class TagdTrustScoreTEst extends TestCase
 
     public function testTrustScoreInheritance()
     {
-        $repo = app(Tagds::class);
+        $repo = app(ResellerSalesService::class);
 
         $parentTagd = $this->aTagd();
         $parentTagd->trust_score = 50;
 
         $reseller = $this->aReseller();
 
-        $tagd = $repo->createForResale($reseller, $parentTagd);
+        $tagd = $repo->startResellerSale($reseller, $parentTagd);
 
         $this->assertEquals($parentTagd->trust_score, $tagd->trust_score);
-
     }
 }

@@ -24,7 +24,7 @@ class RetailersSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 1,
+            'total' => 5,
             ...$options,
         ]);
 

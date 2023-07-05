@@ -21,7 +21,7 @@ class StockSeeder extends Seeder
     {
         extract([
             'truncate' => false,
-            'total' => 1,
+            'total' => 5,
             'retailerId' => null, // null means first
             'type' => null, // null means random
             ...$options,

@@ -12,7 +12,6 @@ use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Item\Item;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Item\TagdStatus;
-use Tagd\Core\Repositories\Items\Tagds as TagdsRepo;
 use Tagd\Core\Services\ResellerSales\Service as ResellerSalesService;
 
 class ItemsSeeder extends Seeder
@@ -42,7 +41,6 @@ class ItemsSeeder extends Seeder
             ]);
         }
 
-        $tagdsRepo = app()->make(TagdsRepo::class);
         $resellerSalesService = app()->make(ResellerSalesService::class);
 
         $date = Carbon::today()->subMonth(1);
@@ -56,7 +54,7 @@ class ItemsSeeder extends Seeder
             Carbon::setTestNow($date);
 
             Item::factory()
-                ->count(rand(1, 5))
+                ->count(rand(1, 2))
                 ->for($retailer)
                 ->has(
                     Tagd::factory()
@@ -87,7 +85,7 @@ class ItemsSeeder extends Seeder
                 $resoldAt = $listedAt->clone()->addDays($days + rand(1, 5));
                 Carbon::setTestNow($resoldAt);
 
-                $tagdsRepo->confirm($tagdReseller, $newConsumer);
+                $resellerSalesService->confirmResale($tagdReseller, $newConsumer);
             }
             $consumers->push($newConsumer->id);
         }
