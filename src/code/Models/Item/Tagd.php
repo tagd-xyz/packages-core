@@ -204,6 +204,16 @@ class Tagd extends Model
         ]);
     }
 
+    public function deactivate(Carbon $date = null)
+    {
+        $updated = $this->update([
+            'status' => TagdStatus::INACTIVE,
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
+        ]);
+    }
+
     public function expire(Carbon $date = null)
     {
         $updated = $this->update([

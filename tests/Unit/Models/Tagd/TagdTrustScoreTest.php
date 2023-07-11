@@ -9,7 +9,7 @@ use Tagd\Core\Tests\TestCase;
 use Tagd\Core\Tests\Traits\NeedsResellers;
 use Tagd\Core\Tests\Traits\NeedsTagds;
 
-class TagdTrustScoreTEst extends TestCase
+class TagdTrustScoreTest extends TestCase
 {
     use RefreshDatabase, NeedsTagds, NeedsResellers;
 
