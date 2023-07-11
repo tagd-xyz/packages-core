@@ -2,7 +2,7 @@
 
 //phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 
-namespace Tagd\Core\Tests\Feature\Command\Ref\TrustSettings;
+namespace Tagd\Core\Tests\Command\Seed;
 
 use Tagd\Core\Tests\Command\Base;
 
