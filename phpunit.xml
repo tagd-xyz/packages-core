@@ -11,11 +11,17 @@
         <testsuite name="Feature">
             <directory suffix=".php">./tests/Feature</directory>
         </testsuite>
+        <testsuite name="Command">
+            <directory suffix="Test.php">./tests/Command</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">./src/code</directory>
         </include>
+        <exclude>
+            <directory suffix=".php">./src/code/Http</directory>
+        </exclude>
     </coverage>
     <php>
         <env name="DB_CONNECTION" value="sqlite"/>
