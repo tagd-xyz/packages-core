@@ -12,12 +12,17 @@ trait NeedsTagds
     /**
      * Creates a tagd
      */
-    protected function aTagd(): Tagd
+    protected function aTagd(array $options = []): Tagd
     {
+        extract([
+            'retailer' => Retailer::factory()->create(),
+            ...$options,
+        ]);
+
         return Tagd::factory()
             ->for(Consumer::factory()->create())
             ->for(Item::factory()
-                ->for(Retailer::factory()->create())
+                ->for($retailer)
                 ->create())
             ->active(false)
             ->create();

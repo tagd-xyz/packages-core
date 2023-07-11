@@ -3,21 +3,21 @@
 namespace Tagd\Core\Tests\Traits;
 
 use Tagd\Core\Models\Actor\Retailer;
-use Tagd\Core\Models\Item\Item;
+use Tagd\Core\Models\Item\Stock;
 
-trait NeedsItems
+trait NeedsStock
 {
     /**
-     * Creates a tagd
+     * Creates a stock
      */
-    protected function anItem(array $options = []): Item
+    protected function aStock(array $options = []): Stock
     {
         extract([
             'retailer' => Retailer::factory()->create(),
             ...$options,
         ]);
 
-        return Item::factory()
+        return Stock::factory()
             ->for($retailer)
             ->create();
     }
