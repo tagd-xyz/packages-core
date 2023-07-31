@@ -27,6 +27,15 @@ class TagdMetaTest extends TestCase
         $this->assertEquals(TagdStatus::ACTIVE, $tagd->status);
     }
 
+    public function testInactiveState()
+    {
+        $tagd = $this->aTagd();
+
+        $tagd->deactivate();
+
+        $this->assertEquals(TagdStatus::INACTIVE, $tagd->status);
+    }
+
     public function testExpireState()
     {
         $tagd = $this->aTagd();

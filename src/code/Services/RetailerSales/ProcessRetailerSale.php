@@ -53,7 +53,7 @@ trait ProcessRetailerSale
             ]);
 
             // Automatically set the newly created Tagd as "active"
-            $tagd->activate();
+            // $tagd->activate();
 
             // Return newly created item
             return $item;
