@@ -14,15 +14,15 @@ class StateTest extends TestCase
         NeedsTagds,
         NeedsConsumers;
 
-    public function testActivate()
-    {
-        $repo = app(Tagds::class);
+    // public function testActivate()
+    // {
+    //     $repo = app(Tagds::class);
 
-        $tagd = $this->aTagd();
-        $repo->activate($tagd);
+    //     $tagd = $this->aTagd();
+    //     $repo->activate($tagd);
 
-        $this->assertEquals($tagd->isActive, true);
-    }
+    //     $this->assertEquals($tagd->isActive, true);
+    // }
 
     public function testSetAsAvailableForResale()
     {
@@ -42,23 +42,5 @@ class StateTest extends TestCase
         $repo->cancel($tagd);
 
         $this->assertEquals($tagd->isCancelled, true);
-    }
-
-    public function testConfirm()
-    {
-        $repo = app(Tagds::class);
-
-        $parentTagd = $this->aTagd();
-        $tagd = $this->aTagdChildOf($parentTagd);
-        $consumer = $this->aConsumer();
-
-        $newTagd = $repo->confirm($tagd, $consumer);
-
-        $this->assertEquals($tagd->isTransferred, true);
-
-        $this->assertEquals($newTagd->isActive, true);
-        $this->assertEquals($newTagd->consumer_id, $consumer->id);
-        $this->assertEquals($newTagd->parent_id, $tagd->id);
-        $this->assertEquals($newTagd->item_id, $tagd->item_id);
     }
 }

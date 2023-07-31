@@ -53,6 +53,7 @@ class TagdServiceProvider extends ServiceProvider
                 \Tagd\Core\Console\Commands\Seed\Uat::class,
                 \Tagd\Core\Console\Commands\Seed\Prod::class,
                 \Tagd\Core\Console\Commands\Seed\Database::class,
+                \Tagd\Core\Console\Commands\Ref\TrustSettings\Brand::class,
             ];
 
             if ($this->app->environment(['local', 'testing'])) {
@@ -107,6 +108,7 @@ class TagdServiceProvider extends ServiceProvider
                 \Tagd\Core\Listeners\Models\Item::class,
                 \Tagd\Core\Listeners\Models\Tagd::class,
                 \Tagd\Core\Listeners\Models\AccessRequest::class,
+                \Tagd\Core\Listeners\TrustScores\Tagd::class,
             ] as $listener) {
             Event::subscribe($listener);
         }
@@ -124,10 +126,13 @@ class TagdServiceProvider extends ServiceProvider
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Consumers::class, \Tagd\Core\Repositories\Actors\Consumers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Uploads\Resellers::class, \Tagd\Core\Repositories\Uploads\Resellers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Uploads\Stocks::class, \Tagd\Core\Repositories\Uploads\Stocks::class);
+        $this->app->bind(\Tagd\Core\Repositories\Interfaces\Ref\TrustSettings::class, \Tagd\Core\Repositories\Ref\TrustSettings::class);
 
         /**
          * Services
          */
         $this->app->bind(\Tagd\Core\Services\Interfaces\RetailerSales::class, \Tagd\Core\Services\RetailerSales\Service::class);
+        $this->app->bind(\Tagd\Core\Services\Interfaces\ResellerSales::class, \Tagd\Core\Services\ResellerSales\Service::class);
+        $this->app->bind(\Tagd\Core\Services\Interfaces\TrustScores::class, \Tagd\Core\Services\TrustScores\Service::class);
     }
 }
