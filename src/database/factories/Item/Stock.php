@@ -106,6 +106,9 @@ class Stock extends Factory
                 'brand' => $this->randomBrand($type),
                 'model' => $this->faker->words(2, true),
                 'size' => $this->randomSize($type),
+                'manufacturerSerialNumber' => $this->faker->uuid,
+                'yearOfProduction' => $this->faker->year,
+                'rrp' => $this->faker->randomFloat(2, 0, 1000),
             ],
         ];
     }
