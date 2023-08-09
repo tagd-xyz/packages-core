@@ -41,6 +41,10 @@ class ItemsSeeder extends Seeder
             ]);
         }
 
+        if (! empty(Item::count())) {
+            return;
+        }
+
         $resellerSalesService = app()->make(ResellerSalesService::class);
 
         $date = Carbon::today()->subMonth(1);

@@ -41,45 +41,27 @@ class RetailersSeeder extends Seeder
         foreach ([
             'Top Fashion',
             'Dresses & More',
-        ] as $name) {
-            $factory = Retailer::factory()
-                ->count(1)
-                ->state([
-                    'name' => $name,
-                ])
-                // ->has(Item::factory()
-                //     ->count($total)
-                //     ->type(Type::FASHION)
-                //     ->has(Tagd::factory()
-                //         ->count(1)
-                //         ->for(Consumer::factory())
-                //         ->active(),
-                //         'tagds'
-                //     )
-                // )
-                ->create();
-        }
-
-        foreach ([
             'Sneaker World',
             'Kick Game',
         ] as $name) {
-            $factory = Retailer::factory()
-                ->count(1)
-                ->state([
-                    'name' => $name,
-                ])
-                // ->has(Item::factory()
-                //     ->count($total)
-                //     ->type(Type::SNEAKERS)
-                //     ->has(Tagd::factory()
-                //         ->count(1)
-                //         ->for(Consumer::factory())
-                //         ->active(),
-                //         'tagds'
-                //     )
-                // )
-                ->create();
+            if (empty(Retailer::where('name', $name)->count())) {
+                $factory = Retailer::factory()
+                    ->count(1)
+                    ->state([
+                        'name' => $name,
+                    ])
+                    // ->has(Item::factory()
+                    //     ->count($total)
+                    //     ->type(Type::FASHION)
+                    //     ->has(Tagd::factory()
+                    //         ->count(1)
+                    //         ->for(Consumer::factory())
+                    //         ->active(),
+                    //         'tagds'
+                    //     )
+                    // )
+                    ->create();
+            }
         }
     }
 }
