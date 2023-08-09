@@ -30,7 +30,7 @@ class ProcessRetailerSaleTest extends TestCase
         $itemDetails = [
             'name' => 'Name',
             'description' => 'Description',
-            'type' => $stock->type,
+            'type_id' => $stock->type->id,
             'properties' => $stock->properties,
         ];
 

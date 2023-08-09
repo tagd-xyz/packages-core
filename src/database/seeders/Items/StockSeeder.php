@@ -43,8 +43,17 @@ class StockSeeder extends Seeder
             ->count($total);
 
         if ($type) {
+            if (! empty(Stock::where('type_id', $type->id)->count())) {
+                return;
+            }
+
             $factory = $factory->type($type);
+        } else {
+            if (! empty(Stock::count())) {
+                return;
+            }
         }
+
         $factory
             ->for($retailer)
             ->create();

@@ -41,7 +41,7 @@ class CalculateForTagdTest extends TestCase
             [
                 'name' => $stock->name,
                 'description' => $stock->description,
-                'type' => $stock->type,
+                'type_id' => $stock->type->id,
                 'properties' => [
                     ...$stock->properties,
                     'brand' => 'gucci',

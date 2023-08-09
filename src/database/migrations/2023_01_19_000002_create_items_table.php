@@ -27,11 +27,15 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('retailer_id')->constrained();
             $table->string('name');
-            $table->string('type')->nullable();
+            $table->unsignedBigInteger('type_id');
             $table->text('description')->nullable();
             $table->json('properties');
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::table($this->tableName(), function (Blueprint $table) {
+            $table->foreign('type_id')->references('id')->on('item_types');
         });
     }
 
