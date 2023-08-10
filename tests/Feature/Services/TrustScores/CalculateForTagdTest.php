@@ -39,6 +39,10 @@ class CalculateForTagdTest extends TestCase
             'consumer@gmail.com',
             'transaction123',
             [
+                'amount' => 100,
+                'currency' => 'GBP',
+            ],
+            [
                 'name' => $stock->name,
                 'description' => $stock->description,
                 'type' => $stock->type,
