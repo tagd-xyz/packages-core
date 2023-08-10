@@ -26,6 +26,10 @@ class ProcessRetailerSaleTest extends TestCase
         $retailer = $this->aRetailer();
         $stock = $this->anItem();
         $transactionId = 'transaction123';
+        $price = [
+            'amount' => 100,
+            'currency' => 'GBP',
+        ];
 
         $itemDetails = [
             'name' => 'Name',
@@ -38,6 +42,7 @@ class ProcessRetailerSaleTest extends TestCase
             $retailer->id,
             $consumer->email,
             $transactionId,
+            $price,
             $itemDetails,
             []
         );
@@ -46,5 +51,7 @@ class ProcessRetailerSaleTest extends TestCase
 
         $this->assertEquals($tagd->consumer_id, $consumer->id);
         $this->assertEquals($tagd->meta['transaction'], $transactionId);
+        $this->assertEquals($tagd->meta['price']['amount'], $price['amount']);
+        $this->assertEquals($tagd->meta['price']['currency'], $price['currency']);
     }
 }
