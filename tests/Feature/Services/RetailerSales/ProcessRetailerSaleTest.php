@@ -30,6 +30,10 @@ class ProcessRetailerSaleTest extends TestCase
             'amount' => 100,
             'currency' => 'GBP',
         ];
+        $location = [
+            'country' => 'GBR',
+            'city' => 'London',
+        ];
 
         $itemDetails = [
             'name' => 'Name',
@@ -43,6 +47,7 @@ class ProcessRetailerSaleTest extends TestCase
             $consumer->email,
             $transactionId,
             $price,
+            $location,
             $itemDetails,
             []
         );
@@ -53,5 +58,7 @@ class ProcessRetailerSaleTest extends TestCase
         $this->assertEquals($tagd->meta['transaction'], $transactionId);
         $this->assertEquals($tagd->meta['price']['amount'], $price['amount']);
         $this->assertEquals($tagd->meta['price']['currency'], $price['currency']);
+        $this->assertEquals($tagd->meta['location']['country'], $location['country']);
+        $this->assertEquals($tagd->meta['location']['city'], $location['city']);
     }
 }

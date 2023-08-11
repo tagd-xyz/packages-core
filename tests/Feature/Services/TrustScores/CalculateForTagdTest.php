@@ -43,6 +43,10 @@ class CalculateForTagdTest extends TestCase
                 'currency' => 'GBP',
             ],
             [
+                'country' => 'GBR',
+                'city' => 'London',
+            ],
+            [
                 'name' => $stock->name,
                 'description' => $stock->description,
                 'type' => $stock->type,
