@@ -18,6 +18,7 @@ trait ProcessRetailerSale
         string $consumerEmail,
         string $transactionId,
         array $price,
+        array $location,
         array $itemDetails,
         array $imageUploads,
     ): Item {
@@ -27,6 +28,7 @@ trait ProcessRetailerSale
             $consumerEmail,
             $transactionId,
             $price,
+            $location,
             $itemDetails,
             $imageUploads
         ) {
@@ -52,6 +54,7 @@ trait ProcessRetailerSale
                 'meta' => [
                     'transaction' => $transactionId,
                     'price' => $price,
+                    'location' => $location,
                 ],
             ]);
 

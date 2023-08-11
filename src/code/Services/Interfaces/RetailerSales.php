@@ -14,6 +14,7 @@ interface RetailerSales
         string $consumerEmail,
         string $transactionId,
         array $price,
+        array $location,
         array $itemDetails,
         array $imageUploads
     ): Item;
