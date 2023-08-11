@@ -21,7 +21,7 @@ class Stock extends Model
 
     protected $fillable = [
         'retailer_id',
-        'type',
+        'type_id',
         'name',
         'description',
         'properties',
@@ -53,6 +53,11 @@ class Stock extends Model
     public function retailer()
     {
         return $this->belongsTo(Retailer::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
     }
 
     public function propertiesBags()

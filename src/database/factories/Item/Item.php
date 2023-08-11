@@ -31,9 +31,12 @@ class Item extends Factory
 
         return [
             'name' => $stock->name,
-            'type' => $stock->type,
+            'type_id' => $stock->type->id,
             'description' => $stock->description,
-            'properties' => $stock->properties,
+            'properties' => [
+                ...$stock->properties,
+                'retailerSerialNumber' => $this->faker->uuid,
+            ],
         ];
     }
 }

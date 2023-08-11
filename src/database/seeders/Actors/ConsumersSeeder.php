@@ -32,15 +32,10 @@ class ConsumersSeeder extends Seeder
             ]);
         }
 
-        $factory = Consumer::factory()
-            ->count($total)
-            ->create();
-
-        // $factory = Consumer::factory()
-        //     ->count(1)
-        //     ->state([
-        //         'email' => 'juan@totally.group',
-        //     ])
-        //     ->create();
+        if (empty(Consumer::count())) {
+            $factory = Consumer::factory()
+                ->count($total)
+                ->create();
+        }
     }
 }

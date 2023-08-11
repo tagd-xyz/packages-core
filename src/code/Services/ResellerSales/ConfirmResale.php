@@ -16,11 +16,13 @@ trait ConfirmResale
      */
     public function confirmResale(
         Tagd $tagd,
-        Consumer $consumer
+        Consumer $consumer,
+        array $meta = [],
     ): Tagd {
         return DB::transaction(function () use (
             $tagd,
-            $consumer
+            $consumer,
+            $meta
         ) {
             $tagd->transfer();
             $tagd->parent->transfer();
@@ -36,6 +38,11 @@ trait ConfirmResale
             foreach ($activeSiblings as $sibling) {
                 $sibling->expire();
             }
+
+            // update tagd with price meta data
+            $tagd->update([
+                'meta' => array_merge($tagd->meta ?? [], $meta),
+            ]);
 
             // create new tagd
             $tagdsRepo = app(TagdsRepo::class);

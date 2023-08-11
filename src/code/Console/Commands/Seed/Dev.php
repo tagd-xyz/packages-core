@@ -47,6 +47,7 @@ class Dev extends Command
                 ],
             );
         } catch (\Exception $e) {
+            dd($e);
             $this->error($e->getMessage());
 
             return Command::FAILURE;

@@ -7,10 +7,10 @@ use Tagd\Core\Models\Item\Type;
 
 class Stock extends Factory
 {
-    private function randomName($type): string
+    private function randomName(Type $type): string
     {
-        switch ($type) {
-            case Type::FASHION->value:
+        switch ($type->name) {
+            case 'Handbags':
                 return collect([
                     'Leather Tote Bag',
                     'Leather Mini Cross-Body',
@@ -20,7 +20,7 @@ class Stock extends Factory
                     'Nojum Diana Mini Python Bag',
                 ])->random();
 
-            case Type::SNEAKERS->value:
+            case 'Footwear':
                 return collect([
                     'Ca Pro Lux',
                     'Gazelle',
@@ -30,20 +30,21 @@ class Stock extends Factory
                     'Chuck Taylor All',
                     'Waffle Trainer 2',
                 ])->random();
+
+            default:
+                return $this->faker->words(2, true);
         }
     }
 
-    private function randomType(): string
+    private function randomType(): Type
     {
-        $types = Type::cases();
-
-        return $types[array_rand($types)]->value ?? null;
+        return Type::inRandomOrder()->first();
     }
 
-    private function randomBrand(string $type): string
+    private function randomBrand(Type $type): string
     {
-        switch ($type) {
-            case Type::FASHION->value:
+        switch ($type->name) {
+            case 'Handbags':
                 return collect([
                     'Gucci',
                     'Louis Vuitton',
@@ -54,7 +55,7 @@ class Stock extends Factory
                     'Hermès',
                 ])->random();
 
-            case Type::SNEAKERS->value:
+            case 'Footwear':
                 return collect([
                     'Nike',
                     'Adidas',
@@ -62,20 +63,23 @@ class Stock extends Factory
                     'Vans',
                     'Converse',
                 ])->random();
+
+            default:
+                return $this->faker->company();
         }
     }
 
-    private function randomSize(string $type): string
+    private function randomSize(Type $type): string
     {
-        switch ($type) {
-            case Type::FASHION->value:
+        switch ($type->name) {
+            case 'Handbags':
                 return collect([
                     'S',
                     'M',
                     'L',
                 ])->random();
 
-            case Type::SNEAKERS->value:
+            case 'Footwear':
                 return collect([
                     '6',
                     '6.5',
@@ -86,6 +90,9 @@ class Stock extends Factory
                     '9',
                     '9.5',
                 ])->random();
+
+            default:
+                return '';
         }
     }
 
@@ -100,12 +107,15 @@ class Stock extends Factory
 
         return [
             'name' => $this->randomName($type),
-            'type' => $type,
+            'type_id' => $type->id,
             'description' => $this->faker->paragraph(),
             'properties' => [
                 'brand' => $this->randomBrand($type),
                 'model' => $this->faker->words(2, true),
                 'size' => $this->randomSize($type),
+                'manufacturerSerialNumber' => $this->faker->uuid,
+                'yearOfProduction' => $this->faker->year,
+                'rrp' => $this->faker->randomFloat(2, 0, 1000),
             ],
         ];
     }
@@ -117,13 +127,13 @@ class Stock extends Factory
     {
         return $this->state(function (array $attributes) use ($type) {
             return [
-                'name' => $this->randomName($type->value),
-                'type' => $type->value,
+                'name' => $this->randomName($type),
+                'type_id' => $type->id,
                 'description' => $this->faker->paragraph(),
                 'properties' => [
-                    'brand' => $this->randomBrand($type->value),
+                    'brand' => $this->randomBrand($type),
                     'model' => $this->faker->words(2, true),
-                    'size' => $this->randomSize($type->value),
+                    'size' => $this->randomSize($type),
                 ],
             ];
         });
