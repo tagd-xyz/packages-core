@@ -32,6 +32,10 @@ class TrustSettingsSeeder extends Seeder
             ]);
         }
 
+        if (! empty(TrustSetting::count())) {
+            return;
+        }
+
         $brandModifiers = [
             'adidas' => 20,
             'gucci' => 50,

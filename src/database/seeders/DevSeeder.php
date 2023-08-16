@@ -3,6 +3,7 @@
 namespace Tagd\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Tagd\Core\Models\Item\Type;
 
 class DevSeeder extends Seeder
 {
@@ -23,7 +24,15 @@ class DevSeeder extends Seeder
         $this->call(Actors\ConsumersSeeder::class);
         $this->call(Actors\ResellersSeeder::class);
         $this->call(Actors\RetailersSeeder::class);
-        $this->call(Items\StockSeeder::class);
+        foreach ([
+            'Footwear',
+            'Handbags',
+        ] as $typeName) {
+            $type = Type::where('name', $typeName)->firstOrFail();
+            $this->call(Items\StockSeeder::class, false, [
+                ['type' => $type],
+            ]);
+        }
         $this->call(Items\ItemsSeeder::class);
     }
 }

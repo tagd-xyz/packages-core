@@ -22,7 +22,7 @@ class Item extends Model
 
     protected $fillable = [
         'retailer_id',
-        'type',
+        'type_id',
         'name',
         'description',
         'properties',
@@ -50,6 +50,11 @@ class Item extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
 
     public function retailer()
     {
