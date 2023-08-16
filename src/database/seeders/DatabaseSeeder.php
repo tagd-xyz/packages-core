@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(Ref\TrustSettingsSeeder::class);
         $this->call(Ref\CurrenciesSeeder::class);
+        $this->call(Ref\CountriesSeeder::class);
         $this->call(Items\TypesSeeder::class);
     }
 }
