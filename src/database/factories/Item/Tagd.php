@@ -23,6 +23,10 @@ class Tagd extends Factory
                     'city' => $this->faker->city(),
                     'country' => $this->randomCountry()->code,
                 ],
+                'price' => [
+                    'currency' => 'GBP',
+                    'amount' => $this->faker->randomFloat(2, 0, 1000),
+                ],
             ],
         ];
     }
@@ -92,6 +96,7 @@ class Tagd extends Factory
                 'meta' => [
                     'transaction' => null,
                     'location' => null,
+                    'price' => null,
                 ],
             ];
         });
