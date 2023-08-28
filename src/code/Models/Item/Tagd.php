@@ -146,6 +146,13 @@ class Tagd extends Model
         );
     }
 
+    protected function isReturned(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => TagdStatus::RETURNED == $this->status,
+        );
+    }
+
     protected function isRoot(): Attribute
     {
         return Attribute::make(
@@ -238,6 +245,16 @@ class Tagd extends Model
     {
         $updated = $this->update([
             'status' => TagdStatus::CANCELLED,
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
+        ]);
+    }
+
+    public function return(Carbon $date = null)
+    {
+        $updated = $this->update([
+            'status' => TagdStatus::RETURNED,
             'status_at' => $date
                 ? $date
                 : Carbon::now(),
