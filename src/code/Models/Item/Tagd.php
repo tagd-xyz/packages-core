@@ -277,6 +277,24 @@ class Tagd extends Model
         return $collection;
     }
 
+    public function buildParentCollection(callable $filter = null): Collection
+    {
+        $collection = collect();
+
+        $parent = $this->parent;
+        if ($parent) {
+            if (is_null($filter) || $filter($parent)) {
+                $collection->push($parent);
+            }
+
+            $collection = $collection->concat(
+                $parent->buildParentCollection($filter)
+            );
+        }
+
+        return $collection;
+    }
+
     public function countAllAncestors(callable $filter = null): int
     {
         $count = 0;

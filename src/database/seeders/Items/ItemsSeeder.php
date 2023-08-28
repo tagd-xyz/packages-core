@@ -27,8 +27,8 @@ class ItemsSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 1,
-            'totalResales' => 1,
+            'total' => 10,
+            'totalResales' => 10,
             ...$options,
         ]);
 
@@ -53,12 +53,13 @@ class ItemsSeeder extends Seeder
         $consumer = Consumer::first();
 
         // retailer sell some items
-        for ($i = 0; $i < $total; $i++) {
+        // for ($i = 0; $i < $total; $i++) {
+        while ($total-- > 0) {
             $date->addDays(rand(1, 5));
             Carbon::setTestNow($date);
 
             Item::factory()
-                ->count(rand(1, 2))
+                // ->count(rand(1, 2))
                 ->for($retailer)
                 ->has(
                     Tagd::factory()
@@ -73,25 +74,44 @@ class ItemsSeeder extends Seeder
         // consumer resales some items
         $reseller = Reseller::first();
 
-        $consumers = collect($consumer->id);
+        foreach (Tagd::whereStatus(TagdStatus::ACTIVE)->get() as $tagd) {
 
-        while ($totalResales-- > 0) {
-            $newConsumer = Consumer::whereNotIn('id', $consumers)->first();
-            foreach (Tagd::whereStatus(TagdStatus::ACTIVE)->get() as $tagd) {
+            $consumers = collect($consumer->id);
+            $activeTagd = $tagd;
+
+            while ($totalResales-- > 0) {
+                $newConsumer = Consumer::whereNotIn('id', $consumers)->first();
+
+                $consumers->push($newConsumer->id);
 
                 $days = rand(1, 5);
 
-                $listedAt = $tagd->status_at->clone()->addDays($days);
+                $listedAt = $activeTagd->status_at->clone()->addDays($days);
                 Carbon::setTestNow($listedAt);
 
-                $tagdReseller = $resellerSalesService->startResellerSale($reseller, $tagd);
+                $tagdReseller = $resellerSalesService->startResellerSale(
+                    $reseller,
+                    $activeTagd
+                );
 
                 $resoldAt = $listedAt->clone()->addDays($days + rand(1, 5));
                 Carbon::setTestNow($resoldAt);
 
-                $resellerSalesService->confirmResale($tagdReseller, $newConsumer);
+                $newAmount = round(
+                    $activeTagd->meta['price']['amount'] * ((100 - rand(5, 10)) / 100), 2
+                );
+
+                $activeTagd = $resellerSalesService->confirmResale(
+                    $tagdReseller,
+                    $newConsumer, [
+                        'price' => [
+                            ...$activeTagd->meta['price'],
+                            'amount' => $newAmount,
+                        ],
+                        'location' => $activeTagd->meta['location'],
+                    ]
+                );
             }
-            $consumers->push($newConsumer->id);
         }
     }
 }

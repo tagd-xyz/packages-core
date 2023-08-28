@@ -5,7 +5,8 @@ namespace Tagd\Core\Listeners\Models;
 use Illuminate\Events\Dispatcher;
 use Tagd\Core\Events\Items\Tagd\Created;
 use Tagd\Core\Events\Items\Tagd\StatusUpdated;
-use Tagd\Core\Jobs\UpdateTagdAncestorsStats;
+use Tagd\Core\Jobs\UpdateTagdAvgResaleStats;
+use Tagd\Core\Jobs\UpdateTagdCountStats;
 use Tagd\Core\Jobs\UpdateTagdTimeToTransferStats;
 use Tagd\Core\Notifications\Consumers\TagdCreated as TagdCreatedNotification;
 
@@ -27,8 +28,9 @@ class Tagd
             ));
         }
 
-        UpdateTagdAncestorsStats::dispatch($tagd);
-        UpdateTagdTimeToTransferStats::dispatch($tagd);
+        // UpdateTagdCountStats::dispatch($tagd);
+        // UpdateTagdTimeToTransferStats::dispatch($tagd);
+        UpdateTagdAvgResaleStats::dispatch($tagd);
     }
 
     /**
@@ -40,8 +42,7 @@ class Tagd
     {
         $tagd = $event->tagd;
 
-        UpdateTagdAncestorsStats::dispatch($tagd);
-        // UpdateTagdTimeToTransferStats::dispatch($tagd);
+        // UpdateTagdCountStats::dispatch($tagd);
     }
 
     /**
