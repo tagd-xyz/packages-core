@@ -25,6 +25,7 @@ class Role extends Model
     protected $fillable = [
         'actor_type',
         'actor_id',
+        'user_id',
     ];
 
     /*

@@ -5,6 +5,7 @@ namespace Tagd\Core\Database\Factories\Item;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Tagd\Core\Models\Item\TagdStatus;
+use Tagd\Core\Models\Ref\Country;
 
 class Tagd extends Factory
 {
@@ -18,6 +19,14 @@ class Tagd extends Factory
         return [
             'meta' => [
                 'transaction' => $this->faker->ean13(),
+                'location' => [
+                    'city' => $this->faker->city(),
+                    'country' => $this->randomCountry()->code,
+                ],
+                'price' => [
+                    'currency' => 'GBP',
+                    'amount' => $this->faker->randomFloat(2, 0, 1000),
+                ],
             ],
         ];
     }
@@ -86,8 +95,15 @@ class Tagd extends Factory
             return [
                 'meta' => [
                     'transaction' => null,
+                    'location' => null,
+                    'price' => null,
                 ],
             ];
         });
+    }
+
+    private function randomCountry(): Country
+    {
+        return Country::inRandomOrder()->first();
     }
 }

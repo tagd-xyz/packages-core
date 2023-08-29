@@ -41,7 +41,6 @@ class UpdateTagdAncestorsStats implements ShouldQueue
         $parent = $this->tagd->parent;
 
         if ($parent) {
-
             $stats = $parent->stats;
             $stats['count'] = [];
 
