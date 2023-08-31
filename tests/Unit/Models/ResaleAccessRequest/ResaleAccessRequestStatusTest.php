@@ -8,7 +8,7 @@ use Tagd\Core\Tests\Traits\NeedsResaleAccessRequests;
 
 class ResaleAccessRequestStatusTest extends TestCase
 {
-    use RefreshDatabase, NeedsResaleAccessRequests;
+    use NeedsResaleAccessRequests, RefreshDatabase;
 
     public function testDefaultState()
     {

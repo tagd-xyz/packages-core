@@ -10,9 +10,9 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class StateTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsTagds,
-        NeedsConsumers;
+        RefreshDatabase;
 
     // public function testActivate()
     // {

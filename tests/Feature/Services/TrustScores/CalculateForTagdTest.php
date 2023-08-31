@@ -16,12 +16,12 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class CalculateForTagdTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsItems,
-        NeedsTagds,
-        NeedsConsumers,
+        NeedsResellers,
         NeedsRetailers,
-        NeedsResellers;
+        NeedsTagds,
+        RefreshDatabase;
 
     public function testCalculateForTagd()
     {

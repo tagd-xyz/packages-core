@@ -9,7 +9,7 @@ use Tagd\Core\Tests\Traits\NeedsRetailers;
 
 abstract class Base extends TestCase
 {
-    use UsesFactories, NeedsDatabase, NeedsRetailers;
+    use NeedsDatabase, NeedsRetailers, UsesFactories;
 
     /**
      * setUp any test
