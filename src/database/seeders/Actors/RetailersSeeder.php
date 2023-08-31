@@ -13,7 +13,7 @@ use Tagd\Core\Models\Item\Type;
 
 class RetailersSeeder extends Seeder
 {
-    use UsesFactories, TruncatesTables;
+    use TruncatesTables, UsesFactories;
 
     /**
      * Seed the application's database for development purposes.

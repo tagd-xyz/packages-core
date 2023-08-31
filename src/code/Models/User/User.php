@@ -20,8 +20,8 @@ use Tagd\Core\Models\Traits\HasUuidKey;
 
 class User extends Authenticatable
 {
-    use HasUuidKey,
-        HasFactory,
+    use HasFactory,
+        HasUuidKey,
         Notifiable;
 
     /**

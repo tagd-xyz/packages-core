@@ -19,7 +19,6 @@ trait NeedsConsumers
     /**
      * Acts as a consumer
      *
-     * @param  null  $guard
      * @return $this
      */
     protected function actingAsAConsumer(Consumer $consumer = null, $guard = 'api'): static

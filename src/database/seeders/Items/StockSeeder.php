@@ -10,7 +10,7 @@ use Tagd\Core\Models\Item\Stock;
 
 class StockSeeder extends Seeder
 {
-    use UsesFactories, TruncatesTables;
+    use TruncatesTables, UsesFactories;
 
     /**
      * Seed the application's database for development purposes.

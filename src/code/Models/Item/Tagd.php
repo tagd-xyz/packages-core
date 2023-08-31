@@ -20,8 +20,8 @@ use Tagd\Core\Support\Slug;
 class Tagd extends Model
 {
     use HasFactory,
-        HasUuidKey,
         HasTrustScore,
+        HasUuidKey,
         SoftDeletes;
 
     protected $table = 'tagds';
