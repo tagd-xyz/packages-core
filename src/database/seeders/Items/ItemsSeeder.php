@@ -16,7 +16,7 @@ use Tagd\Core\Services\ResellerSales\Service as ResellerSalesService;
 
 class ItemsSeeder extends Seeder
 {
-    use UsesFactories, TruncatesTables;
+    use TruncatesTables, UsesFactories;
 
     /**
      * Seed the application's database for development purposes.

@@ -20,7 +20,6 @@ trait NeedsRetailers
     /**
      * Acts as a retailer
      *
-     * @param  null  $guard
      * @return $this
      */
     protected function actingAsARetailer(Retailer $retailer = null, $guard = 'api'): static

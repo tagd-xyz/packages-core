@@ -9,7 +9,7 @@ use Tagd\Core\Models\Actor\Consumer;
 
 class ConsumersSeeder extends Seeder
 {
-    use UsesFactories, TruncatesTables;
+    use TruncatesTables, UsesFactories;
 
     /**
      * Seed the application's database for development purposes.
