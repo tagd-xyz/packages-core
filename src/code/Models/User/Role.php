@@ -15,6 +15,8 @@ class Role extends Model
 
     public const CONSUMER = 'consumer';
 
+    public const ADMIN = 'admin';
+
     public const UNKNOWN = 'unknown';
 
     /**
