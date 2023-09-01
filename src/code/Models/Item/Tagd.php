@@ -265,7 +265,7 @@ class Tagd extends Model
     {
         $this->update([
             'meta' => [
-                ...$this->meta,
+                ...(array) $this->meta,
                 (TagdMeta::AVAILABLE_FOR_RESALE)->value => $enabled,
             ],
         ]);
