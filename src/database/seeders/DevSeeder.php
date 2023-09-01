@@ -21,7 +21,11 @@ class DevSeeder extends Seeder
 
         $this->call(DatabaseSeeder::class);
 
-        $this->call(Actors\ConsumersSeeder::class);
+        $this->call(Actors\ConsumersSeeder::class, false, [
+            'options' => [
+                'total' => 25,
+            ],
+        ]);
         $this->call(Actors\ResellersSeeder::class);
         $this->call(Actors\RetailersSeeder::class);
         foreach ([
