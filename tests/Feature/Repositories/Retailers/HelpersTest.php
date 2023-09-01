@@ -9,7 +9,7 @@ use Tagd\Core\Tests\Traits\NeedsRetailers;
 
 class HelpersTest extends TestCase
 {
-    use RefreshDatabase, NeedsRetailers;
+    use NeedsRetailers, RefreshDatabase;
 
     public function testAssertExistsPrevious()
     {

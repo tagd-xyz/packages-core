@@ -11,7 +11,7 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class TagdTrustScoreTest extends TestCase
 {
-    use RefreshDatabase, NeedsTagds, NeedsResellers;
+    use NeedsResellers, NeedsTagds, RefreshDatabase;
 
     public function testGetTrustScoreDefault()
     {

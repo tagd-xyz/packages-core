@@ -9,7 +9,7 @@ use Tagd\Core\Tests\Traits\NeedsResaleAccessRequests;
 
 class StateTest extends TestCase
 {
-    use RefreshDatabase, NeedsResaleAccessRequests;
+    use NeedsResaleAccessRequests, RefreshDatabase;
 
     public function testPending()
     {
