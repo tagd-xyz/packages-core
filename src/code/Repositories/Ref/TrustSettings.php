@@ -36,7 +36,7 @@ class TrustSettings extends Repository implements TrustSettingsInterface
 
         $data->update([
             'setting' => [
-                ...$data->setting,
+                ...(array) $data->setting,
                 $brandName => $value,
             ],
         ]);
