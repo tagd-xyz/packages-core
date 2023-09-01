@@ -31,7 +31,7 @@ trait HasTrustModifier
         );
 
         $this->trust = [
-            ...$this->trust ?? [],
+            ...(array) $this->trust ?? [],
             'modifier' => $value,
         ];
     }
