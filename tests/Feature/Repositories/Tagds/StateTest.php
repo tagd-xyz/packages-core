@@ -24,6 +24,16 @@ class StateTest extends TestCase
     //     $this->assertEquals($tagd->isActive, true);
     // }
 
+    // public function testReturn()
+    // {
+    //     $repo = app(Tagds::class);
+
+    //     $tagd = $this->aTagd();
+    //     $repo->return($tagd);
+
+    //     $this->assertEquals($tagd->isReturned, true);
+    // }
+
     public function testSetAsAvailableForResale()
     {
         $repo = app(Tagds::class);

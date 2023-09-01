@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Tagd\Core\Models\Actor\Admin;
 use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
 use Tagd\Core\Models\Actor\Retailer;
@@ -140,7 +141,7 @@ class User extends Authenticatable
     /**
      * checks whether or not can act as the given actor
      */
-    public function canActAs(Consumer|Reseller|Retailer $actor): bool
+    public function canActAs(Consumer|Reseller|Retailer|Admin $actor): bool
     {
         return $this->roles()->get()->contains(function ($v, $k) use ($actor) {
             return $v->actor_id == $actor->id;
@@ -172,7 +173,7 @@ class User extends Authenticatable
     /**
      * start acting as the given actor
      */
-    public function startActingAs(Consumer|Reseller|Retailer $actor): static
+    public function startActingAs(Consumer|Reseller|Retailer|Admin $actor): static
     {
         if (! $this->canActAs($actor)) {
             DB::transaction(function () use ($actor) {
@@ -185,7 +186,7 @@ class User extends Authenticatable
         return $this;
     }
 
-    public function stopActingAs(Consumer|Reseller|Retailer $actor): static
+    public function stopActingAs(Consumer|Reseller|Retailer|Admin $actor): static
     {
         $this->roles()->whereHas('actor', function (Builder $query) use ($actor) {
             $query->where('id', $actor->id);
