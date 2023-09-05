@@ -55,6 +55,7 @@ class TagdServiceProvider extends ServiceProvider
                 \Tagd\Core\Console\Commands\Seed\Database::class,
                 \Tagd\Core\Console\Commands\Ref\TrustSettings\Brand::class,
                 \Tagd\Core\Console\Commands\Support\Tree::class,
+                \Tagd\Core\Console\Commands\Support\BuildStats::class,
             ];
 
             if ($this->app->environment(['local', 'testing'])) {

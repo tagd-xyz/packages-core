@@ -5,6 +5,7 @@
 
 namespace Tagd\Core\Models\Item;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -194,6 +195,22 @@ class Tagd extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Scope a query to only include root tagds.
+     */
+    public function scopeRoots(Builder $query): void
+    {
+        $query->whereIsNull('parent_id');
+    }
+
+    /**
+     * Scope a query to only include leaf tagds.
+     */
+    public function scopeLeafs(Builder $query): void
+    {
+        $query->whereDoesntHave('children');
+    }
 
     /*
     |--------------------------------------------------------------------------
