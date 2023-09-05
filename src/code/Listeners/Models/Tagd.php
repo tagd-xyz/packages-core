@@ -28,8 +28,8 @@ class Tagd
             ));
         }
 
-        // UpdateTagdCountStats::dispatch($tagd);
-        // UpdateTagdTimeToTransferStats::dispatch($tagd);
+        UpdateTagdTimeToTransferStats::dispatch($tagd);
+        UpdateTagdCountStats::dispatch($tagd);
         UpdateTagdAvgResaleStats::dispatch($tagd);
     }
 
@@ -42,7 +42,7 @@ class Tagd
     {
         $tagd = $event->tagd;
 
-        // UpdateTagdCountStats::dispatch($tagd);
+        // do nothing
     }
 
     /**
