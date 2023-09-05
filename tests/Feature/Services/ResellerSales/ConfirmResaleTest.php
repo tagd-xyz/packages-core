@@ -12,11 +12,11 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class ConfirmResaleTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsItems,
-        NeedsConsumers,
+        NeedsResellers,
         NeedsTagds,
-        NeedsResellers;
+        RefreshDatabase;
 
     public function testConfirm()
     {

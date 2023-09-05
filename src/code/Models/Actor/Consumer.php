@@ -16,8 +16,8 @@ use Tagd\Core\Models\User\Role;
 class Consumer extends Actor
 {
     use HasFactory,
-        HasUuidKey,
         HasTrustScore,
+        HasUuidKey,
         SoftDeletes;
 
     protected $table = 'consumers';

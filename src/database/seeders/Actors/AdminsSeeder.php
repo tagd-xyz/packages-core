@@ -5,9 +5,9 @@ namespace Tagd\Core\Database\Seeders\Actors;
 use Illuminate\Database\Seeder;
 use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
-use Tagd\Core\Models\Actor\Consumer;
+use Tagd\Core\Models\Actor\Admin;
 
-class ConsumersSeeder extends Seeder
+class AdminsSeeder extends Seeder
 {
     use TruncatesTables, UsesFactories;
 
@@ -20,7 +20,7 @@ class ConsumersSeeder extends Seeder
     {
         extract([
             'truncate' => true,
-            'total' => 5,
+            'total' => 1,
             ...$options,
         ]);
 
@@ -28,12 +28,12 @@ class ConsumersSeeder extends Seeder
 
         if ($truncate) {
             $this->truncate([
-                (new Consumer())->getTable(),
+                (new Admin())->getTable(),
             ]);
         }
 
-        if (empty(Consumer::count())) {
-            $factory = Consumer::factory()
+        if (empty(Admin::count())) {
+            $factory = Admin::factory()
                 ->count($total)
                 ->create();
         }

@@ -8,7 +8,7 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class TagdStateTest extends TestCase
 {
-    use RefreshDatabase, NeedsTagds;
+    use NeedsTagds, RefreshDatabase;
 
     public function testDefaultMeta()
     {

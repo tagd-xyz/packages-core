@@ -47,7 +47,13 @@ class Tree extends Command
                 'item',
             ])->findOrFail($tagdId);
 
-            $this->renderNode($tagd);
+            if (! $tagd->is_root
+                && $this->confirm('This tagd is not the tree root. Do you want the root instead?')
+            ) {
+                $this->renderNode($tagd->root);
+            } else {
+                $this->renderNode($tagd);
+            }
         } catch (\Exception $e) {
             $this->error($e->getMessage());
 

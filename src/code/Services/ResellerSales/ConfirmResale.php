@@ -17,7 +17,7 @@ trait ConfirmResale
     public function confirmResale(
         Tagd $tagd,
         Consumer $consumer,
-        array $meta = [],
+        array $meta = null,
     ): Tagd {
         return DB::transaction(function () use (
             $tagd,
@@ -40,9 +40,11 @@ trait ConfirmResale
             }
 
             // update tagd with price meta data
-            $tagd->update([
-                'meta' => array_merge($tagd->meta ?? [], $meta),
-            ]);
+            if (! is_null($meta)) {
+                $tagd->update([
+                    'meta' => array_merge($tagd->meta ?? [], $meta),
+                ]);
+            }
 
             // create new tagd
             $tagdsRepo = app(TagdsRepo::class);
@@ -53,6 +55,7 @@ trait ConfirmResale
                 'trust' => $tagd->trust,
                 'status' => TagdStatus::ACTIVE,
                 'status_at' => Carbon::now(),
+                'meta' => $meta,
             ]);
 
             return $newTagd;

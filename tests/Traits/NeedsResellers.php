@@ -20,7 +20,6 @@ trait NeedsResellers
     /**
      * Acts as a reseller
      *
-     * @param  null  $guard
      * @return $this
      */
     protected function actingAsAReseller(Reseller $reseller = null, $guard = 'api'): static

@@ -5,6 +5,7 @@
 
 namespace Tagd\Core\Models\Item;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,8 +21,8 @@ use Tagd\Core\Support\Slug;
 class Tagd extends Model
 {
     use HasFactory,
-        HasUuidKey,
         HasTrustScore,
+        HasUuidKey,
         SoftDeletes;
 
     protected $table = 'tagds';
@@ -195,6 +196,22 @@ class Tagd extends Model
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Scope a query to only include root tagds.
+     */
+    public function scopeRoots(Builder $query): void
+    {
+        $query->whereIsNull('parent_id');
+    }
+
+    /**
+     * Scope a query to only include leaf tagds.
+     */
+    public function scopeLeafs(Builder $query): void
+    {
+        $query->whereDoesntHave('children');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACTIONS
@@ -265,7 +282,7 @@ class Tagd extends Model
     {
         $this->update([
             'meta' => [
-                ...$this->meta,
+                ...(array) $this->meta,
                 (TagdMeta::AVAILABLE_FOR_RESALE)->value => $enabled,
             ],
         ]);
@@ -288,6 +305,24 @@ class Tagd extends Model
         foreach ($this->children as $child) {
             $collection = $collection->concat(
                 $child->buildChildrenCollection($filter)
+            );
+        }
+
+        return $collection;
+    }
+
+    public function buildParentCollection(callable $filter = null): Collection
+    {
+        $collection = collect();
+
+        $parent = $this->parent;
+        if ($parent) {
+            if (is_null($filter) || $filter($parent)) {
+                $collection->push($parent);
+            }
+
+            $collection = $collection->concat(
+                $parent->buildParentCollection($filter)
             );
         }
 

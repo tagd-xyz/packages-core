@@ -12,11 +12,11 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class ProcessRetailerSaleTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsItems,
+        NeedsRetailers,
         NeedsTagds,
-        NeedsConsumers,
-        NeedsRetailers;
+        RefreshDatabase;
 
     public function testProcessRetailerSale()
     {

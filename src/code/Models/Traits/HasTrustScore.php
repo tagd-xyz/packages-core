@@ -41,7 +41,7 @@ trait HasTrustScore
         );
 
         $this->trust = [
-            ...$this->trust ?? [],
+            ...(array) $this->trust ?? [],
             'score' => $value,
         ];
     }
