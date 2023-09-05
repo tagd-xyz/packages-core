@@ -44,10 +44,9 @@ class UpdateTagdAvgResaleStats implements ShouldQueue
 
         // Only care for transferred tagds that belong to consumers
         if (
-            TagdStatus::ACTIVE == $tagd->status
+            TagdStatus::TRANSFERRED == $tagd->status
             && ! is_null($tagd->consumer_id)
         ) {
-
             // build list of parents
             $parents = $tagd->buildParentCollection(
                 function ($node) {
@@ -61,7 +60,7 @@ class UpdateTagdAvgResaleStats implements ShouldQueue
 
                 if ($parentPrice['currency'] && $price['currency']) {
                     $diffPerc = round(
-                        ($price['amount'] - $parentPrice['amount']) / $parentPrice['amount'], 2
+                        100 * ($price['amount'] - $parentPrice['amount']) / $parentPrice['amount'], 2
                     );
                     $tagd->update([
                         'stats' => [
