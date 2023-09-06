@@ -119,6 +119,13 @@ class Tagd extends Model
         );
     }
 
+    protected function isInactive(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => TagdStatus::INACTIVE == $this->status,
+        );
+    }
+
     protected function isExpired(): Attribute
     {
         return Attribute::make(
