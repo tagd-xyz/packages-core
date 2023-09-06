@@ -44,7 +44,7 @@ class UpdateTagdAvgResaleStats implements ShouldQueue
 
         // Only care for transferred tagds that belong to consumers
         if (
-            TagdStatus::TRANSFERRED == $tagd->status
+            $tagd->status == TagdStatus::TRANSFERRED
             && ! is_null($tagd->consumer_id)
         ) {
             // build list of parents
@@ -89,7 +89,7 @@ class UpdateTagdAvgResaleStats implements ShouldQueue
     private function findActiveDescendant(Tagd $tagd = null): ?Tagd
     {
         foreach ($tagd->children as $child) {
-            if (TagdStatus::ACTIVE == $child->status) {
+            if ($child->status == TagdStatus::ACTIVE) {
                 return $child;
             } else {
                 return $this->findActiveDescendant($child);
@@ -104,16 +104,16 @@ class UpdateTagdAvgResaleStats implements ShouldQueue
      */
     private function findNextTransfer(Tagd $tagd): ?Tagd
     {
-        if (TagdStatus::TRANSFERRED == $tagd->status) {
+        if ($tagd->status == TagdStatus::TRANSFERRED) {
             foreach ($tagd->children as $child) {
                 dd($child);
                 if (
-                    TagdStatus::TRANSFERRED == $child->status
+                    $child->status == TagdStatus::TRANSFERRED
                     && ! is_null($child->reseller_id)
                 ) {
                     foreach ($child->children as $grandChild) {
                         if (
-                            TagdStatus::TRANSFERRED == $grandChild->status
+                            $grandChild->status == TagdStatus::TRANSFERRED
                             && ! is_null($grandChild->consumer_id)
                         ) {
                             return $grandChild;

@@ -27,7 +27,7 @@ class Sih implements Transforms\Native\Definitions
         $key = trim(rtrim($key, '/'));
 
         // validate params
-        if ('' == $cdn || '' == $bucket || '' == $key) {
+        if ($cdn == '' || $bucket == '' || $key == '') {
             throw new Exceptions\InvalidConfig();
         }
 

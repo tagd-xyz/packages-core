@@ -32,7 +32,7 @@ trait ConfirmResale
                 ->filter(function ($child) use ($tagd) {
                     return
                         $child->id != $tagd->id
-                        && TagdStatus::RESALE == $child->status;
+                        && $child->status == TagdStatus::RESALE;
                 });
 
             foreach ($activeSiblings as $sibling) {

@@ -115,49 +115,49 @@ class Tagd extends Model
     protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::ACTIVE == $this->status,
+            get: fn () => $this->status == TagdStatus::ACTIVE,
         );
     }
 
     protected function isInactive(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::INACTIVE == $this->status,
+            get: fn () => $this->status == TagdStatus::INACTIVE,
         );
     }
 
     protected function isExpired(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::EXPIRED == $this->status,
+            get: fn () => $this->status == TagdStatus::EXPIRED,
         );
     }
 
     protected function isCancelled(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::CANCELLED == $this->status,
+            get: fn () => $this->status == TagdStatus::CANCELLED,
         );
     }
 
     protected function isResale(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::RESALE == $this->status,
+            get: fn () => $this->status == TagdStatus::RESALE,
         );
     }
 
     protected function isTransferred(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::TRANSFERRED == $this->status,
+            get: fn () => $this->status == TagdStatus::TRANSFERRED,
         );
     }
 
     protected function isReturned(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::RETURNED == $this->status,
+            get: fn () => $this->status == TagdStatus::RETURNED,
         );
     }
 
