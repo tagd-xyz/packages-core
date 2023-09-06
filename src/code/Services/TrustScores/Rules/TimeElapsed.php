@@ -15,7 +15,7 @@ class TimeElapsed extends Base
     public function apply(): float
     {
         // apply only on resale
-        if (TagdStatus::RESALE != $this->tagd->status) {
+        if ($this->tagd->status != TagdStatus::RESALE) {
             return TrustSetting::SCORE_DEFAULT;
         }
 
