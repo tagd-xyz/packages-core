@@ -44,7 +44,7 @@ class UpdateTagdTimeToTransferStats implements ShouldQueue
 
         // Only care for transferred tagds that belongs to consumers
         if (
-            TagdStatus::TRANSFERRED == $tagd->status
+            $tagd->status == TagdStatus::TRANSFERRED
             && ! is_null($tagd->consumer_id)
         ) {
             //build list of children that belong to a consumer

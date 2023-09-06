@@ -69,7 +69,7 @@ class Tree extends Command
         $showStats = $this->option('stats');
         $showItem = $this->option('item');
 
-        if ($showItem && 0 == $indentLevel) {
+        if ($showItem && $indentLevel == 0) {
             $retailer = $tagd->item->retailer->name;
             $this->info("{$tagd->item->name}");
             $this->info("{$tagd->item->description}");

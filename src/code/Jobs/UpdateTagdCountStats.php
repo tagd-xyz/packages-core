@@ -58,7 +58,7 @@ class UpdateTagdCountStats implements ShouldQueue
 
             // count per status (split by actor) - only transferred
             foreach (TagdStatus::cases() as $status) {
-                if (TagdStatus::TRANSFERRED == $status) {
+                if ($status == TagdStatus::TRANSFERRED) {
                     $count[$status->value . '_consumer'] =
                         $parent->countAllChildren(function ($child) use ($status) {
                             return ! is_null($child->consumer_id)
@@ -69,7 +69,7 @@ class UpdateTagdCountStats implements ShouldQueue
 
             // count self
             if (
-                TagdStatus::TRANSFERRED == $parent->status
+                $parent->status == TagdStatus::TRANSFERRED
                 && ! is_null($parent->consumer_id)
             ) {
                 $count[$parent->status->value . '_consumer']++;
