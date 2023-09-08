@@ -14,4 +14,9 @@ interface Resellers extends Repository
      * @param  string  $name
      */
     public function assertExists($email, $name = null): Model;
+
+    /**
+     * Update avatar
+     */
+    public function updateAvatar(string $resellerId, string $uploadId): Model;
 }

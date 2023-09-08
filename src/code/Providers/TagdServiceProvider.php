@@ -73,6 +73,7 @@ class TagdServiceProvider extends ServiceProvider
          * Polymorph mapping
          */
         \Illuminate\Database\Eloquent\Relations\Relation::enforceMorphMap([
+            // 'affiliate' => \IFAC\Core\Models\Affiliate\Affiliate::class,
         ]);
 
         /**

@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('uploads', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            // $table->uuidMorphs('entity');
-            $table->string('bucket');
-            $table->string('folder')->nullable();
-            $table->string('file')->nullable();
+        Schema::create('resellers_images', function (Blueprint $table) {
+            $table->id('id');
+            $table->foreignUuid('reseller_id')->constrained();
+            $table->foreignUuid('upload_id')->constrained();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uploads');
+        Schema::dropIfExists('resellers_images');
     }
 };
