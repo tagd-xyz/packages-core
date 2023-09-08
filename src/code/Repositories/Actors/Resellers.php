@@ -38,4 +38,20 @@ class Resellers extends Repository implements ResellersInterface
             ]);
         }, 5);
     }
+
+    /**
+     * Update avatar
+     */
+    public function updateAvatar(string $resellerId, string $uploadId): Model
+    {
+        $reseller = Model::findOrFail($resellerId);
+
+        $reseller->images()->updateOrCreate([
+            'upload_id' => $uploadId,
+        ]);
+
+        $reseller->load('images');
+
+        return $reseller;
+    }
 }
