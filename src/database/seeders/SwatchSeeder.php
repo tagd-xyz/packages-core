@@ -3,17 +3,23 @@
 namespace Tagd\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Tagd\Core\Database\Seeders\Traits\TruncatesTables;
 use Tagd\Core\Database\Seeders\Traits\UsesFactories;
+use Tagd\Core\Models\Actor\Consumer;
 use Tagd\Core\Models\Actor\Reseller;
 use Tagd\Core\Models\Actor\ResellerImage;
 use Tagd\Core\Models\Actor\Retailer;
 use Tagd\Core\Models\Item\Item;
+use Tagd\Core\Models\Item\ItemImage;
 use Tagd\Core\Models\Item\Stock;
 use Tagd\Core\Models\Item\StockImage;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Item\Type;
 use Tagd\Core\Models\Upload\Upload;
+use Tagd\Core\Services\Interfaces\ResellerSales;
+use Tagd\Core\Services\Interfaces\RetailerSales;
 
 class SwatchSeeder extends Seeder
 {
@@ -41,9 +47,7 @@ class SwatchSeeder extends Seeder
 
     const RES_6 = 'LetGo';
 
-    const RES_7 = 'ebay';
-
-    const RES_8 = 'Etsy';
+    const RES_7 = 'Etsy';
 
     const BRAND_1 = 'BREGUET';
 
@@ -77,6 +81,12 @@ class SwatchSeeder extends Seeder
 
     private $watches = [];
 
+    private $retailerSales = null;
+
+    private $resellerSales = null;
+
+    private $now = null;
+
     /**
      * Seed the application's database.
      *
@@ -87,98 +97,238 @@ class SwatchSeeder extends Seeder
     ) {
         extract([
             'truncate' => true,
+            'seedSalesTotal' => 200,
+            'seedResalesMin' => 1,
+            'seedResalesMax' => 10,
             ...$options,
         ]);
 
         $this->setupFactories();
+        $this->call(DatabaseSeeder::class);
 
+        // truncate tables if needed
         if ($truncate) {
+            Log::info('truncating tables...');
             $this->truncate([
                 (new Upload())->getTable(),
                 (new StockImage())->getTable(),
                 (new Stock())->getTable(),
                 (new Item())->getTable(),
+                (new ItemImage())->getTable(),
                 (new Tagd())->getTable(),
-                (new Retailer())->getTable(),
-                (new Reseller())->getTable(),
+                // (new Retailer())->getTable(),
+                // (new Reseller())->getTable(),
+                // (new ResellerImage())->getTable(),
             ]);
         }
+
+        // initialise
         $this->watches = $this->watches();
         $this->retailers = collect();
         $this->resellers = collect();
-        $typeWatches = Type::where('name', self::TYPE_WATCHES)->first();
+        $this->now = Carbon::now();
 
-        $this->call(DatabaseSeeder::class);
+        $this->retailerSales = app(RetailerSales::class);
+        $this->resellerSales = app(ResellerSales::class);
 
-        // seed retailers
-        foreach ([
-            self::RET_1,
-            self::RET_2,
-            self::RET_3,
-            self::RET_4,
-            self::RET_5,
-        ] as $name) {
-            $this->retailers[$name] = Retailer::factory()
-                ->state([
-                    'name' => $name,
-                ])->create();
-        }
-
-        // seed resellers
-        foreach ([
-            self::RES_1,
-            self::RES_2,
-            self::RES_3,
-            self::RES_4,
-            self::RES_5,
-            self::RES_6,
-        ] as $name) {
-            switch ($name) {
-                case self::RES_1:
-                    $avatar = 'vinted.webp';
-                    break;
-                case self::RES_2:
-                    $avatar = 'facebook.webp';
-                    break;
-                case self::RES_3:
-                    $avatar = 'google.webp';
-                    break;
-                case self::RES_4:
-                    $avatar = 'etsy.webp';
-                    break;
-                case self::RES_5:
-                    $avatar = 'wallapop.webp';
-                    break;
-                case self::RES_6:
-                    $avatar = 'letgo.webp';
-                    break;
-                case self::RES_7:
-                    $avatar = 'ebay.webp';
-                    break;
-                case self::RES_8:
-                    $avatar = 'etsy.webp';
-                    break;
-            }
-            $this->resellers[$name] = Reseller::factory()
-                ->state([
-                    'name' => $name,
-                ])
-                ->has(
-                    ResellerImage::factory()
-                        ->for(
-                            Upload::factory()
-                                ->state([
-                                    'bucket' => 'totally-tagd-media-dev',
-                                    'folder' => 'resellerImages/_seed',
-                                    'file' => $avatar,
-                                ])
-                        ), 'images'
-                )
-                ->create();
-        }
+        // start seeding
+        $this->seedRetailers();
+        $this->seedResellers();
 
         // seed stock
+        $this->seedStock();
+
+        $monthsBackMin = 1;
+        $monthsBackMax = 6;
+
+        if ($seedSalesTotal > 0) {
+            Log::info('Seeding sales...');
+            foreach ($this->retailersNames() as $name) {
+                if (! $this->retailers->contains($name)) {
+                    $this->retailers[$name] = Retailer::whereName($name)->first();
+                }
+            }
+            foreach ($this->resellersNames() as $name) {
+                if (! $this->resellers->contains($name)) {
+                    $this->resellers[$name] = Reseller::whereName($name)->firstOrFail();
+                }
+            }
+
+            while ($seedSalesTotal-- > 0) {
+                Carbon::setTestNow($this->now);
+                Log::info('-------------------------------------');
+
+                // make a sale
+                $retailer = $this->retailers->random();
+                // $retailer = $this->retailers->first();
+                $stock = $retailer->stock->random();
+
+                // Log::info('+ Sale ' . ($seedSalesTotal + 1) . ' by ' . $retailer->name);
+
+                $date = Carbon::now()
+                    ->subMonths(rand($monthsBackMin, $monthsBackMax))
+                    ->addDays(rand(1, 2));
+
+                Log::info($date->toString());
+
+                $retTagd = $this->retailerSale(
+                    $retailer,
+                    $stock,
+                    Consumer::factory()->create(),
+                    $date
+                );
+
+                // make a number of resales
+                // $seedResales = rand($seedResalesMin, $seedResalesMax);
+
+                $seedResales = rand($seedResalesMin, $seedResalesMax);
+                $tagd = $retTagd;
+                while ($seedResales-- > 0) {
+                    $reseller = $this->resellers->random();
+
+                    // Log::info('- Resale ' . ($seedResales + 1) . ' by ' . $reseller->name);
+
+                    $date->addDays(rand(2, 5));
+
+                    if ($date->gt(Carbon::now())) {
+                        break;
+                    }
+
+                    $tagd = $this->resellerList($reseller, $tagd, $date);
+
+                    $date->addDays(rand(5, 15));
+
+                    if ($date->gt(Carbon::now())) {
+                        break;
+                    }
+
+                    $tagd = $this->resellerConfirm($tagd, $date);
+                }
+            }
+
+        }
+
+        // // seed tagds
+        // $tagdsToSeed = 1;
+
+        // // pick up a random retailer
+        // $retailer = Retailer::where('name', $this->retailers->random())->first();
+
+        // // sale an item to a random consumer
+        // $consumre = Consumer::inRandomOrder()->first();
+
+        // // resale the item a number of times
+    }
+
+    private function retailerSale(
+        Retailer $retailer,
+        Stock $stock,
+        Consumer $consumer,
+        Carbon $date
+    ): Tagd {
+        Carbon::setTestNow($date);
+        $item = $this->retailerSales->processRetailerSale(
+            $retailer->id,
+            $consumer->email,
+            'TS1234567890',
+            [
+                'currency' => 'GBP',
+                'amount' => 100,
+            ],
+            [
+                'country' => 'GBR',
+                'city' => 'London',
+            ],
+            [
+                'name' => $stock->name,
+                'description' => $stock->description,
+                'type_id' => $stock->type_id,
+                'properties' => [
+                    ...$stock->properties ?? [],
+                    'retailerSerialNumber' => 'SN1234567890',
+                ],
+            ],
+            [] // uploads
+        );
+
+        $tagd = $item->tagds->first();
+        $tagd->activate();
+
+        return $tagd;
+    }
+
+    private function seedRetailers()
+    {
+        Log::info('seeding retailers...');
+        foreach ($this->retailersNames() as $name) {
+            $retailer = Retailer::where('name', $name)->first();
+            if (! $retailer) {
+                $retailer = Retailer::factory()
+                    ->state([
+                        'name' => $name,
+                    ])->create();
+            }
+            $this->retailers[$name] = $retailer;
+        }
+    }
+
+    private function seedResellers()
+    {
+        Log::info('seeding resellers...');
+        // seed resellers
+        foreach ($this->resellersNames() as $name) {
+            $reseller = Reseller::where('name', $name)->first();
+            if (! $reseller) {
+                switch ($name) {
+                    case self::RES_1:
+                        $avatar = 'vinted.webp';
+                        break;
+                    case self::RES_2:
+                        $avatar = 'facebook.webp';
+                        break;
+                    case self::RES_3:
+                        $avatar = 'google.webp';
+                        break;
+                    case self::RES_4:
+                        $avatar = 'ebay.webp';
+                        break;
+                    case self::RES_5:
+                        $avatar = 'wallapop.webp';
+                        break;
+                    case self::RES_6:
+                        $avatar = 'letgo.webp';
+                        break;
+                    case self::RES_7:
+                        $avatar = 'etsy.webp';
+                        break;
+                }
+                $reseller = Reseller::factory()
+                    ->state([
+                        'name' => $name,
+                    ])
+                    ->has(
+                        ResellerImage::factory()
+                            ->for(
+                                Upload::factory()
+                                    ->state([
+                                        'bucket' => 'totally-tagd-media-dev',
+                                        'folder' => 'resellerImages/_seed',
+                                        'file' => $avatar,
+                                    ])
+                            ), 'images'
+                    )
+                    ->create();
+            }
+            $this->resellers[$name] = $reseller;
+        }
+    }
+
+    private function seedStock()
+    {
+        $typeWatches = Type::where('name', self::TYPE_WATCHES)->first();
+
         foreach ($this->retailers as $retailerName => $retailer) {
+            Log::info('seeding stock for ... ' . $retailerName);
             foreach ($this->watchesForRetailer($retailerName) as $properties) {
                 $stock = Stock::factory()
                     ->count(1)
@@ -210,8 +360,44 @@ class SwatchSeeder extends Seeder
         }
     }
 
+    private function resellerList(
+        Reseller $reseller,
+        Tagd $tagd,
+        Carbon $date
+    ): Tagd {
+        Carbon::setTestNow($date);
+
+        return $this->resellerSales->startResellerSale(
+            $reseller,
+            $tagd
+        );
+    }
+
+    private function resellerConfirm(
+        Tagd $tagd,
+        Carbon $date
+    ): Tagd {
+        $consumer = Consumer::factory()->randomEmail()->create();
+
+        return $this->resellerSales->confirmResale(
+            $tagd,
+            Consumer::factory()->create(),
+            [
+                'price' => [
+                    'currency' => 'GBP',
+                    'amount' => 200,
+                ],
+                'location' => [
+                    'country' => 'GBR',
+                    'city' => 'London',
+                ],
+            ],
+        );
+    }
+
     private function watchesForRetailer($retailerName): array
     {
+        // TODO: cache this
         switch ($retailerName) {
             case self::RET_1:
                 return array_merge(
@@ -253,6 +439,30 @@ class SwatchSeeder extends Seeder
             default:
                 return [];
         }
+    }
+
+    private function retailersNames(): array
+    {
+        return [
+            self::RET_1,
+            // self::RET_2,
+            // self::RET_3,
+            // self::RET_4,
+            // self::RET_5,
+        ];
+    }
+
+    private function resellersNames(): array
+    {
+        return [
+            self::RES_1,
+            self::RES_2,
+            self::RES_3,
+            self::RES_4,
+            self::RES_5,
+            self::RES_6,
+            self::RES_7,
+        ];
     }
 
     private function watches(): array

@@ -57,6 +57,7 @@ class TagdServiceProvider extends ServiceProvider
                 \Tagd\Core\Console\Commands\Seed\Support\Sale::class,
                 \Tagd\Core\Console\Commands\Seed\Support\Resale::class,
                 \Tagd\Core\Console\Commands\Seed\Support\Activate::class,
+                \Tagd\Core\Console\Commands\Seed\Support\Role::class,
                 \Tagd\Core\Console\Commands\Ref\TrustSettings\Brand::class,
                 \Tagd\Core\Console\Commands\Support\Tree::class,
                 \Tagd\Core\Console\Commands\Support\BuildStats::class,
