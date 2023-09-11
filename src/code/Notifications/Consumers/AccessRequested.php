@@ -55,7 +55,7 @@ class AccessRequested extends Notification
         return [
             'title' => "{$resellerName} has requested to access your items.",
             'reseller' => $this->reseller,
-            'logo' => $this->reseller->avatar->url,
+            'logo' => $this->reseller->avatar->url ?? null,
             'accessRequestId' => $this->accessRequestId,
         ];
     }
