@@ -19,7 +19,7 @@ class TypesSeeder extends Seeder
     public function run(array $options = [])
     {
         extract([
-            'truncate' => true,
+            'truncate' => false,
             ...$options,
         ]);
 
