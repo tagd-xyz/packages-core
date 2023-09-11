@@ -82,7 +82,7 @@ class BuildStats extends Command
     private function buildCount()
     {
         $this->processGroupOfTagds(
-            'Building avgResaleDiffPerc for all Tagds...',
+            'Building count for all Tagds...',
             Tagd::leafs(),
             function ($tagd) {
                 UpdateTagdCountStats::dispatch($tagd);
@@ -93,7 +93,7 @@ class BuildStats extends Command
     private function buildTimeToTransfer()
     {
         $this->processGroupOfTagds(
-            'Building avgResaleDiffPerc for all Tagds...',
+            'Building timeToTransfer for all Tagds...',
             Tagd::where('status', TagdStatus::TRANSFERRED)
                 ->whereNotNull('consumer_id'),
             function ($tagd) {

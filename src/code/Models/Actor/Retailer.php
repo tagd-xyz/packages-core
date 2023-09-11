@@ -8,6 +8,7 @@ namespace Tagd\Core\Models\Actor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tagd\Core\Models\Item\Item;
+use Tagd\Core\Models\Item\Stock;
 use Tagd\Core\Models\Traits\HasUuidKey;
 
 class Retailer extends Actor

@@ -39,8 +39,8 @@ class Stocks extends Repository implements StocksInterface
             'bucket' => $s3Bucket,
             'file' => $fileName,
             'folder' => $folder . '/' . $stockId,
-            'entity_id' => $stockId,
-            'entity_type' => 'item',
+            // 'entity_id' => $stockId,
+            // 'entity_type' => 'stock',
         ]);
 
     }

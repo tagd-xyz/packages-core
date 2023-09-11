@@ -39,8 +39,8 @@ class Items extends Repository implements ItemsInterface
             'bucket' => $s3Bucket,
             'file' => $fileName,
             'folder' => $folder . '/' . $itemId,
-            'entity_id' => $itemId,
-            'entity_type' => 'item',
+            // 'entity_id' => $itemId,
+            // 'entity_type' => 'item',
         ]);
 
     }

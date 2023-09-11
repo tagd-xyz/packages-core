@@ -16,7 +16,7 @@ class ConsumerReputation extends Base
     public function apply(): float
     {
         // apply only on resale
-        if (TagdStatus::RESALE != $this->tagd->status) {
+        if ($this->tagd->status != TagdStatus::RESALE) {
             return TrustSetting::SCORE_DEFAULT;
         }
 
@@ -28,7 +28,7 @@ class ConsumerReputation extends Base
         } else {
             // calculate score based on consumer's trust score
             $score = $consumer->trust_score;
-            if (TrustSetting::SCORE_MIN == $score) {
+            if ($score == TrustSetting::SCORE_MIN) {
                 return 0.0;
             } else {
                 switch ($this->modifier2step($score, 4)) {

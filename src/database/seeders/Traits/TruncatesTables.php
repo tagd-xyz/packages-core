@@ -13,7 +13,7 @@ trait TruncatesTables
      */
     private function truncate(array $tables)
     {
-        $mysql = 'mysql' == DB::connection()->getConfig()['driver'];
+        $mysql = DB::connection()->getConfig()['driver'] == 'mysql';
 
         if ($mysql) {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');

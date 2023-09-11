@@ -7,10 +7,10 @@ namespace Tagd\Core\Models\User;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Tagd\Core\Models\Actor\Admin;
 use Tagd\Core\Models\Actor\Consumer;
@@ -85,6 +85,22 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->hasMany(Role::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Scope a query to only include users with a given role.
+     */
+    public function scopeActingAs(Builder $query, string $role): void
+    {
+        $query->whereHas('roles', function ($query) use ($role) {
+            $query->with('actor')->where('actor_type', $role);
+        });
     }
 
     /*

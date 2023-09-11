@@ -34,7 +34,7 @@ class ItemBrand extends Base
         $modifier = $repo->getModifierForBrand($brand);
 
         // calculate score based on modifier
-        if (TrustSetting::MODIFIER_MIN == $modifier) {
+        if ($modifier == TrustSetting::MODIFIER_MIN) {
             return 0.0;
         } else {
             switch ($this->modifier2step($modifier, 4)) {
