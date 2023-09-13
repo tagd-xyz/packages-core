@@ -119,6 +119,13 @@ class Tagd extends Model
         );
     }
 
+    protected function activatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::ACTIVE) ? $this->status_at : null,
+        );
+    }
+
     protected function isInactive(): Attribute
     {
         return Attribute::make(
@@ -133,10 +140,24 @@ class Tagd extends Model
         );
     }
 
+    protected function expireddAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::EXPIRED) ? $this->status_at : null,
+        );
+    }
+
     protected function isCancelled(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->status == TagdStatus::CANCELLED,
+        );
+    }
+
+    protected function cancelledAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::CANCELLED) ? $this->status_at : null,
         );
     }
 
@@ -154,10 +175,24 @@ class Tagd extends Model
         );
     }
 
+    protected function transferredAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::TRANSFERRED) ? $this->status_at : null,
+        );
+    }
+
     protected function isReturned(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->status == TagdStatus::RETURNED,
+        );
+    }
+
+    protected function returnedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::RETURNED) ? $this->status_at : null,
         );
     }
 
