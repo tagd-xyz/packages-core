@@ -87,6 +87,8 @@ class SwatchSeeder extends Seeder
 
     private $now = null;
 
+    private $returnProbability = 0;
+
     /**
      * Seed the application's database.
      *
@@ -100,6 +102,7 @@ class SwatchSeeder extends Seeder
             'seedSalesTotal' => 200,
             'seedResalesMin' => 1,
             'seedResalesMax' => 10,
+            'returnProbability' => 10,
             ...$options,
         ]);
 
@@ -127,6 +130,7 @@ class SwatchSeeder extends Seeder
         $this->retailers = collect();
         $this->resellers = collect();
         $this->now = Carbon::now();
+        $this->returnProbability = $returnProbability;
 
         $this->retailerSales = app(RetailerSales::class);
         $this->resellerSales = app(ResellerSales::class);
@@ -163,8 +167,6 @@ class SwatchSeeder extends Seeder
                 // $retailer = $this->retailers->first();
                 $stock = $retailer->stock->random();
 
-                // Log::info('+ Sale ' . ($seedSalesTotal + 1) . ' by ' . $retailer->name);
-
                 $date = Carbon::now()
                     ->subMonths(rand($monthsBackMin, $monthsBackMax))
                     ->addDays(rand(1, 2));
@@ -178,15 +180,15 @@ class SwatchSeeder extends Seeder
                     $date
                 );
 
-                // make a number of resales
-                // $seedResales = rand($seedResalesMin, $seedResalesMax);
+                if ($retTagd->is_returned) {
+                    continue;
+                }
 
+                // make a number of resales
                 $seedResales = rand($seedResalesMin, $seedResalesMax);
                 $tagd = $retTagd;
                 while ($seedResales-- > 0) {
                     $reseller = $this->resellers->random();
-
-                    // Log::info('- Resale ' . ($seedResales + 1) . ' by ' . $reseller->name);
 
                     $date->addDays(rand(2, 5));
 
@@ -207,17 +209,6 @@ class SwatchSeeder extends Seeder
             }
 
         }
-
-        // // seed tagds
-        // $tagdsToSeed = 1;
-
-        // // pick up a random retailer
-        // $retailer = Retailer::where('name', $this->retailers->random())->first();
-
-        // // sale an item to a random consumer
-        // $consumre = Consumer::inRandomOrder()->first();
-
-        // // resale the item a number of times
     }
 
     private function retailerSale(
@@ -233,7 +224,7 @@ class SwatchSeeder extends Seeder
             'TS1234567890',
             [
                 'currency' => 'GBP',
-                'amount' => 100,
+                'amount' => $stock->properties['rrp'] ?? 100,
             ],
             [
                 'country' => 'GBR',
@@ -252,7 +243,13 @@ class SwatchSeeder extends Seeder
         );
 
         $tagd = $item->tagds->first();
-        $tagd->activate();
+
+        // randomly return items
+        if (rand(0, 100) > (100 - $this->returnProbability)) {
+            $tagd->return();
+        } else {
+            $tagd->activate();
+        }
 
         return $tagd;
     }
@@ -344,6 +341,7 @@ class SwatchSeeder extends Seeder
                             'manufacturerSerialNumber' => $properties['manufacturerSerialNumber'],
                             'yearOfProduction' => $properties['yearOfProduction'],
                             'rrp' => $properties['rrp'],
+                            'currency' => 'GBP',
                         ],
                     ])
                     ->has(StockImage::factory()
@@ -379,13 +377,18 @@ class SwatchSeeder extends Seeder
     ): Tagd {
         $consumer = Consumer::factory()->randomEmail()->create();
 
+        // randomly change the price
+        $percent = rand(-50, 50);
+        $price = $tagd->parent->meta['price']['amount'];
+        $price = $price + ($price * $percent / 100);
+
         return $this->resellerSales->confirmResale(
             $tagd,
             Consumer::factory()->create(),
             [
                 'price' => [
                     'currency' => 'GBP',
-                    'amount' => 200,
+                    'amount' => $price,
                 ],
                 'location' => [
                     'country' => 'GBR',
@@ -445,10 +448,10 @@ class SwatchSeeder extends Seeder
     {
         return [
             self::RET_1,
-            // self::RET_2,
-            // self::RET_3,
-            // self::RET_4,
-            // self::RET_5,
+            self::RET_2,
+            self::RET_3,
+            self::RET_4,
+            self::RET_5,
         ];
     }
 
