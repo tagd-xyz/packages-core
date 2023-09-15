@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Tagd\Core\Jobs\UpdateTagdAvgResaleStats;
 use Tagd\Core\Jobs\UpdateTagdCountStats;
 use Tagd\Core\Jobs\UpdateTagdTimeToTransferStats;
+use Tagd\Core\Jobs\UpdateTagdTrustScore;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Item\TagdStatus;
 
@@ -48,10 +49,12 @@ class BuildStats extends Command
                 $this->buildAvgResaleDiffPerc();
                 $this->buildCount();
                 $this->buildTimeToTransfer();
+                $this->buildTrustScore();
             } else {
                 $this->resetAvgResaleDiffPerc();
                 $this->resetCount();
                 $this->resetTimeToTransfer();
+                $this->resetTrustScore();
             }
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -102,6 +105,17 @@ class BuildStats extends Command
         );
     }
 
+    private function buildTrustScore()
+    {
+        $this->processGroupOfTagds(
+            'Building trust score for all Tagds...',
+            Tagd::query(),
+            function ($tagd) {
+                UpdateTagdTrustScore::dispatch($tagd);
+            },
+        );
+    }
+
     /**
      * Wrapper functions to reset Tagds
      */
@@ -148,6 +162,19 @@ class BuildStats extends Command
                 }
                 $tagd->update([
                     'stats' => $stats,
+                ]);
+            }
+        );
+    }
+
+    private function resetTrustScore()
+    {
+        $this->resetGroupOfTagds(
+            'Resetting trust score for all Tagds...',
+            function ($tagd) {
+                $tagd->update([
+                    // 'trust' => ['score' => 0],
+                    'trust' => null,
                 ]);
             }
         );
