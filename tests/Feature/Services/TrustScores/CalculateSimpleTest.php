@@ -14,7 +14,7 @@ use Tagd\Core\Tests\Traits\NeedsResellers;
 use Tagd\Core\Tests\Traits\NeedsRetailers;
 use Tagd\Core\Tests\Traits\NeedsTagds;
 
-class CalculateForTagdTest extends TestCase
+class CalculateSimpleTest extends TestCase
 {
     use NeedsConsumers,
         NeedsItems,
@@ -23,7 +23,7 @@ class CalculateForTagdTest extends TestCase
         NeedsTagds,
         RefreshDatabase;
 
-    public function testCalculateForTagd()
+    public function testCalculateSimple()
     {
         $trustScoresService = app(TrustScoresService::class);
         $retailerSalesService = app(RetailerSalesService::class);

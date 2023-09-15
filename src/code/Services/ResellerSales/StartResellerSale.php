@@ -29,6 +29,7 @@ trait StartResellerSale
                 'parent_id' => $parentTagd->id,
                 'item_id' => $parentTagd->item_id,
                 'reseller_id' => $reseller->id,
+                'meta' => $parentTagd->meta,
                 'trust' => $parentTagd->trust,
                 'status' => TagdStatus::RESALE,
                 'status_at' => Carbon::now(),
