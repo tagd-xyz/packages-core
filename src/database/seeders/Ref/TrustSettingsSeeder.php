@@ -10,7 +10,7 @@ use Tagd\Core\Models\Ref\TrustSettingName;
 
 class TrustSettingsSeeder extends Seeder
 {
-    use UsesFactories, TruncatesTables;
+    use TruncatesTables, UsesFactories;
 
     /**
      * Seed the application's database for development purposes.
@@ -20,7 +20,7 @@ class TrustSettingsSeeder extends Seeder
     public function run(array $options = [])
     {
         extract([
-            'truncate' => true,
+            'truncate' => false,
             ...$options,
         ]);
 
@@ -30,6 +30,10 @@ class TrustSettingsSeeder extends Seeder
             $this->truncate([
                 (new TrustSetting())->getTable(),
             ]);
+        }
+
+        if (! empty(TrustSetting::count())) {
+            return;
         }
 
         $brandModifiers = [

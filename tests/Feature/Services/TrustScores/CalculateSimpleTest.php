@@ -14,16 +14,16 @@ use Tagd\Core\Tests\Traits\NeedsResellers;
 use Tagd\Core\Tests\Traits\NeedsRetailers;
 use Tagd\Core\Tests\Traits\NeedsTagds;
 
-class CalculateForTagdTest extends TestCase
+class CalculateSimpleTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsItems,
-        NeedsTagds,
-        NeedsConsumers,
+        NeedsResellers,
         NeedsRetailers,
-        NeedsResellers;
+        NeedsTagds,
+        RefreshDatabase;
 
-    public function testCalculateForTagd()
+    public function testCalculateSimple()
     {
         $trustScoresService = app(TrustScoresService::class);
         $retailerSalesService = app(RetailerSalesService::class);
@@ -39,9 +39,17 @@ class CalculateForTagdTest extends TestCase
             'consumer@gmail.com',
             'transaction123',
             [
+                'amount' => 100,
+                'currency' => 'GBP',
+            ],
+            [
+                'country' => 'GBR',
+                'city' => 'London',
+            ],
+            [
                 'name' => $stock->name,
                 'description' => $stock->description,
-                'type' => $stock->type,
+                'type_id' => $stock->type->id,
                 'properties' => [
                     ...$stock->properties,
                     'brand' => 'gucci',

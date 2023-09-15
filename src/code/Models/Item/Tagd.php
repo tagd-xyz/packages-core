@@ -5,6 +5,7 @@
 
 namespace Tagd\Core\Models\Item;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,8 +21,8 @@ use Tagd\Core\Support\Slug;
 class Tagd extends Model
 {
     use HasFactory,
-        HasUuidKey,
         HasTrustScore,
+        HasUuidKey,
         SoftDeletes;
 
     protected $table = 'tagds';
@@ -114,35 +115,84 @@ class Tagd extends Model
     protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::ACTIVE == $this->status,
+            get: fn () => $this->status == TagdStatus::ACTIVE,
+        );
+    }
+
+    protected function activatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::ACTIVE) ? $this->status_at : null,
+        );
+    }
+
+    protected function isInactive(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->status == TagdStatus::INACTIVE,
         );
     }
 
     protected function isExpired(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::EXPIRED == $this->status,
+            get: fn () => $this->status == TagdStatus::EXPIRED,
+        );
+    }
+
+    protected function expireddAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::EXPIRED) ? $this->status_at : null,
         );
     }
 
     protected function isCancelled(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::CANCELLED == $this->status,
+            get: fn () => $this->status == TagdStatus::CANCELLED,
+        );
+    }
+
+    protected function cancelledAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::CANCELLED) ? $this->status_at : null,
         );
     }
 
     protected function isResale(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::RESALE == $this->status,
+            get: fn () => $this->status == TagdStatus::RESALE,
         );
     }
 
     protected function isTransferred(): Attribute
     {
         return Attribute::make(
-            get: fn () => TagdStatus::TRANSFERRED == $this->status,
+            get: fn () => $this->status == TagdStatus::TRANSFERRED,
+        );
+    }
+
+    protected function transferredAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::TRANSFERRED) ? $this->status_at : null,
+        );
+    }
+
+    protected function isReturned(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->status == TagdStatus::RETURNED,
+        );
+    }
+
+    protected function returnedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->status == TagdStatus::RETURNED) ? $this->status_at : null,
         );
     }
 
@@ -188,6 +238,22 @@ class Tagd extends Model
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Scope a query to only include root tagds.
+     */
+    public function scopeRoots(Builder $query): void
+    {
+        $query->whereNull('parent_id');
+    }
+
+    /**
+     * Scope a query to only include leaf tagds.
+     */
+    public function scopeLeafs(Builder $query): void
+    {
+        $query->whereDoesntHave('children');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACTIONS
@@ -198,6 +264,16 @@ class Tagd extends Model
     {
         $updated = $this->update([
             'status' => TagdStatus::ACTIVE,
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
+        ]);
+    }
+
+    public function deactivate(Carbon $date = null)
+    {
+        $updated = $this->update([
+            'status' => TagdStatus::INACTIVE,
             'status_at' => $date
                 ? $date
                 : Carbon::now(),
@@ -234,11 +310,21 @@ class Tagd extends Model
         ]);
     }
 
+    public function return(Carbon $date = null)
+    {
+        $updated = $this->update([
+            'status' => TagdStatus::RETURNED,
+            'status_at' => $date
+                ? $date
+                : Carbon::now(),
+        ]);
+    }
+
     public function enableForResale(bool $enabled = true)
     {
         $this->update([
             'meta' => [
-                ...$this->meta,
+                ...(array) $this->meta,
                 (TagdMeta::AVAILABLE_FOR_RESALE)->value => $enabled,
             ],
         ]);
@@ -261,6 +347,24 @@ class Tagd extends Model
         foreach ($this->children as $child) {
             $collection = $collection->concat(
                 $child->buildChildrenCollection($filter)
+            );
+        }
+
+        return $collection;
+    }
+
+    public function buildParentCollection(callable $filter = null): Collection
+    {
+        $collection = collect();
+
+        $parent = $this->parent;
+        if ($parent) {
+            if (is_null($filter) || $filter($parent)) {
+                $collection->push($parent);
+            }
+
+            $collection = $collection->concat(
+                $parent->buildParentCollection($filter)
             );
         }
 

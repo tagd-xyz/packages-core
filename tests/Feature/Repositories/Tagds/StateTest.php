@@ -10,9 +10,9 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class StateTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsTagds,
-        NeedsConsumers;
+        RefreshDatabase;
 
     // public function testActivate()
     // {
@@ -22,6 +22,16 @@ class StateTest extends TestCase
     //     $repo->activate($tagd);
 
     //     $this->assertEquals($tagd->isActive, true);
+    // }
+
+    // public function testReturn()
+    // {
+    //     $repo = app(Tagds::class);
+
+    //     $tagd = $this->aTagd();
+    //     $repo->return($tagd);
+
+    //     $this->assertEquals($tagd->isReturned, true);
     // }
 
     public function testSetAsAvailableForResale()

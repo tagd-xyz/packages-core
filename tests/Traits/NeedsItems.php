@@ -10,10 +10,15 @@ trait NeedsItems
     /**
      * Creates a tagd
      */
-    protected function anItem(): Item
+    protected function anItem(array $options = []): Item
     {
+        extract([
+            'retailer' => Retailer::factory()->create(),
+            ...$options,
+        ]);
+
         return Item::factory()
-            ->for(Retailer::factory()->create())
+            ->for($retailer)
             ->create();
     }
 }

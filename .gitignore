@@ -1,6 +1,5 @@
 /vendor
 /tests-coverage
-composer.lock
 .phpunit.result.cache
 .DS_Store
 .thumbs.db

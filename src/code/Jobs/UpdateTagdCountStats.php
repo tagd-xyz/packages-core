@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Item\TagdStatus;
 
-class UpdateTagdAncestorsStats implements ShouldQueue
+class UpdateTagdCountStats implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -34,6 +34,8 @@ class UpdateTagdAncestorsStats implements ShouldQueue
     /**
      * Execute the job.
      *
+     * This job calculates the 'count' stats for a tag and its parents
+     *
      * @return void
      */
     public function handle()
@@ -41,27 +43,23 @@ class UpdateTagdAncestorsStats implements ShouldQueue
         $parent = $this->tagd->parent;
 
         if ($parent) {
-
-            $stats = $parent->stats;
-            $stats['count'] = [];
+            $count = [];
 
             // count per status
-            // ----------------------------------------------------------------
             foreach (TagdStatus::cases() as $status) {
-                $stats['count'][$status->value] =
+                $count[$status->value] =
                     $parent->countAllChildren(function ($child) use ($status) {
                         return $status->value == $child->status->value;
                     });
             }
 
             // count self
-            $stats['count'][$parent->status->value]++;
+            $count[$parent->status->value]++;
 
-            // count per status(split by actor) - only transferred
-            // ----------------------------------------------------------------
+            // count per status (split by actor) - only transferred
             foreach (TagdStatus::cases() as $status) {
-                if (TagdStatus::TRANSFERRED == $status) {
-                    $stats['count'][$status->value . '_consumer'] =
+                if ($status == TagdStatus::TRANSFERRED) {
+                    $count[$status->value . '_consumer'] =
                         $parent->countAllChildren(function ($child) use ($status) {
                             return ! is_null($child->consumer_id)
                                 && $status->value == $child->status->value;
@@ -71,16 +69,18 @@ class UpdateTagdAncestorsStats implements ShouldQueue
 
             // count self
             if (
-                TagdStatus::TRANSFERRED == $parent->status
+                $parent->status == TagdStatus::TRANSFERRED
                 && ! is_null($parent->consumer_id)
             ) {
-                $stats['count'][$parent->status->value . '_consumer']++;
+                $count[$parent->status->value . '_consumer']++;
             }
 
-            // update parent and dispatch recursive ob
-            // ----------------------------------------------------------------
+            // update parent and dispatch recursive job
             $parent->update([
-                'stats' => $stats,
+                'stats' => [
+                    ...(array) $parent->stats,
+                    'count' => $count,
+                ],
             ]);
 
             self::dispatch($parent);

@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Tagd\Core\Models\Actor\Reseller;
 use Tagd\Core\Models\Exceptions\CantRequestUpload;
 use Tagd\Core\Models\Item\Item;
+use Tagd\Core\Models\Item\Stock;
+use Tagd\Core\Models\Item\StockImage;
 use Tagd\Core\Models\Model;
 use Tagd\Core\Models\Traits\HasUuidKey;
 
@@ -44,21 +46,37 @@ class Upload extends Model
     |--------------------------------------------------------------------------
     */
 
-    /**
-     * Get the parent uploader model (Reseller).
-     */
-    public function resellers()
-    {
-        return $this->morphedByMany(Reseller::class, 'uploads');
-    }
+    // /**
+    //  * Get the parent uploader model (Reseller).
+    //  */
+    // public function resellers()
+    // {
+    //     return $this->morphedByMany(Reseller::class, 'uploads');
+    // }
 
-    /**
-     * Get the parent uploader model (Item).
-     */
-    public function items()
-    {
-        return $this->morphedByMany(Item::class, 'uploads');
-    }
+    // /**
+    //  * Get the parent model (Item).
+    //  */
+    // public function items()
+    // {
+    //     return $this->morphedByMany(Item::class, 'uploads');
+    // }
+
+    // /**
+    //  * Get the parent model (Item).
+    //  */
+    // public function stock()
+    // {
+    //     return $this->morphedByMany(Stock::class, 'uploads');
+    // }
+
+    // /**
+    //  * Get the parent model (Item).
+    //  */
+    // public function stockImage()
+    // {
+    //     return $this->morphedByMany(StockImage::class, 'uploads');
+    // }
 
     /*
     |--------------------------------------------------------------------------

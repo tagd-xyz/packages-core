@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('uploads', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuidMorphs('entity');
+            // $table->uuidMorphs('entity');
             $table->string('bucket');
             $table->string('folder')->nullable();
             $table->string('file')->nullable();

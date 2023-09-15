@@ -39,8 +39,8 @@ class Resellers extends Repository implements ResellersInterface
             'bucket' => $s3Bucket,
             'file' => $fileName,
             'folder' => $folder . '/' . $resellerId,
-            'entity_id' => $resellerId,
-            'entity_type' => 'reseller',
+            // 'entity_id' => $resellerId,
+            // 'entity_type' => 'reseller',
         ]);
 
     }

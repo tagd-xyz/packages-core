@@ -4,10 +4,10 @@ namespace Tagd\Core\Support\Sih;
 
 class Sih implements Transforms\Native\Definitions
 {
-    use Transforms\Native\Resize,
-        Transforms\Native\Color,
+    use Transforms\Native\Color,
+        Transforms\Native\Crop,
         Transforms\Native\Flip,
-        Transforms\Native\Crop;
+        Transforms\Native\Resize;
 
     private $cdn;
 
@@ -27,7 +27,7 @@ class Sih implements Transforms\Native\Definitions
         $key = trim(rtrim($key, '/'));
 
         // validate params
-        if ('' == $cdn || '' == $bucket || '' == $key) {
+        if ($cdn == '' || $bucket == '' || $key == '') {
             throw new Exceptions\InvalidConfig();
         }
 

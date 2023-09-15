@@ -9,7 +9,7 @@ use Tagd\Core\Models\Actor\Reseller;
 
 class ResellersSeeder extends Seeder
 {
-    use UsesFactories, TruncatesTables;
+    use TruncatesTables, UsesFactories;
 
     /**
      * Seed the application's database for development purposes.
@@ -38,12 +38,14 @@ class ResellersSeeder extends Seeder
             'Depop',
             'eBid',
         ] as $name) {
-            $factory = Reseller::factory()
-                ->count(1)
-                ->state([
-                    'name' => $name,
-                ])
-                ->create();
+            if (empty(Reseller::where('name', $name)->count())) {
+                $factory = Reseller::factory()
+                    ->count(1)
+                    ->state([
+                        'name' => $name,
+                    ])
+                    ->create();
+            }
         }
     }
 }

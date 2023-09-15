@@ -34,25 +34,30 @@ class UpdateTagdTimeToTransferStats implements ShouldQueue
     /**
      * Execute the job.
      *
+     * This Job updates the time to transfer stats for a tagd and its parents
+     *
      * @return void
      */
     public function handle()
     {
         $tagd = $this->tagd;
 
+        // Only care for transferred tagds that belongs to consumers
         if (
-            TagdStatus::TRANSFERRED == $tagd->status
+            $tagd->status == TagdStatus::TRANSFERRED
             && ! is_null($tagd->consumer_id)
         ) {
-            //build list of nodes
+            //build list of children that belong to a consumer
             $nodes = $tagd->buildChildrenCollection(
                 function ($node) {
                     return ! is_null($node->consumer_id);
                 }
             );
 
+            // active node is last in the tree
             $activeNode = $nodes->last();
 
+            // build array, one ttt for each node
             $ttt = [];
             foreach ($nodes as $index => $node) {
                 if ($node->id == $activeNode->id) {
@@ -68,66 +73,31 @@ class UpdateTagdTimeToTransferStats implements ShouldQueue
                 }
             }
 
-            $stats = $tagd->stats;
-            $stats['ttt'] = $ttt;
-
+            // update the stats
             $tagd->update([
-                'stats' => $stats,
+                'stats' => [
+                    ...(array) $tagd->stats,
+                    'ttt' => $ttt,
+                ],
             ]);
 
             //update parent if it is a resale
-            if (! is_null($tagd->parent_id)) {
+            if (
+                ! is_null($tagd->parent_id)
+                && ! is_null($tagd->parent->reseller_id)
+            ) {
                 $tagd->parent->update([
-                    'stats' => $stats,
+                    'stats' => [
+                        ...(array) $tagd->parent->stats,
+                        'ttt' => $ttt,
+                    ],
                 ]);
             }
         }
 
+        // traverse up the tree
         if (! $tagd->is_root) {
             self::dispatch($tagd->parent);
         }
-    }
-
-    /**
-     * Find the active child of a transferred tagd
-     */
-    private function findActiveDescendant(Tagd $tagd = null): ?Tagd
-    {
-        foreach ($tagd->children as $child) {
-            if (TagdStatus::ACTIVE == $child->status) {
-                return $child;
-            } else {
-                return $this->findActiveDescendant($child);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Find the next transferred node (to a consumer)
-     */
-    private function findNextTransfer(Tagd $tagd): ?Tagd
-    {
-        if (TagdStatus::TRANSFERRED == $tagd->status) {
-            foreach ($tagd->children as $child) {
-                dd($child);
-                if (
-                    TagdStatus::TRANSFERRED == $child->status
-                    && ! is_null($child->reseller_id)
-                ) {
-                    foreach ($child->children as $grandChild) {
-                        if (
-                            TagdStatus::TRANSFERRED == $grandChild->status
-                            && ! is_null($grandChild->consumer_id)
-                        ) {
-                            return $grandChild;
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
     }
 }

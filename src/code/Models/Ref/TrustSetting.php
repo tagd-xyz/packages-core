@@ -11,7 +11,7 @@ class TrustSetting extends Model
 {
     public const TABLE = 'trust_settings';
 
-    public const MODIFIER_MIN = 0;
+    public const MODIFIER_MIN = 0.0;
 
     public const MODIFIER_MAX = 100;
 

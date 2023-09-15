@@ -12,11 +12,11 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class ProcessRetailerSaleTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsItems,
+        NeedsRetailers,
         NeedsTagds,
-        NeedsConsumers,
-        NeedsRetailers;
+        RefreshDatabase;
 
     public function testProcessRetailerSale()
     {
@@ -26,11 +26,19 @@ class ProcessRetailerSaleTest extends TestCase
         $retailer = $this->aRetailer();
         $stock = $this->anItem();
         $transactionId = 'transaction123';
+        $price = [
+            'amount' => 100,
+            'currency' => 'GBP',
+        ];
+        $location = [
+            'country' => 'GBR',
+            'city' => 'London',
+        ];
 
         $itemDetails = [
             'name' => 'Name',
             'description' => 'Description',
-            'type' => $stock->type,
+            'type_id' => $stock->type->id,
             'properties' => $stock->properties,
         ];
 
@@ -38,6 +46,8 @@ class ProcessRetailerSaleTest extends TestCase
             $retailer->id,
             $consumer->email,
             $transactionId,
+            $price,
+            $location,
             $itemDetails,
             []
         );
@@ -46,5 +56,9 @@ class ProcessRetailerSaleTest extends TestCase
 
         $this->assertEquals($tagd->consumer_id, $consumer->id);
         $this->assertEquals($tagd->meta['transaction'], $transactionId);
+        $this->assertEquals($tagd->meta['price']['amount'], $price['amount']);
+        $this->assertEquals($tagd->meta['price']['currency'], $price['currency']);
+        $this->assertEquals($tagd->meta['location']['country'], $location['country']);
+        $this->assertEquals($tagd->meta['location']['city'], $location['city']);
     }
 }

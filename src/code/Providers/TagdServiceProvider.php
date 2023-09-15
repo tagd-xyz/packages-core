@@ -52,8 +52,15 @@ class TagdServiceProvider extends ServiceProvider
                 \Tagd\Core\Console\Commands\Seed\Qa::class,
                 \Tagd\Core\Console\Commands\Seed\Uat::class,
                 \Tagd\Core\Console\Commands\Seed\Prod::class,
+                \Tagd\Core\Console\Commands\Seed\Swatch::class,
                 \Tagd\Core\Console\Commands\Seed\Database::class,
+                \Tagd\Core\Console\Commands\Seed\Support\Sale::class,
+                \Tagd\Core\Console\Commands\Seed\Support\Resale::class,
+                \Tagd\Core\Console\Commands\Seed\Support\Activate::class,
+                \Tagd\Core\Console\Commands\Seed\Support\Role::class,
                 \Tagd\Core\Console\Commands\Ref\TrustSettings\Brand::class,
+                \Tagd\Core\Console\Commands\Support\Tree::class,
+                \Tagd\Core\Console\Commands\Support\BuildStats::class,
             ];
 
             if ($this->app->environment(['local', 'testing'])) {
@@ -67,6 +74,7 @@ class TagdServiceProvider extends ServiceProvider
          * Polymorph mapping
          */
         \Illuminate\Database\Eloquent\Relations\Relation::enforceMorphMap([
+            // 'affiliate' => \IFAC\Core\Models\Affiliate\Affiliate::class,
         ]);
 
         /**
@@ -124,6 +132,7 @@ class TagdServiceProvider extends ServiceProvider
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Retailers::class, \Tagd\Core\Repositories\Actors\Retailers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Resellers::class, \Tagd\Core\Repositories\Actors\Resellers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Consumers::class, \Tagd\Core\Repositories\Actors\Consumers::class);
+        $this->app->bind(\Tagd\Core\Repositories\Interfaces\Actors\Admins::class, \Tagd\Core\Repositories\Actors\Admins::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Uploads\Resellers::class, \Tagd\Core\Repositories\Uploads\Resellers::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Uploads\Stocks::class, \Tagd\Core\Repositories\Uploads\Stocks::class);
         $this->app->bind(\Tagd\Core\Repositories\Interfaces\Ref\TrustSettings::class, \Tagd\Core\Repositories\Ref\TrustSettings::class);

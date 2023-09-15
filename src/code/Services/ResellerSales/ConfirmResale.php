@@ -16,11 +16,13 @@ trait ConfirmResale
      */
     public function confirmResale(
         Tagd $tagd,
-        Consumer $consumer
+        Consumer $consumer,
+        array $meta = null,
     ): Tagd {
         return DB::transaction(function () use (
             $tagd,
-            $consumer
+            $consumer,
+            $meta
         ) {
             $tagd->transfer();
             $tagd->parent->transfer();
@@ -30,11 +32,18 @@ trait ConfirmResale
                 ->filter(function ($child) use ($tagd) {
                     return
                         $child->id != $tagd->id
-                        && TagdStatus::RESALE == $child->status;
+                        && $child->status == TagdStatus::RESALE;
                 });
 
             foreach ($activeSiblings as $sibling) {
                 $sibling->expire();
+            }
+
+            // update tagd with price meta data
+            if (! is_null($meta)) {
+                $tagd->update([
+                    'meta' => array_merge($tagd->meta ?? [], $meta),
+                ]);
             }
 
             // create new tagd
@@ -46,6 +55,7 @@ trait ConfirmResale
                 'trust' => $tagd->trust,
                 'status' => TagdStatus::ACTIVE,
                 'status_at' => Carbon::now(),
+                'meta' => $meta,
             ]);
 
             return $newTagd;

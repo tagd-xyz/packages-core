@@ -12,11 +12,11 @@ use Tagd\Core\Tests\Traits\NeedsTagds;
 
 class ConfirmResaleTest extends TestCase
 {
-    use RefreshDatabase,
+    use NeedsConsumers,
         NeedsItems,
-        NeedsConsumers,
+        NeedsResellers,
         NeedsTagds,
-        NeedsResellers;
+        RefreshDatabase;
 
     public function testConfirm()
     {
@@ -25,10 +25,19 @@ class ConfirmResaleTest extends TestCase
         $parentTagd = $this->aTagd();
         $tagd = $this->aTagdChildOf($parentTagd);
         $consumer = $this->aConsumer();
+        $price = [
+            'amount' => 100,
+            'currency' => 'GBP',
+        ];
 
-        $newTagd = $service->confirmResale($tagd, $consumer);
+        $newTagd = $service->confirmResale($tagd, $consumer, [
+            'price' => $price,
+        ]);
 
         $this->assertEquals($tagd->isTransferred, true);
+
+        $this->assertEquals($tagd->meta['price']['amount'], $price['amount']);
+        $this->assertEquals($tagd->meta['price']['currency'], $price['currency']);
 
         $this->assertEquals($newTagd->isActive, true);
         $this->assertEquals($newTagd->consumer_id, $consumer->id);

@@ -9,7 +9,7 @@ use Tagd\Core\Tests\Traits\NeedsConsumers;
 
 class TestTrustScore extends TestCase
 {
-    use RefreshDatabase, NeedsConsumers;
+    use NeedsConsumers, RefreshDatabase;
 
     public function testGetTrustScoreDefault()
     {

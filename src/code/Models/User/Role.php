@@ -15,6 +15,8 @@ class Role extends Model
 
     public const CONSUMER = 'consumer';
 
+    public const ADMIN = 'admin';
+
     public const UNKNOWN = 'unknown';
 
     /**
@@ -23,8 +25,10 @@ class Role extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'actor_type',
         'actor_id',
+        'user_id',
     ];
 
     /*

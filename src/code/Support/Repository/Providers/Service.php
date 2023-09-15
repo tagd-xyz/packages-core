@@ -21,8 +21,6 @@ class Service extends ServiceProvider
      */
     public function boot()
     {
-        dd('repo boot');
-
         /**
          * Config files
          */
@@ -40,7 +38,6 @@ class Service extends ServiceProvider
     {
         parent::register();
 
-        dd('repo config');
         /**
          * Config file
          */

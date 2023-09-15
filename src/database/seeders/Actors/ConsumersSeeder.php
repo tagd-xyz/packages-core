@@ -9,7 +9,7 @@ use Tagd\Core\Models\Actor\Consumer;
 
 class ConsumersSeeder extends Seeder
 {
-    use UsesFactories, TruncatesTables;
+    use TruncatesTables, UsesFactories;
 
     /**
      * Seed the application's database for development purposes.
@@ -32,15 +32,10 @@ class ConsumersSeeder extends Seeder
             ]);
         }
 
-        $factory = Consumer::factory()
-            ->count($total)
-            ->create();
-
-        // $factory = Consumer::factory()
-        //     ->count(1)
-        //     ->state([
-        //         'email' => 'juan@totally.group',
-        //     ])
-        //     ->create();
+        if (empty(Consumer::count())) {
+            $factory = Consumer::factory()
+                ->count($total)
+                ->create();
+        }
     }
 }

@@ -17,6 +17,8 @@ trait ProcessRetailerSale
         string $retailerId,
         string $consumerEmail,
         string $transactionId,
+        array $price,
+        array $location,
         array $itemDetails,
         array $imageUploads,
     ): Item {
@@ -25,6 +27,8 @@ trait ProcessRetailerSale
             $retailerId,
             $consumerEmail,
             $transactionId,
+            $price,
+            $location,
             $itemDetails,
             $imageUploads
         ) {
@@ -49,11 +53,13 @@ trait ProcessRetailerSale
                 'consumer_id' => $consumer->id,
                 'meta' => [
                     'transaction' => $transactionId,
+                    'price' => $price,
+                    'location' => $location,
                 ],
             ]);
 
             // Automatically set the newly created Tagd as "active"
-            $tagd->activate();
+            // $tagd->activate();
 
             // Return newly created item
             return $item;

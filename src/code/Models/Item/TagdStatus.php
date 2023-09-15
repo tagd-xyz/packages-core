@@ -14,6 +14,7 @@ enum TagdStatus: string
     case TRANSFERRED = 'transferred';
     case CANCELLED = 'cancelled';
     case EXPIRED = 'expired';
+    case RETURNED = 'returned';
 
     public function description(): string
     {
@@ -24,6 +25,7 @@ enum TagdStatus: string
             self::TRANSFERRED => 'Transferred',
             self::CANCELLED => 'Cancelled',
             self::EXPIRED => 'Expired',
+            self::RETURNED => 'Returned',
         };
     }
 }

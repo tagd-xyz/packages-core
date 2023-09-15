@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Tagd\Core\Models\Actor\Reseller as Model;
+use Tagd\Core\Models\Item\Item as Model;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 return new class extends Migration
@@ -25,13 +25,17 @@ return new class extends Migration
     {
         Schema::create($this->tableName(), function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('email')->unique();
-            $table->string('name')->nullable();
-            $table->string('logo')->nullable();
-            $table->foreignUuid('avatar_upload_id')->nullable()->constrained('uploads');
-            $table->string('website')->nullable();
+            $table->foreignUuid('retailer_id')->constrained();
+            $table->string('name');
+            $table->unsignedBigInteger('type_id');
+            $table->text('description')->nullable();
+            $table->json('properties');
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::table($this->tableName(), function (Blueprint $table) {
+            $table->foreign('type_id')->references('id')->on('item_types');
         });
     }
 

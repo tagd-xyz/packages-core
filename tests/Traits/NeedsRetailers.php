@@ -3,6 +3,7 @@
 namespace Tagd\Core\Tests\Traits;
 
 use Tagd\Core\Models\Actor\Retailer;
+use Tagd\Core\Models\User\Role;
 use Tagd\Core\Models\User\User;
 
 trait NeedsRetailers
@@ -19,7 +20,6 @@ trait NeedsRetailers
     /**
      * Acts as a retailer
      *
-     * @param  null  $guard
      * @return $this
      */
     protected function actingAsARetailer(Retailer $retailer = null, $guard = 'api'): static
@@ -32,6 +32,9 @@ trait NeedsRetailers
             ->firebase('retailers')
             ->create();
         $user->startActingAs($retailer);
+
+        // tenant is injected by the auth provider, according to the bearer token
+        $user->tenant = Role::RETAILER;
 
         return $this->actingAs($user, $guard);
     }
