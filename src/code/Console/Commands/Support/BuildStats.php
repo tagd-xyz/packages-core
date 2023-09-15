@@ -46,14 +46,14 @@ class BuildStats extends Command
     {
         try {
             if (! $this->option('reset')) {
-                $this->buildAvgResaleDiffPerc();
-                $this->buildCount();
-                $this->buildTimeToTransfer();
-                $this->buildTrustScore();
+                // $this->buildAvgResaleDiffPerc();
+                // $this->buildCount();
+                // $this->buildTimeToTransfer();
+                $this->buildTrustScore(Tagd::roots());
             } else {
-                $this->resetAvgResaleDiffPerc();
-                $this->resetCount();
-                $this->resetTimeToTransfer();
+                // $this->resetAvgResaleDiffPerc();
+                // $this->resetCount();
+                // $this->resetTimeToTransfer();
                 $this->resetTrustScore();
             }
         } catch (\Exception $e) {
@@ -105,13 +105,14 @@ class BuildStats extends Command
         );
     }
 
-    private function buildTrustScore()
+    private function buildTrustScore($group)
     {
         $this->processGroupOfTagds(
             'Building trust score for all Tagds...',
-            Tagd::query(),
+            $group,
             function ($tagd) {
                 UpdateTagdTrustScore::dispatch($tagd);
+                $this->buildTrustScore($tagd->children);
             },
         );
     }
