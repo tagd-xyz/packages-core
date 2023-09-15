@@ -299,7 +299,7 @@ class SwatchSeeder extends Seeder
 
         Log::info('seeding trust settings...');
         $brandModifiers = TrustSetting::where('name', TrustSettingName::BRAND_MODIFIER)
-                ->first();
+            ->first();
 
         $list = $brandModifiers->setting;
 
