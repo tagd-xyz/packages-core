@@ -17,6 +17,8 @@ use Tagd\Core\Models\Item\Stock;
 use Tagd\Core\Models\Item\StockImage;
 use Tagd\Core\Models\Item\Tagd;
 use Tagd\Core\Models\Item\Type;
+use Tagd\Core\Models\Ref\TrustSetting;
+use Tagd\Core\Models\Ref\TrustSettingName;
 use Tagd\Core\Models\Upload\Upload;
 use Tagd\Core\Services\Interfaces\ResellerSales;
 use Tagd\Core\Services\Interfaces\RetailerSales;
@@ -89,6 +91,10 @@ class SwatchSeeder extends Seeder
 
     private $returnProbability = 0;
 
+    private $consumerTrustProbability = 0;
+
+    private $resaleQuickProbability = 0;
+
     /**
      * Seed the application's database.
      *
@@ -98,11 +104,13 @@ class SwatchSeeder extends Seeder
         array $options = [],
     ) {
         extract([
-            'truncate' => true,
-            'seedSalesTotal' => 200,
+            'truncate' => false,
+            'seedSalesTotal' => 100,
             'seedResalesMin' => 1,
             'seedResalesMax' => 10,
-            'returnProbability' => 10,
+            'returnProbability' => 5,
+            'consumerTrustProbability' => 50,
+            'resaleQuickProbability' => 50,
             ...$options,
         ]);
 
@@ -131,6 +139,8 @@ class SwatchSeeder extends Seeder
         $this->resellers = collect();
         $this->now = Carbon::now();
         $this->returnProbability = $returnProbability;
+        $this->consumerTrustProbability = $consumerTrustProbability;
+        $this->resaleQuickProbability = $resaleQuickProbability;
 
         $this->retailerSales = app(RetailerSales::class);
         $this->resellerSales = app(ResellerSales::class);
@@ -176,7 +186,7 @@ class SwatchSeeder extends Seeder
                 $retTagd = $this->retailerSale(
                     $retailer,
                     $stock,
-                    Consumer::factory()->create(),
+                    Consumer::factory()->randomEmail()->create(),
                     $date
                 );
 
@@ -190,7 +200,12 @@ class SwatchSeeder extends Seeder
                 while ($seedResales-- > 0) {
                     $reseller = $this->resellers->random();
 
-                    $date->addDays(rand(2, 5));
+                    //randomly resale quickly (for trust score)
+                    if ($this->isProbable($this->resaleQuickProbability)) {
+                        $date->addHours(rand(1, 48));
+                    } else {
+                        $date->addDays(rand(2, 5));
+                    }
 
                     if ($date->gt(Carbon::now())) {
                         break;
@@ -228,7 +243,7 @@ class SwatchSeeder extends Seeder
             ],
             [
                 'country' => 'GBR',
-                'city' => 'London',
+                'city' => $this->aRandomCity(),
             ],
             [
                 'name' => $stock->name,
@@ -245,13 +260,27 @@ class SwatchSeeder extends Seeder
         $tagd = $item->tagds->first();
 
         // randomly return items
-        if (rand(0, 100) > (100 - $this->returnProbability)) {
+        if ($this->isProbable($this->returnProbability)) {
             $tagd->return();
         } else {
             $tagd->activate();
         }
 
+        // randomly tweak the consumer's trust score
+        if ($this->isProbable($this->consumerTrustProbability)) {
+            $consumer->update([
+                'trust' => [
+                    'score' => rand(10, 100),
+                ],
+            ]);
+        }
+
         return $tagd;
+    }
+
+    private function isProbable(float $probability): bool
+    {
+        return rand(0, 100) > (100 - $probability);
     }
 
     private function seedRetailers()
@@ -267,6 +296,34 @@ class SwatchSeeder extends Seeder
             }
             $this->retailers[$name] = $retailer;
         }
+
+        Log::info('seeding trust settings...');
+        $brandModifiers = TrustSetting::where('name', TrustSettingName::BRAND_MODIFIER)
+                ->first();
+
+        $list = $brandModifiers->setting;
+
+        foreach ([
+            self::BRAND_1 => 80,
+            self::BRAND_2 => 80,
+            self::BRAND_3 => 80,
+            self::BRAND_4 => 80,
+            self::BRAND_5 => 80,
+            self::BRAND_6 => 80,
+            self::BRAND_7 => 80,
+            self::BRAND_8 => 80,
+            self::BRAND_9 => 80,
+            self::BRAND_10 => 80,
+            self::BRAND_11 => 80,
+            self::BRAND_12 => 80,
+        ] as $brand => $modifier) {
+            if (! array_key_exists($brand, $list)) {
+                $list[$brand] = $modifier;
+            }
+        }
+
+        $brandModifiers->setting = $list;
+        $brandModifiers->save();
     }
 
     private function seedResellers()
@@ -384,7 +441,7 @@ class SwatchSeeder extends Seeder
 
         return $this->resellerSales->confirmResale(
             $tagd,
-            Consumer::factory()->create(),
+            Consumer::factory()->randomEmail()->create(),
             [
                 'price' => [
                     'currency' => 'GBP',
@@ -392,7 +449,7 @@ class SwatchSeeder extends Seeder
                 ],
                 'location' => [
                     'country' => 'GBR',
-                    'city' => 'London',
+                    'city' => $this->aRandomCity(),
                 ],
             ],
         );
@@ -466,6 +523,24 @@ class SwatchSeeder extends Seeder
             self::RES_6,
             self::RES_7,
         ];
+    }
+
+    private function aRandomCity(): string
+    {
+        return array_rand([
+            'London',
+            'Manchester',
+            'Bristol',
+            'Liverpool',
+            'Oxford',
+            'Cambridge',
+            'Birmingham',
+            'Leicester',
+            'Bath',
+            'Leeds',
+            'Gloucester',
+            'Canterbury',
+        ]);
     }
 
     private function watches(): array
