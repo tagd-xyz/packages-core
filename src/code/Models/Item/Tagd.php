@@ -243,7 +243,7 @@ class Tagd extends Model
      */
     public function scopeRoots(Builder $query): void
     {
-        $query->whereIsNull('parent_id');
+        $query->whereNull('parent_id');
     }
 
     /**
